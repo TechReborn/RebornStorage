@@ -5,11 +5,16 @@ import net.minecraft.world.World;
 import reborncore.common.multiblock.IMultiblockPart;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockControllerBase;
+import reborncore.common.util.Inventory;
 
 /**
  * Created by Mark on 03/01/2017.
  */
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
+
+	public MultiBlockInventory inventory = new MultiBlockInventory(56, "multicrafter", 1, this);
+
+
 	public MultiBlockCrafter(World world) {
 		super(world);
 	}
@@ -106,21 +111,21 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
-
+		inventory.writeToNBT(nbtTagCompound);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-
+		inventory.readFromNBT(nbtTagCompound);
 	}
 
 	@Override
 	public void formatDescriptionPacket(NBTTagCompound nbtTagCompound) {
-
+		writeToNBT(nbtTagCompound);
 	}
 
 	@Override
 	public void decodeDescriptionPacket(NBTTagCompound nbtTagCompound) {
-
+		readFromNBT(nbtTagCompound);
 	}
 }

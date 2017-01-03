@@ -1,6 +1,10 @@
 package RebornStorage.tiles;
 
 import RebornStorage.multiblocks.MultiBlockCrafter;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.MultiblockValidationException;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockTileEntityBase;
@@ -59,4 +63,26 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase {
 
 
 	}
+
+	MultiBlockCrafter getMultiBlock(){
+		return (MultiBlockCrafter) getMultiblockController();
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if(getMultiblockController() != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			return true;
+		}
+		return super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if(getMultiblockController() != null &&  capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return (T) new InvWrapper(getMultiBlock().inventory);
+		}
+		return super.getCapability(capability, facing);
+	}
+
 }
