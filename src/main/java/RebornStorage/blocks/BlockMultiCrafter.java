@@ -52,7 +52,7 @@ public class BlockMultiCrafter extends BlockMultiblockBase{
 		if(tile.getMultiblockController() != null && !worldIn.isRemote){
 			if(!tile.getMultiblockController().isAssembled()){
 				if(tile.getMultiblockController().getLastValidationException() != null){
-					playerIn.addChatComponentMessage(new TextComponentString(tile.getMultiblockController().getLastValidationException().getMessage()));
+					playerIn.sendMessage(new TextComponentString(tile.getMultiblockController().getLastValidationException().getMessage()));
 				}
 			} else {
 				playerIn.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER, worldIn, pos.getX(), pos.getY(), pos.getZ());
