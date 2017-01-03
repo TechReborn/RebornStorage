@@ -12,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import reborncore.common.multiblock.BlockMultiblockBase;
 
@@ -45,13 +46,13 @@ public class BlockMultiCrafter extends BlockMultiblockBase{
 	                                float hitY,
 	                                float hitZ) {
 		TileMultiCrafter tile = (TileMultiCrafter) worldIn.getTileEntity(pos);
-		if(tile.getMultiblockController() != null){
+		if(tile.getMultiblockController() != null && !worldIn.isRemote){
 			tile.getMultiblockController().checkIfMachineIsWhole();
-			System.out.println(tile.getMultiblockController().getLastValidationException());
-		} else {
-			System.out.println("null");
-		}
+			if(tile.getMultiblockController().getLastValidationException() != null){
+				playerIn.addChatComponentMessage(new TextComponentString(tile.getMultiblockController().getLastValidationException().getMessage()));
+			}
 
+		}
 		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 }

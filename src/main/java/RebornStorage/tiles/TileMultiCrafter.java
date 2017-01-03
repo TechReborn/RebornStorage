@@ -56,9 +56,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase {
 
 	@Override
 	public void update() {
-		if(getMultiblockController() != null){
-			getMultiblockController().checkIfMachineIsWhole();
-		}
+
 
 	}
 }

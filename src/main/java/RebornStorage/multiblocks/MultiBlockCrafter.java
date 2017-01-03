@@ -51,7 +51,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected int getMinimumNumberOfBlocksForAssembledMachine() {
-		return 9 * 3;
+		return 1;
 	}
 
 	@Override
@@ -70,8 +70,23 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	@Override
+	protected int getMinimumXSize() {
+		return 2;
+	}
+
+	@Override
+	protected int getMinimumYSize() {
+		return 2;
+	}
+
+	@Override
+	protected int getMinimumZSize() {
+		return 2;
+	}
+
+	@Override
 	protected void onAssimilate(MultiblockControllerBase multiblockControllerBase) {
-		System.out.println("hello");
+
 	}
 
 	@Override
