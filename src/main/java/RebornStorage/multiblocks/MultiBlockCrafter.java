@@ -1,21 +1,34 @@
 package RebornStorage.multiblocks;
 
+import RebornStorage.blocks.BlockMultiCrafter;
+import RebornStorage.tiles.TileMultiCrafter;
+import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
+import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider;
+import com.raoulvdberge.refinedstorage.api.network.INetworkMaster;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 import reborncore.common.multiblock.IMultiblockPart;
 import reborncore.common.multiblock.MultiblockControllerBase;
+import reborncore.common.multiblock.MultiblockValidationException;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockControllerBase;
 import reborncore.common.util.Inventory;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Mark on 03/01/2017.
  */
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
-	//public MultiBlockInventory inventory = new MultiBlockInventory(5, "multicrafter", 1, this);
+	public MultiBlockInventory inv = new MultiBlockInventory(5, "multicrafter", 1, this);
 
-	public ItemStackHandler inv = new StackHandler(5);
+	public int powerUsage = 0;
+	public int speed = 0;
 
 	public MultiBlockCrafter(World world) {
 		super(world);
@@ -38,8 +51,22 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected void onMachineAssembled() {
-		inv.setSize(getNumConnectedBlocks() * 11);
-		System.out.println(getNumConnectedBlocks() * 11 + " slots");
+		int slots = 0;
+		powerUsage = 0;
+		speed = 0;
+		for(IMultiblockPart part : connectedParts){
+			if(part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("storage")){
+				slots += 10;
+				powerUsage += 5;
+			}
+			if(part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("cpu")){
+				slots += 10;
+				powerUsage += 10;
+				speed++;
+			}
+		}
+		inv.setSize(slots);
+		System.out.println(slots + " slots");
 	}
 
 	@Override
@@ -59,37 +86,37 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected int getMinimumNumberOfBlocksForAssembledMachine() {
-		return 1;
+		return (9 * 3);
 	}
 
 	@Override
 	protected int getMaximumXSize() {
-		return 256;
+		return 16;
 	}
 
 	@Override
 	protected int getMaximumZSize() {
-		return 256;
+		return 16;
 	}
 
 	@Override
 	protected int getMaximumYSize() {
-		return 256;
+		return 16;
 	}
 
 	@Override
 	protected int getMinimumXSize() {
-		return 2;
+		return 3;
 	}
 
 	@Override
 	protected int getMinimumYSize() {
-		return 2;
+		return 3;
 	}
 
 	@Override
 	protected int getMinimumZSize() {
-		return 2;
+		return 3;
 	}
 
 	@Override
@@ -114,12 +141,12 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
-        nbtTagCompound.merge(inv.serializeNBT());
+        inv.writeToNBT(nbtTagCompound);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        inv.deserializeNBT(nbtTagCompound);
+        inv.readFromNBT(nbtTagCompound);
 	}
 
 	@Override
@@ -132,16 +159,43 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		readFromNBT(nbtTagCompound);
 	}
 
-    public ItemStackHandler getInv()
+    public MultiBlockInventory getInv()
     {
         return inv;
     }
 
-    class StackHandler extends ItemStackHandler
-	{
-		StackHandler(int size)
-		{
-			super(size);
+    //RS things:
+
+
+	public List<ICraftingPattern> actualPatterns = new ArrayList();
+
+	public void rebuildPatterns() {
+		this.actualPatterns.clear();
+		for (int i = 0; i < inv.getSizeInventory(); ++i) {
+			ItemStack patternStack = inv.getStackInSlot(i);
+			if (patternStack != null) {
+				ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, getReferenceTile());
+				if (pattern.isValid()) {
+					this.actualPatterns.add(pattern);
+				}
+			}
 		}
+
 	}
+
+	public void onConnectionChange(INetworkMaster network, boolean state, BlockPos pos) {
+		if (!state) {
+			network.getCraftingTasks().stream().filter((task) -> task.getPattern().getContainer().getPosition().equals(pos)).forEach(network::cancelCraftingTask);
+		}
+
+		network.rebuildPatterns();
+	}
+
+
+
+	private TileMultiCrafter getReferenceTile(){
+		return (TileMultiCrafter) worldObj.getTileEntity(getReferenceCoord().toBlockPos());
+	}
+
+
 }

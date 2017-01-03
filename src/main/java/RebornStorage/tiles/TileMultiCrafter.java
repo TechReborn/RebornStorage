@@ -1,5 +1,6 @@
 package RebornStorage.tiles;
 
+import RebornStorage.blocks.BlockMultiCrafter;
 import RebornStorage.multiblocks.MultiBlockCrafter;
 import com.raoulvdberge.refinedstorage.RS;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
@@ -17,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.MultiblockValidationException;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockTileEntityBase;
@@ -32,37 +34,63 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public void isGoodForFrame() throws MultiblockValidationException {
-
+		if(!getVarient().equals("frame")){
+			throw new MultiblockValidationException(getVarient() + " is not valid for the frame of the block");
+		}
 	}
 
 	@Override
 	public void isGoodForSides() throws MultiblockValidationException {
-
+		if(!getVarient().equals("heat")){
+			throw new MultiblockValidationException(getVarient() + " is not valid for the sides of the block");
+		}
 	}
 
 	@Override
 	public void isGoodForTop() throws MultiblockValidationException {
-
+		if(!getVarient().equals("heat")){
+			throw new MultiblockValidationException(getVarient() + " is not valid for the sides of the block");
+		}
 	}
 
 	@Override
 	public void isGoodForBottom() throws MultiblockValidationException {
-
+		if(!getVarient().equals("heat")){
+			throw new MultiblockValidationException(getVarient() + " is not valid for the sides of the block");
+		}
 	}
 
 	@Override
 	public void isGoodForInterior() throws MultiblockValidationException {
-
+		if(!getVarient().equals("cpu") && !getVarient().equals("storage")){
+			throw new MultiblockValidationException(getVarient() + " is not valid for the inside of the block");
+		}
 	}
 
 	@Override
 	public void onMachineActivated() {
-
+		if(getMultiBlock() != null){
+			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
+			multiBlockCrafter.rebuildPatterns();
+		}
+		if(network != null){
+			network.rebuildPatterns();
+		}
 	}
 
 	@Override
 	public void onMachineDeactivated() {
+		if(getMultiBlock() != null){
+			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
+			multiBlockCrafter.rebuildPatterns();
+		}
+		if(network != null){
+			network.rebuildPatterns();
+		}
+	}
 
+	String getVarient(){
+		return world.getBlockState(pos).getValue(BlockMultiCrafter.VARIANTS);
 	}
 
 	@Override
@@ -80,9 +108,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	//RS stuff
-	private List<ICraftingPattern> actualPatterns = new ArrayList();
-	private ItemHandlerUpgrade upgrades = new ItemHandlerUpgrade(4, this, new int[] { 2 });
-	private boolean triggeredAutocrafting = false;
+
 	protected TileDataManager dataManager;
 	protected int ticks;
 	protected INetworkMaster network;
@@ -91,78 +117,38 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		this.dataManager = new TileDataManager(this);
 	}
 
-	private void rebuildPatterns() {
-		this.actualPatterns.clear();
-
-		if (getMultiBlock() == null) {
-			return;
-		}
-		for (int i = 0; i < getMultiBlock().inv.getSlots(); ++i) {
-			ItemStack patternStack = getMultiBlock().inv.getStackInSlot(i);
-			if (patternStack != null) {
-				ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(this.getWorld(), patternStack, this);
-				if (pattern.isValid()) {
-					this.actualPatterns.add(pattern);
-				}
-			}
-		}
-
-	}
-
 	public int getEnergyUsage() {
 		if (getMultiBlock() == null) {
 			return 0;
 		}
-		int usage = RS.INSTANCE.config.crafterUsage + this.upgrades.getEnergyUsage();
-
-		for (int i = 0; i < getMultiBlock().inv.getSlots(); ++i) {
-			if (getMultiBlock().inv.getStackInSlot(i) != null) {
-				usage += RS.INSTANCE.config.crafterPerPatternUsage;
-			}
-		}
-
-		return usage;
+		return getMultiBlock().powerUsage;
 	}
 
 	public void update() {
-		if (!this.getWorld().isRemote && this.ticks == 0) {
-			this.rebuildPatterns();
+
+		if(getMultiBlock() != null){
+			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
+			if(multiBlockCrafter.inv.hasChanged){
+				multiBlockCrafter.rebuildPatterns();
+				multiBlockCrafter.inv.hasChanged = false;
+			}
+			if (!this.getWorld().isRemote && this.ticks == 0) {
+				multiBlockCrafter.rebuildPatterns();
+			}
 		}
-	//	this.rebuildPatterns();
 		if (!this.getWorld().isRemote) {
 			++this.ticks;
 			this.dataManager.detectAndSendChanges();
 		}
-		updateNode();
 	}
 
-	public void updateNode() {
-		if (this.triggeredAutocrafting && this.getWorld().isBlockPowered(this.pos)) {
-			Iterator var1 = this.actualPatterns.iterator();
 
-			while (var1.hasNext()) {
-				ICraftingPattern pattern = (ICraftingPattern) var1.next();
-				Iterator var3 = pattern.getOutputs().iterator();
-
-				while (var3.hasNext()) {
-					ItemStack output = (ItemStack) var3.next();
-					this.network.scheduleCraftingTask(output, 1, 3);
-				}
-			}
-		}
-
-	}
-
-	public void onConnectionChange(INetworkMaster network, boolean state) {
-		if (!state) {
-			network.getCraftingTasks().stream().filter((task) -> task.getPattern().getContainer().getPosition().equals(this.pos)).forEach(network::cancelCraftingTask);
-		}
-
-		network.rebuildPatterns();
-	}
 
 	public int getSpeedUpdateCount() {
-		return this.upgrades.getUpgradeCount(2);
+		if(getMultiBlock() == null){
+			return 0;
+		}
+		return getMultiBlock().speed;
 	}
 
 	public IItemHandler getFacingInventory() {
@@ -175,7 +161,10 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	public List<ICraftingPattern> getPatterns() {
-		return this.actualPatterns;
+		if(getMultiBlock() == null){
+			return new ArrayList<>();
+		}
+		return getMultiBlock().actualPatterns;
 	}
 
 	@Override
@@ -186,12 +175,17 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	@Override
 	public void onConnected(INetworkMaster iNetworkMaster) {
 		network = iNetworkMaster;
-		onConnectionChange(network, true);
+		if(getMultiBlock() != null){
+			getMultiBlock().onConnectionChange(network, true, pos);
+		}
+
 	}
 
 	@Override
 	public void onDisconnected(INetworkMaster iNetworkMaster) {
-		onConnectionChange(network, false);
+		if(getMultiBlock() != null){
+			getMultiBlock().onConnectionChange(network, false, pos);
+		}
 		network = null;
 	}
 
@@ -202,7 +196,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public boolean canConduct(EnumFacing enumFacing) {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -226,7 +220,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (getMultiblockController() != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(getMultiBlock().inv);
+			return (T) new InvWrapper(getMultiBlock().inv);
 		}
 		return super.getCapability(capability, facing);
 	}

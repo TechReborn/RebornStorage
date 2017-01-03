@@ -1,8 +1,10 @@
 package RebornStorage.client.gui;
 
 import RebornStorage.multiblocks.MultiBlockCrafter;
+import RebornStorage.multiblocks.MultiBlockInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import reborncore.common.container.RebornContainer;
@@ -16,8 +18,8 @@ public class ContainerMultiCrafter extends RebornContainer
         this.page = page;
         if (crafter != null)
         {
-            ItemStackHandler handler = crafter.getInv();
-            if (handler != null)
+            MultiBlockInventory handler = crafter.getInv();
+            if(handler != null)
             {
                 drawSlotsForPage(page, handler);
             }
@@ -27,7 +29,7 @@ public class ContainerMultiCrafter extends RebornContainer
         }
     }
 
-    public void drawSlotsForPage(int page, ItemStackHandler handler)
+    public void drawSlotsForPage(int page, MultiBlockInventory handler)
     {
         int j;
         int k;
@@ -50,7 +52,7 @@ public class ContainerMultiCrafter extends RebornContainer
             {
                 i++;
                 if (i <= max)
-                    this.addSlotToContainer(new SlotItemHandler(handler, i - 1, 9 + k * 18, 21 + j * 18));
+                    this.addSlotToContainer(new Slot(handler, i - 1, 9 + k * 18, 21 + j * 18));
             }
         }
     }
