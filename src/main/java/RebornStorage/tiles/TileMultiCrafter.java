@@ -26,6 +26,7 @@ import java.util.List;
  * Created by Mark on 03/01/2017.
  */
 public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implements ICraftingPatternContainer , INetworkNode {
+
 	@Override
 	public void isGoodForFrame() throws MultiblockValidationException {
 
@@ -96,7 +97,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if(getMultiblockController() != null &&  capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return (T) new InvWrapper(getMultiBlock().inventory);
+			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(getMultiBlock().inv);
 		}
 		return super.getCapability(capability, facing);
 	}
@@ -121,8 +122,8 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		MultiBlockCrafter crafter = getMultiBlock();
 		List<ICraftingPattern> patterns = new ArrayList<>();
 		if(crafter != null){
-			for (int i = 0; i < crafter.inventory.getSizeInventory(); i++) {
-				ItemStack stack = crafter.inventory.getStackInSlot(i);
+			for (int i = 0; i < crafter.inv.getSlots(); i++) {
+				ItemStack stack = crafter.inv.getStackInSlot(i);
 				if(stack != null){
 					if(stack.getItem() instanceof ICraftingPatternProvider){
 						patterns.add(((ICraftingPatternProvider) stack.getItem()).create(getWorld(), stack, this));

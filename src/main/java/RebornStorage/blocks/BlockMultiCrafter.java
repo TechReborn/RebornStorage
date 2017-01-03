@@ -28,7 +28,7 @@ public class BlockMultiCrafter extends BlockMultiblockBase{
 	public BlockMultiCrafter() {
 		super(Material.IRON);
 		setCreativeTab(CreativeTabRebornStorage.INSTANCE);
-		setUnlocalizedName(ModInfo.MOD_NAME + ".multicrafter");
+		setUnlocalizedName(ModInfo.MOD_ID + ".multicrafter");
 	}
 
 	@Override
@@ -37,17 +37,7 @@ public class BlockMultiCrafter extends BlockMultiblockBase{
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn,
-	                                BlockPos pos,
-	                                IBlockState state,
-	                                EntityPlayer playerIn,
-	                                EnumHand hand,
-	                                @Nullable
-		                                ItemStack heldItem,
-	                                EnumFacing side,
-	                                float hitX,
-	                                float hitY,
-	                                float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileMultiCrafter tile = (TileMultiCrafter) worldIn.getTileEntity(pos);
 		if(tile.getMultiblockController() != null && !worldIn.isRemote){
 			if(!tile.getMultiblockController().isAssembled()){

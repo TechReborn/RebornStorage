@@ -19,16 +19,23 @@ public class GuiHandler implements IGuiHandler {
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		if(ID == MULTI_CRAFTER){
-			return new ContainerMultiCrafter(player, getMultiBlock(world, x, y, z));
+		if(ID == MULTI_CRAFTER)
+		{
+			if(getMultiBlock(world, x, y, z) != null)
+			{
+				return new ContainerMultiCrafter(player, getMultiBlock(world, x, y, z));
+			}
 		}
 		return null;
 	}
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		if(ID == MULTI_CRAFTER){
-			return new GuiMultiCrafter(player, getMultiBlock(world, x, y, z));
+		if(ID == MULTI_CRAFTER) {
+			if(getMultiBlock(world, x, y, z) != null)
+			{
+				return new GuiMultiCrafter(player, getMultiBlock(world, x, y, z));
+			}
 		}
 		return null;
 	}

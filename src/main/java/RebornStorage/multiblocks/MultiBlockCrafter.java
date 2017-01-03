@@ -2,6 +2,7 @@ package RebornStorage.multiblocks;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemStackHandler;
 import reborncore.common.multiblock.IMultiblockPart;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockControllerBase;
@@ -12,8 +13,9 @@ import reborncore.common.util.Inventory;
  */
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
-	public MultiBlockInventory inventory = new MultiBlockInventory(5, "multicrafter", 1, this);
+	//public MultiBlockInventory inventory = new MultiBlockInventory(5, "multicrafter", 1, this);
 
+	public ItemStackHandler inv = new StackHandler(5);
 
 	public MultiBlockCrafter(World world) {
 		super(world);
@@ -111,21 +113,34 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
-		inventory.writeToNBT(nbtTagCompound);
+        nbtTagCompound.merge(inv.serializeNBT());
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-		inventory.readFromNBT(nbtTagCompound);
+        inv.deserializeNBT(nbtTagCompound);
 	}
 
 	@Override
 	public void formatDescriptionPacket(NBTTagCompound nbtTagCompound) {
-		writeToNBT(nbtTagCompound);
+//		writeToNBT(nbtTagCompound);
 	}
 
 	@Override
 	public void decodeDescriptionPacket(NBTTagCompound nbtTagCompound) {
-		readFromNBT(nbtTagCompound);
+//		readFromNBT(nbtTagCompound);
+	}
+
+    public ItemStackHandler getInv()
+    {
+        return inv;
+    }
+
+    class StackHandler extends ItemStackHandler
+	{
+		StackHandler(int size)
+		{
+			super(size);
+		}
 	}
 }
