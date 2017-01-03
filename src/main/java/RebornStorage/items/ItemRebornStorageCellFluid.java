@@ -12,15 +12,15 @@ import java.util.List;
 /**
  * Created by Gigabit101 on 03/01/2017.
  */
-public class ItemRebornStorageCell extends ItemBase
+public class ItemRebornStorageCellFluid extends ItemBase
 {
-    public static final String[] types = new String[]{"256k", "1024k", "4096k", "16384k"};
+    public static final String[] types = new String[]{"1024k", "4096k", "16384k", "32768k"};
 
-    public ItemRebornStorageCell()
+    public ItemRebornStorageCellFluid()
     {
-        setUnlocalizedName(ModInfo.MOD_ID + ".storagecell");
+        setUnlocalizedName(ModInfo.MOD_ID + ".storagecellfluid");
         setHasSubtypes(true);
-        setRegistryName("storagecell");
+        setRegistryName("storagecellfluid");
     }
 
     @Override

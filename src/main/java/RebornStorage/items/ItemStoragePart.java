@@ -2,25 +2,23 @@ package RebornStorage.items;
 
 import RebornStorage.lib.ModInfo;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
 
 import java.util.List;
 
 /**
  * Created by Gigabit101 on 03/01/2017.
  */
-public class ItemRebornStorageCell extends ItemBase
+public class ItemStoragePart extends ItemBase
 {
-    public static final String[] types = new String[]{"256k", "1024k", "4096k", "16384k"};
+    public static final String[] types = new String[]{"256k", "1024k", "4096k", "16384k", "1024k_fluid", "4096k_fluid", "16384k_fluid", "32768k_fluid"};
 
-    public ItemRebornStorageCell()
+    public ItemStoragePart()
     {
-        setUnlocalizedName(ModInfo.MOD_ID + ".storagecell");
+        setUnlocalizedName(ModInfo.MOD_ID + ".storagepart");
         setHasSubtypes(true);
-        setRegistryName("storagecell");
+        setRegistryName("storagepart");
     }
 
     @Override
@@ -41,11 +39,5 @@ public class ItemRebornStorageCell extends ItemBase
             meta = 0;
         }
         return super.getUnlocalizedName() + "." + types[meta];
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
-    {
-        tooltip.add(TextFormatting.RED + "WIP BLAME WAY2MUCHNOISE");
     }
 }
