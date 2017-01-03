@@ -9,8 +9,12 @@ import reborncore.common.container.RebornContainer;
 
 public class ContainerMultiCrafter extends RebornContainer
 {
-	public ContainerMultiCrafter(EntityPlayer player, MultiBlockCrafter crafter)
+
+	int page;
+
+	public ContainerMultiCrafter(EntityPlayer player, MultiBlockCrafter crafter, int page)
     {
+    	this.page = page;
 		if(crafter != null)
         {
             ItemStackHandler handler = crafter.getInv();
@@ -23,7 +27,7 @@ public class ContainerMultiCrafter extends RebornContainer
 	            for (int i = 0; i < crafter.inv.getSlots(); i++) {
 		            this.addSlotToContainer(new SlotItemHandler(handler, i,  10 + (pos * 18), 10 + (row * 18)));
 		            pos++;
-		            if(pos > 12){
+		            if(pos > 10){
 			            row ++;
 			            pos= 0;
 		            }
