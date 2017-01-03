@@ -33,9 +33,11 @@ public class ModelHelper
             String[] name = ItemStoragePart.types.clone();
             registerItemModel(ModItems.REBORN_STORAGE_PART, i, name[i]);
         }
-//	    for (i = 0; i < BlockMultiCrafter.types.length; ++i) {
-//		    registerItemModel(ModBlocks.BLOCK_MULTI_CRAFTER, i, BlockMultiCrafter.types[i]);
-//	    }
+	    for (i = 0; i < BlockMultiCrafter.types.length; ++i)
+        {
+            String[] name = BlockMultiCrafter.types.clone();
+            registerItemModel(ModBlocks.BLOCK_MULTI_CRAFTER, i, name[i]);
+	    }
     }
 
     static void registerItemModel(Block b, int meta)
