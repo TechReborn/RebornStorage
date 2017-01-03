@@ -1,5 +1,6 @@
 package RebornStorage.client;
 
+import RebornStorage.init.ModItems;
 import RebornStorage.lib.ModInfo;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -20,6 +21,6 @@ public class CreativeTabRebornStorage extends CreativeTabs
     @Override
     public Item getTabIconItem()
     {
-        return Items.DIAMOND;
+        return ModItems.REBORN_STORAGE_CELL;
     }
 }

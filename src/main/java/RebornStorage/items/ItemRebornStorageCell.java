@@ -1,11 +1,15 @@
 package RebornStorage.items;
 
 import RebornStorage.lib.ModInfo;
+import com.raoulvdberge.refinedstorage.apiimpl.storage.item.ItemStorageNBT;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -44,8 +48,27 @@ public class ItemRebornStorageCell extends ItemBase
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+    public void addInformation(ItemStack disk, EntityPlayer player, List<String> tooltip, boolean advanced) {
+        if (ItemStorageNBT.isValid(disk)) {
+            String capacity = types[disk.getItemDamage()];
+            tooltip.add(I18n.format("misc.refinedstorage:storage.stored_capacity", ItemStorageNBT.getStoredFromNBT(disk.getTagCompound()), capacity));
+        }
+    }
+
+    @Override
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
     {
-        tooltip.add(TextFormatting.RED + "WIP BLAME WAY2MUCHNOISE");
+        super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
+        if (!stack.hasTagCompound())
+        {
+            ItemStorageNBT.createStackWithNBT(stack);
+        }
+    }
+
+    @Override
+    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn)
+    {
+        super.onCreated(stack, worldIn, playerIn);
+        ItemStorageNBT.createStackWithNBT(stack);
     }
 }
