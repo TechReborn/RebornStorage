@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import reborncore.client.guibuilder.GuiBuilder;
 import reborncore.common.network.NetworkManager;
 
@@ -23,11 +24,12 @@ public class GuiMultiCrafter extends GuiContainer
 
 	int page;
 	BlockPos pos;
+    public static int maxSlotsPerPage = 78;
 
 	public GuiMultiCrafter(EntityPlayer player, MultiBlockCrafter crafter, int page, BlockPos pos)
 	{
 		super(new ContainerMultiCrafter(player, crafter, page));
-		this.xSize = 240;
+		this.xSize = 250;
 		this.ySize = 240;
 		this.crafter = crafter;
 		this.page = page;
@@ -37,26 +39,37 @@ public class GuiMultiCrafter extends GuiContainer
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
-
 		builder.drawDefaultBackground(this, guiLeft, guiTop, xSize, ySize);
 		builder.drawPlayerSlots(this, guiLeft + xSize / 2, guiTop + 140, true);
-		int pos = 0;
-		int row = 0;
-		for (int i = 0; i < crafter.inv.getSlots(); i++) {
-			builder.drawSlot(this, guiLeft + 10 + (pos * 18), guiTop + 10 + (row * 18));
-			pos++;
-			if(pos > 12){
-				row ++;
-				pos= 0;
-			}
-		}
-		this.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Page " + page, 50, 50, 4210752);
+        drawSlots(13, 10, maxSlotsPerPage);
 	}
 
-	@Override
+    public void drawSlots(int col, int rows, int max)
+    {
+        int i = 0;
+        for (int y = 0; y < rows; y++)
+        {
+            for (int x = 0; x < col; x++)
+            {
+                i++;
+                if(i <= max)
+                    builder.drawSlot(this, guiLeft + 8 + x * 18, guiTop + 20 + y * 18);
+            }
+        }
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        this.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Page " + page, 125, 130, 181651);
+    }
+
+    @Override
 	public void initGui() {
+        super.initGui();
 		this.buttonList.clear();
-		this.buttonList.add(new GuiButton(this.page-1, this.guiLeft+13, this.guiTop+172, 20, 20, "<"));
+        if(page != 0)
+            this.buttonList.add(new GuiButton(this.page-1, this.guiLeft+13, this.guiTop+172, 20, 20, "<"));
 		this.buttonList.add(new GuiButton(this.page+1, this.guiLeft+209, this.guiTop+172, 20, 20, ">"));
 	}
 
