@@ -1,0 +1,34 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "builtin/generated",
+    "textures": {
+      "layer0": "blocks/dirt"
+    },
+    "transform": "forge:default-item"
+  },
+  "variants": {
+    "type": {
+      "256k": {
+        "textures": {
+          "layer0": "rebornstorage:items/256k"
+        }
+      },
+      "1024k": {
+        "textures": {
+          "layer0": "rebornstorage:items/1024k"
+        }
+      },
+      "4096k": {
+        "textures": {
+          "layer0": "rebornstorage:items/4096k"
+        }
+      },
+      "16384k": {
+        "textures": {
+          "layer0": "rebornstorage:items/16384k"
+        }
+      }
+    }
+  }
+}
