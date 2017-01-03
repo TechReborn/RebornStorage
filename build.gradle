@@ -60,8 +60,8 @@ minecraft {
 }
 
 dependencies {
-    compile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     compile 'RebornCore:RebornCore-1.10.2:+:dev'
+	compile 'refinedstorage:refinedstorage:1.2.14-793:debof'
 
 }
 
