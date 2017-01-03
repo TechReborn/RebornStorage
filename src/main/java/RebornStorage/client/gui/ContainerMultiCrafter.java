@@ -16,7 +16,19 @@ public class ContainerMultiCrafter extends RebornContainer
             ItemStackHandler handler = crafter.getInv();
             if(handler != null)
             {
-                this.addSlotToContainer(new SlotItemHandler(handler, 0, 25, 100));
+
+
+	            int pos = 0;
+	            int row = 0;
+	            for (int i = 0; i < crafter.inv.getSlots(); i++) {
+		            this.addSlotToContainer(new SlotItemHandler(handler, i,  10 + (pos * 18), 10 + (row * 18)));
+		            pos++;
+		            if(pos > 12){
+			            row ++;
+			            pos= 0;
+		            }
+	            }
+
             }
 		}
         drawPlayersInv(player, 45, 141);

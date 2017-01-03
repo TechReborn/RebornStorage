@@ -12,12 +12,14 @@ import reborncore.client.guibuilder.GuiBuilder;
 public class GuiMultiCrafter extends GuiContainer
 {
 	GuiBuilder builder = new GuiBuilder(GuiBuilder.defaultTextureSheet);
+	MultiBlockCrafter crafter;
 
 	public GuiMultiCrafter(EntityPlayer player, MultiBlockCrafter crafter)
 	{
 		super(new ContainerMultiCrafter(player, crafter));
 		this.xSize = 250;
 		this.ySize = 240;
+		this.crafter = crafter;
 	}
 
 	@Override
@@ -25,6 +27,16 @@ public class GuiMultiCrafter extends GuiContainer
 	{
 		builder.drawDefaultBackground(this, guiLeft, guiTop, xSize, ySize);
 		builder.drawPlayerSlots(this, guiLeft + xSize / 2, guiTop + 140, true);
-		builder.drawSlot(this, guiLeft + 25, guiTop + 100);
+		int pos = 0;
+		int row = 0;
+		for (int i = 0; i < crafter.inv.getSlots(); i++) {
+			builder.drawSlot(this, guiLeft + 10 + (pos * 18), guiTop + 10 + (row * 18));
+			pos++;
+			if(pos > 12){
+				row ++;
+				pos= 0;
+			}
+		}
+
 	}
 }

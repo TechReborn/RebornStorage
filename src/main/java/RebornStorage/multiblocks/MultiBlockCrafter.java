@@ -38,7 +38,8 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected void onMachineAssembled() {
-		System.out.println("New block");
+		inv.setSize(getNumConnectedBlocks() * 11);
+		System.out.println(getNumConnectedBlocks() * 11 + " slots");
 	}
 
 	@Override
@@ -123,12 +124,12 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	public void formatDescriptionPacket(NBTTagCompound nbtTagCompound) {
-//		writeToNBT(nbtTagCompound);
+		writeToNBT(nbtTagCompound);
 	}
 
 	@Override
 	public void decodeDescriptionPacket(NBTTagCompound nbtTagCompound) {
-//		readFromNBT(nbtTagCompound);
+		readFromNBT(nbtTagCompound);
 	}
 
     public ItemStackHandler getInv()
