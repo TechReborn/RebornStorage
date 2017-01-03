@@ -1,5 +1,8 @@
 package RebornStorage.blocks;
 
+import RebornStorage.RebornStorage;
+import RebornStorage.client.CreativeTabRebornStorage;
+import RebornStorage.client.GuiHandler;
 import RebornStorage.lib.ModInfo;
 import RebornStorage.tiles.TileMultiCrafter;
 import net.minecraft.block.material.Material;
@@ -24,7 +27,7 @@ import javax.annotation.Nullable;
 public class BlockMultiCrafter extends BlockMultiblockBase{
 	public BlockMultiCrafter() {
 		super(Material.IRON);
-		setCreativeTab(CreativeTabs.MISC);
+		setCreativeTab(CreativeTabRebornStorage.INSTANCE);
 		setUnlocalizedName(ModInfo.MOD_NAME + ".multicrafter");
 	}
 
@@ -47,9 +50,12 @@ public class BlockMultiCrafter extends BlockMultiblockBase{
 	                                float hitZ) {
 		TileMultiCrafter tile = (TileMultiCrafter) worldIn.getTileEntity(pos);
 		if(tile.getMultiblockController() != null && !worldIn.isRemote){
-			tile.getMultiblockController().checkIfMachineIsWhole();
-			if(tile.getMultiblockController().getLastValidationException() != null){
-				playerIn.addChatComponentMessage(new TextComponentString(tile.getMultiblockController().getLastValidationException().getMessage()));
+			if(!tile.getMultiblockController().isAssembled()){
+				if(tile.getMultiblockController().getLastValidationException() != null){
+					playerIn.addChatComponentMessage(new TextComponentString(tile.getMultiblockController().getLastValidationException().getMessage()));
+				}
+			} else {
+				playerIn.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			}
 
 		}

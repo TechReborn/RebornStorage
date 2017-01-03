@@ -12,7 +12,7 @@ import reborncore.common.util.Inventory;
  */
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
-	public MultiBlockInventory inventory = new MultiBlockInventory(56, "multicrafter", 1, this);
+	public MultiBlockInventory inventory = new MultiBlockInventory(5, "multicrafter", 1, this);
 
 
 	public MultiBlockCrafter(World world) {
