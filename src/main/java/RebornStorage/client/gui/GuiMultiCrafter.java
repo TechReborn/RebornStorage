@@ -42,7 +42,7 @@ public class GuiMultiCrafter extends GuiContainer
 		builder.drawPlayerSlots(this, guiLeft + xSize / 2, guiTop + 140, true);
 		int pos = 0;
 		int row = 0;
-		for (int i = 0; i < crafter.inv.getSlots(); i++) {
+		for (int i = 0; i < crafter.inv.getSizeInventory(); i++) {
 			builder.drawSlot(this, guiLeft + 10 + (pos * 18), guiTop + 10 + (row * 18));
 			pos++;
 			if(pos > 12){

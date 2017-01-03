@@ -1,5 +1,6 @@
 package RebornStorage.multiblocks;
 
+import net.minecraft.item.ItemStack;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.util.Inventory;
 
@@ -15,5 +16,9 @@ public class MultiBlockInventory extends Inventory {
 	@Override
 	public void markDirty() {
 		//nope
+	}
+
+	public void setSize(int size) {
+		this.contents = new ItemStack[size];
 	}
 }
