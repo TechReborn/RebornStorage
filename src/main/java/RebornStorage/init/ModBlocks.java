@@ -1,40 +1,23 @@
 package RebornStorage.init;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
+import RebornStorage.blocks.BlockMultiCrafter;
+import RebornStorage.lib.ModInfo;
+import RebornStorage.tiles.TileMultiCrafter;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import java.lang.reflect.InvocationTargetException;
+import reborncore.RebornRegistry;
+import reborncore.common.multiblock.BlockMultiblockBase;
 
 /**
  * Created by Gigabit101 on 03/01/2017.
  */
 public class ModBlocks
 {
+
+	public static BlockMultiblockBase BLOCK_MULTI_CRAFTER;
     public static void init()
     {
-
-    }
-
-    public static void registerBlock(Block block, String name)
-    {
-        block.setRegistryName(name);
-        GameRegistry.register(block);
-        GameRegistry.register(new ItemBlock(block), block.getRegistryName());
-    }
-
-    public static void registerBlock(Block block, Class<? extends ItemBlock> itemclass, String name)
-    {
-        block.setRegistryName(name);
-        GameRegistry.register(block);
-        try
-        {
-            ItemBlock itemBlock = itemclass.getConstructor(Block.class).newInstance(block);
-            itemBlock.setRegistryName(name);
-            GameRegistry.register(itemBlock);
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
-        {
-            e.printStackTrace();
-        }
+	    BLOCK_MULTI_CRAFTER = new BlockMultiCrafter();
+	    RebornRegistry.registerBlock(BLOCK_MULTI_CRAFTER, "multicrafter");
+	    GameRegistry.registerTileEntity(TileMultiCrafter.class, ModInfo.MOD_NAME + "TileMultiCrafter");
     }
 }
