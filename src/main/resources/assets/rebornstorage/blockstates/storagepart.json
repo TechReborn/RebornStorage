@@ -27,26 +27,26 @@
       "16384k": {
         "textures": {
           "layer0": "rebornstorage:items/parts/16384k"
-        },
-        "1024k_fluid": {
-          "textures": {
-            "layer0": "rebornstorage:items/parts/1024k_fluid"
           }
         },
-        "4096k_fluid": {
-          "textures": {
-            "layer0": "rebornstorage:items/parts/4096k_fluid"
-          }
-        },
-        "16384k_fluid": {
-          "textures": {
-            "layer0": "rebornstorage:items/parts/16384k_fluid"
-          }
-        },
-        "32768k_fluid": {
-          "textures": {
-            "layer0": "rebornstorage:items/parts/32768k_fluid"
-          }
+      "1024k_fluid": {
+        "textures": {
+          "layer0": "rebornstorage:items/parts/1024k_fluid"
+        }
+      },
+      "4096k_fluid": {
+        "textures": {
+          "layer0": "rebornstorage:items/parts/4096k_fluid"
+        }
+      },
+      "16384k_fluid": {
+        "textures": {
+          "layer0": "rebornstorage:items/parts/16384k_fluid"
+        }
+      },
+      "32768k_fluid": {
+        "textures": {
+          "layer0": "rebornstorage:items/parts/32768k_fluid"
         }
       }
     }
