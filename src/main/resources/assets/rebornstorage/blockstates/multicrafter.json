@@ -1,0 +1,33 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {},
+    "transform": "forge:default-block",
+    "model": "cube_all"
+  },
+  "variants": {
+    "inventory": [{}],
+    "type": {
+      "frame": {
+        "textures": {
+          "all": "rebornstorage:blocks/frame"
+        }
+      },
+      "heat": {
+        "textures": {
+          "all": "rebornstorage:blocks/heat"
+        }
+      },
+      "cpu": {
+        "textures": {
+          "all": "rebornstorage:blocks/cpu"
+        }
+      },
+      "storage": {
+        "textures": {
+          "all": "rebornstorage:blocks/storage"
+        }
+      }
+    }
+  }
+}
