@@ -34,7 +34,7 @@ public class ModelHelper
             registerItemModel(ModItems.REBORN_STORAGE_PART, i, name[i]);
         }
 	    for (i = 0; i < BlockMultiCrafter.types.length; ++i) {
-		    registerItemModel(ModItems.REBORN_STORAGE_PART, i, BlockMultiCrafter.types[i]);
+		    registerItemModel(ModBlocks.BLOCK_MULTI_CRAFTER, i, BlockMultiCrafter.types[i]);
 	    }
     }
 
