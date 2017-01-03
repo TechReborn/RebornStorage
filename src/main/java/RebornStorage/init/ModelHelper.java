@@ -1,5 +1,6 @@
 package RebornStorage.init;
 
+import RebornStorage.blocks.BlockMultiCrafter;
 import RebornStorage.items.ItemRebornStorageCell;
 import RebornStorage.items.ItemRebornStorageCellFluid;
 import RebornStorage.items.ItemStoragePart;
@@ -32,6 +33,9 @@ public class ModelHelper
             String[] name = ItemStoragePart.types.clone();
             registerItemModel(ModItems.REBORN_STORAGE_PART, i, name[i]);
         }
+	    for (i = 0; i < BlockMultiCrafter.types.length; ++i) {
+		    registerItemModel(ModItems.REBORN_STORAGE_PART, i, BlockMultiCrafter.types[i]);
+	    }
     }
 
     static void registerItemModel(Block b, int meta)

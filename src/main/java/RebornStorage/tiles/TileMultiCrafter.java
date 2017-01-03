@@ -128,7 +128,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if (!this.getWorld().isRemote && this.ticks == 0) {
 			this.rebuildPatterns();
 		}
-		this.rebuildPatterns();
+	//	this.rebuildPatterns();
 		if (!this.getWorld().isRemote) {
 			++this.ticks;
 			this.dataManager.detectAndSendChanges();
@@ -180,7 +180,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public BlockPos getPosition() {
-		return null;
+		return getPos();
 	}
 
 	@Override

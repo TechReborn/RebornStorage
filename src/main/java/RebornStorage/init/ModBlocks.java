@@ -1,6 +1,7 @@
 package RebornStorage.init;
 
 import RebornStorage.blocks.BlockMultiCrafter;
+import RebornStorage.blocks.ItemBlockMultiCrafter;
 import RebornStorage.lib.ModInfo;
 import RebornStorage.tiles.TileMultiCrafter;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -17,7 +18,7 @@ public class ModBlocks
     public static void init()
     {
 	    BLOCK_MULTI_CRAFTER = new BlockMultiCrafter();
-	    RebornRegistry.registerBlock(BLOCK_MULTI_CRAFTER, "multicrafter");
+	    RebornRegistry.registerBlock(BLOCK_MULTI_CRAFTER, ItemBlockMultiCrafter.class, "multicrafter");
 	    GameRegistry.registerTileEntity(TileMultiCrafter.class, ModInfo.MOD_NAME + "TileMultiCrafter");
     }
 }
