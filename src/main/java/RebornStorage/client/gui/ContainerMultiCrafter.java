@@ -5,15 +5,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import reborncore.common.container.RebornContainer;
 
-
-public class ContainerMultiCrafter extends RebornContainer {
-
-	public ContainerMultiCrafter(EntityPlayer player, MultiBlockCrafter crafter) {
-		this.addPlayersHotbar(player);
-		this.addPlayersInventory(player);
-		if(crafter != null){
-			this.addSlotToContainer(new Slot(crafter.inventory, 0, 0, 0));
+public class ContainerMultiCrafter extends RebornContainer
+{
+	public ContainerMultiCrafter(EntityPlayer player, MultiBlockCrafter crafter)
+    {
+		if(crafter != null)
+        {
+			this.addSlotToContainer(new Slot(crafter.inventory, 1, 50, 50));
 		}
+        drawPlayersInv(player, 45, 141);
+        drawPlayersHotBar(player, 45, 199);
 	}
 
 	@Override
