@@ -4,6 +4,7 @@ import RebornStorage.RebornStorage;
 import RebornStorage.client.CreativeTabRebornStorage;
 import RebornStorage.client.GuiHandler;
 import RebornStorage.lib.ModInfo;
+import RebornStorage.multiblocks.MultiBlockCrafter;
 import RebornStorage.tiles.TileMultiCrafter;
 import com.google.common.collect.Lists;
 import net.minecraft.block.material.Material;
@@ -62,6 +63,8 @@ public class BlockMultiCrafter extends BlockMultiblockBase{
 					playerIn.sendMessage(new TextComponentString(tile.getMultiblockController().getLastValidationException().getMessage()));
 				}
 			} else {
+				MultiBlockCrafter crafter = tile.getMultiBlock();
+				crafter.updateInfo();
 				playerIn.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			}
 

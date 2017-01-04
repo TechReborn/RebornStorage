@@ -2,6 +2,7 @@ package RebornStorage.tiles;
 
 import RebornStorage.blocks.BlockMultiCrafter;
 import RebornStorage.multiblocks.MultiBlockCrafter;
+import RebornStorage.multiblocks.MultiBlockInventory;
 import com.raoulvdberge.refinedstorage.RS;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternContainer;
@@ -24,6 +25,7 @@ import reborncore.common.multiblock.MultiblockValidationException;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -72,9 +74,9 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if(getMultiBlock() != null){
 			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
 			multiBlockCrafter.rebuildPatterns();
-		}
-		if(network != null){
-			network.rebuildPatterns();
+			if(multiBlockCrafter.network != null){
+				multiBlockCrafter.network.rebuildPatterns();
+			}
 		}
 	}
 
@@ -83,9 +85,9 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if(getMultiBlock() != null){
 			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
 			multiBlockCrafter.rebuildPatterns();
-		}
-		if(network != null){
-			network.rebuildPatterns();
+			if(multiBlockCrafter.network != null){
+				multiBlockCrafter.network.rebuildPatterns();
+			}
 		}
 	}
 
@@ -109,12 +111,11 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	//RS stuff
 
-	protected TileDataManager dataManager;
+
 	protected int ticks;
-	protected INetworkMaster network;
+
 
 	public TileMultiCrafter() {
-		this.dataManager = new TileDataManager(this);
 	}
 
 	public int getEnergyUsage() {
@@ -126,23 +127,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	public void update() {
 
-		if(getMultiBlock() != null){
-			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-			if(multiBlockCrafter.inv.hasChanged){
-				multiBlockCrafter.rebuildPatterns();
-				multiBlockCrafter.inv.hasChanged = false;
-			}
-			if (!this.getWorld().isRemote && this.ticks == 0) {
-				multiBlockCrafter.rebuildPatterns();
-			}
-		}
-		if (!this.getWorld().isRemote) {
-			++this.ticks;
-			this.dataManager.detectAndSendChanges();
-		}
 	}
-
-
 
 	public int getSpeedUpdateCount() {
 		if(getMultiBlock() == null){
@@ -174,9 +159,8 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public void onConnected(INetworkMaster iNetworkMaster) {
-		network = iNetworkMaster;
 		if(getMultiBlock() != null){
-			getMultiBlock().onConnectionChange(network, true, pos);
+			getMultiBlock().onConnectionChange(iNetworkMaster, true, pos);
 		}
 
 	}
@@ -184,9 +168,8 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	@Override
 	public void onDisconnected(INetworkMaster iNetworkMaster) {
 		if(getMultiBlock() != null){
-			getMultiBlock().onConnectionChange(network, false, pos);
+			getMultiBlock().onConnectionChange(iNetworkMaster, false, pos);
 		}
-		network = null;
 	}
 
 	@Override
@@ -201,7 +184,10 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public INetworkMaster getNetwork() {
-		return network;
+		if(getMultiBlock() != null){
+			return getMultiBlock().network;
+		}
+		return null; //Will that cause issues?
 	}
 
 	@Override
@@ -209,20 +195,21 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		return world;
 	}
 
-	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (getMultiblockController() != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return true;
-		}
-		return super.hasCapability(capability, facing);
-	}
-
-	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if (getMultiblockController() != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return (T) new InvWrapper(getMultiBlock().inv);
-		}
-		return super.getCapability(capability, facing);
-	}
+	//TODO add better cap support for it
+//	@Override
+//	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+//		if (getMultiblockController() != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+//			return true;
+//		}
+//		return super.hasCapability(capability, facing);
+//	}
+//
+//	@Override
+//	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+//		if (getMultiblockController() != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+//			return (T) new InvWrapper(getMultiBlock().inv);
+//		}
+//		return super.getCapability(capability, facing);
+//	}
 
 }

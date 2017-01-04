@@ -18,7 +18,4 @@ public class MultiBlockInventory extends Inventory {
 		//nope
 	}
 
-	public void setSize(int size) {
-		this.contents = new ItemStack[size];
-	}
 }
