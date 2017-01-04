@@ -205,8 +205,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		}
 	}
 
-
-
 	public void onConnectionChange(INetworkMaster network, boolean state, BlockPos pos) {
 		if (!state) {
 			network.getCraftingTasks().stream().filter((task) -> task.getPattern().getContainer().getPosition().equals(pos)).forEach(network::cancelCraftingTask);
@@ -219,6 +217,4 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	private TileMultiCrafter getReferenceTile(){
 		return (TileMultiCrafter) worldObj.getTileEntity(getReferenceCoord().toBlockPos());
 	}
-
-
 }

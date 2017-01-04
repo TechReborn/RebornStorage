@@ -9,7 +9,7 @@ import reborncore.common.util.Inventory;
 
 public class ContainerMultiCrafter extends RebornContainer
 {
-	int page =1;
+	int page = 0;
 	MultiBlockCrafter crafter;
 
 	public ContainerMultiCrafter(EntityPlayer player, MultiBlockCrafter crafter, int page)

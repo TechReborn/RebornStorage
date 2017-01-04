@@ -23,7 +23,7 @@ public class GuiMultiCrafter extends GuiContainer
 	GuiBuilder builder = new GuiBuilder(GuiBuilder.defaultTextureSheet);
 	MultiBlockCrafter crafter;
 
-	int page =1;
+	int page = 0;
 	BlockPos pos;
     public static int maxSlotsPerPage = 78;
 
@@ -65,7 +65,6 @@ public class GuiMultiCrafter extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-
 	    if(crafter.invs.size() == 0){
 		    drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Multiblock must contain at least 1 storage block",  xSize /2 , 75, Color.RED.getRGB());
 	    } else {
@@ -89,10 +88,7 @@ public class GuiMultiCrafter extends GuiContainer
 		    if(crafter.invs.size() > page){
 			    this.buttonList.add(new GuiButton(this.page, this.guiLeft+209, this.guiTop+172, 20, 20, ">"));
 		    }
-
-
 	    }
-
 	}
 
 	@Override

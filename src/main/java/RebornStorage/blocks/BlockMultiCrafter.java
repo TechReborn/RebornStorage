@@ -5,6 +5,7 @@ import RebornStorage.client.CreativeTabRebornStorage;
 import RebornStorage.client.GuiHandler;
 import RebornStorage.lib.ModInfo;
 import RebornStorage.multiblocks.MultiBlockCrafter;
+import RebornStorage.packet.PacketGui;
 import RebornStorage.tiles.TileMultiCrafter;
 import com.google.common.collect.Lists;
 import net.minecraft.block.material.Material;
@@ -27,6 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import reborncore.common.blocks.PropertyString;
 import reborncore.common.multiblock.BlockMultiblockBase;
+import reborncore.common.network.NetworkManager;
 import reborncore.common.util.ArrayUtils;
 import reborncore.common.util.ChatUtils;
 import reborncore.common.util.StringUtils;
@@ -67,6 +69,7 @@ public class BlockMultiCrafter extends BlockMultiblockBase{
 				}
 			} else if(worldIn.isRemote) {
 				playerIn.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE, worldIn, pos.getX(), pos.getY(), pos.getZ());
+				NetworkManager.sendToServer(new PacketGui(0, pos));
 				return true;
 			}
 
