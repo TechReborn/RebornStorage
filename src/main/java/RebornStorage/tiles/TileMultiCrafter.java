@@ -68,9 +68,6 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if (getMultiBlock() != null) {
 			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
 			multiBlockCrafter.rebuildPatterns();
-			if (multiBlockCrafter.network != null) {
-				multiBlockCrafter.network.rebuildPatterns();
-			}
 		}
 	}
 
@@ -79,9 +76,6 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if (getMultiBlock() != null) {
 			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
 			multiBlockCrafter.rebuildPatterns();
-			if (multiBlockCrafter.network != null) {
-				multiBlockCrafter.network.rebuildPatterns();
-			}
 		}
 	}
 
@@ -120,9 +114,6 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 				inv.hasChanged = false;
 				MultiBlockCrafter multiBlockCrafter = getMultiBlock();
 				multiBlockCrafter.rebuildPatterns();
-				if (multiBlockCrafter.network != null) {
-					multiBlockCrafter.network.rebuildPatterns();
-				}
 			}
 		}
 

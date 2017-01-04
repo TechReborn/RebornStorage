@@ -30,9 +30,6 @@ public class GuiMultiCrafter extends GuiContainer
 	public GuiMultiCrafter(EntityPlayer player, MultiBlockCrafter crafter, int page, BlockPos pos)
 	{
 		super(new ContainerMultiCrafter(player, crafter, page));
-		if(page > crafter.pages){
-			page = crafter.pages;
-		}
 		this.xSize = 250;
 		this.ySize = 240;
 		this.crafter = crafter;

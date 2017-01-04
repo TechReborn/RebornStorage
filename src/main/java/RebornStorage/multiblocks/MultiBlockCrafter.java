@@ -60,12 +60,14 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		speed = 0;
 		pages = 0;
 		invs.clear();
+		int id =0;
 		for(IMultiblockPart part : connectedParts){
 			if(part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("storage")){
 				pages ++;
 				powerUsage += 5;
 				if(part instanceof TileMultiCrafter){
-					invs.put(invs.size() + 1, ((TileMultiCrafter) part).inv);
+					invs.put(id, ((TileMultiCrafter) part).inv);
+					id ++;
 				}
 
 			}
@@ -77,7 +79,8 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	public Inventory getInvForPage(int page){
-		return invs.get(page);
+		System.out.println(page);
+		return invs.get(page -1);
 	}
 
 	@Override
@@ -197,6 +200,9 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 				}
 			}
 		}
+		if(network != null){
+			network.rebuildPatterns();
+		}
 	}
 
 
@@ -206,7 +212,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 			network.getCraftingTasks().stream().filter((task) -> task.getPattern().getContainer().getPosition().equals(pos)).forEach(network::cancelCraftingTask);
 		}
 
-		network.rebuildPatterns();
+		rebuildPatterns();
 		this.network = network;
 	}
 

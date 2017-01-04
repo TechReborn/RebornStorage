@@ -66,8 +66,6 @@ public class BlockMultiCrafter extends BlockMultiblockBase{
 					ChatUtils.sendNoSpamMessages(42, new TextComponentString(tile.getMultiblockController().getLastValidationException().getMessage()));
 				}
 			} else if(worldIn.isRemote) {
-				MultiBlockCrafter crafter = tile.getMultiBlock();
-				crafter.updateInfo();
 				playerIn.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE, worldIn, pos.getX(), pos.getY(), pos.getZ());
 				return true;
 			}

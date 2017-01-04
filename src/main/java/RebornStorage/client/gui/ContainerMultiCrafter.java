@@ -16,12 +16,8 @@ public class ContainerMultiCrafter extends RebornContainer
     {
         this.page = page;
         this.crafter = crafter;
-        if(page > crafter.pages){
-        	page = crafter.pages;
-        }
         if (crafter != null)
         {
-        	crafter.updateInfo();
 	        Inventory handler = crafter.getInvForPage(page);
             if(handler != null)
             {
@@ -44,6 +40,7 @@ public class ContainerMultiCrafter extends RebornContainer
 			    i++;
 		    }
 	    }
+	    System.out.println("count " + i);
     }
 
 	@Override
