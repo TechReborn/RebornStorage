@@ -56,6 +56,7 @@ public class ItemRebornStorageCell extends ItemBase
             String capacity = types[disk.getItemDamage()];
             tooltip.add(I18n.format("misc.refinedstorage:storage.stored_capacity", ItemStorageNBT.getStoredFromNBT(disk.getTagCompound()), capacity));
         }
+        //TODO remove this
         for(EnumItemStorageType t: EnumItemStorageType.values())
         {
             tooltip.add(t.getName() + " " + t.getCapacity());
