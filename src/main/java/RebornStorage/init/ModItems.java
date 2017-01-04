@@ -3,7 +3,9 @@ package RebornStorage.init;
 import RebornStorage.items.ItemRebornStorageCell;
 import RebornStorage.items.ItemRebornStorageCellFluid;
 import RebornStorage.items.ItemStoragePart;
+import com.raoulvdberge.refinedstorage.block.EnumItemStorageType;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
@@ -25,5 +27,7 @@ public class ModItems
 
         REBORN_STORAGE_PART = new ItemStoragePart();
         GameRegistry.register(REBORN_STORAGE_PART);
+
+        EnumHelper.addEnum(EnumItemStorageType.class, "256k", new Class[]{int.class, int.class, String.class}, new Object[]{6, 256000, "256k"});
     }
 }

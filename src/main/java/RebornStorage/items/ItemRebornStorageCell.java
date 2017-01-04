@@ -2,6 +2,7 @@ package RebornStorage.items;
 
 import RebornStorage.lib.ModInfo;
 import com.raoulvdberge.refinedstorage.apiimpl.storage.item.ItemStorageNBT;
+import com.raoulvdberge.refinedstorage.block.EnumItemStorageType;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -10,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.EnumHelper;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ import java.util.List;
  */
 public class ItemRebornStorageCell extends ItemBase
 {
-    public static final String[] types = new String[]{"256k", "1024k", "4096k", "16384k"};
+    public static final String[] types = new String[]{"", "", "", "", "", "256k", "1024k", "4096k", "16384k"};
 
     public ItemRebornStorageCell()
     {
@@ -30,9 +32,10 @@ public class ItemRebornStorageCell extends ItemBase
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list)
     {
-        for (int meta = 0; meta < types.length; meta++)
+        for (int meta = 5; meta < types.length; meta++)
         {
-            list.add(new ItemStack(item, 1, meta));
+//            list.add(new ItemStack(item, 1, meta));
+            list.add(ItemStorageNBT.createStackWithNBT(new ItemStack(item, 1, meta)));
         }
     }
 
@@ -52,6 +55,10 @@ public class ItemRebornStorageCell extends ItemBase
         if (ItemStorageNBT.isValid(disk)) {
             String capacity = types[disk.getItemDamage()];
             tooltip.add(I18n.format("misc.refinedstorage:storage.stored_capacity", ItemStorageNBT.getStoredFromNBT(disk.getTagCompound()), capacity));
+        }
+        for(EnumItemStorageType t: EnumItemStorageType.values())
+        {
+            tooltip.add(t.getName() + " " + t.getCapacity());
         }
     }
 
