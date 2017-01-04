@@ -14,7 +14,9 @@
         }
       },
       "heat": {
-        "model": "rebornstorage:heat_ctm_model"
+        "textures": {
+          "all": "rebornstorage:blocks/heat"
+        }
       },
       "cpu": {
         "textures": {
