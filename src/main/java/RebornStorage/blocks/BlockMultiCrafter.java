@@ -45,7 +45,6 @@ public class BlockMultiCrafter extends BlockMultiblockBase{
 	private static final List<String> typesList = Lists.newArrayList(ArrayUtils.arrayToLowercase(types));
 
 	public static final PropertyString VARIANTS = new PropertyString("type", types);
-	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
 	public BlockMultiCrafter() {
 		super(Material.IRON);
@@ -79,25 +78,17 @@ public class BlockMultiCrafter extends BlockMultiblockBase{
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		boolean active = false;
-		if (meta >= types.length) {
-			active = true;
-		}
-		int offset = 0;
-		if(active){
-			offset = types.length;
-		}
-		return getBlockState().getBaseState().withProperty(VARIANTS, typesList.get(meta - offset)).withProperty(ACTIVE, active);
+		return getBlockState().getBaseState().withProperty(VARIANTS, typesList.get(meta ));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return typesList.indexOf(state.getValue(VARIANTS)) + (state.getValue(ACTIVE) ? typesList.size() : 0);
+		return typesList.indexOf(state.getValue(VARIANTS));
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, VARIANTS, ACTIVE);
+		return new BlockStateContainer(this, VARIANTS);
 	}
 
 	@Override

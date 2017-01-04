@@ -26,14 +26,6 @@
           "all": "rebornstorage:blocks/storage"
         }
       }
-    },
-    "active": {
-      "true": {
-
-      },
-      "false": {
-
-      }
     }
   }
 }
