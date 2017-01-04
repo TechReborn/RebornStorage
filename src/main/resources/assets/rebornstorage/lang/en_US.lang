@@ -22,3 +22,10 @@ item.rebornstorage.storagepart.1024k_fluid.name=1024k Fluid Storage Part
 item.rebornstorage.storagepart.4096k_fluid.name=4096k Fluid Storage Part
 item.rebornstorage.storagepart.16384k_fluid.name=16384k Fluid Storage Part
 item.rebornstorage.storagepart.32768k_fluid.name=32768k Fluid Storage Part
+
+//Blocks
+tile.rebornstorage.multicrafter.heat.name=Heat Conductor
+tile.rebornstorage.multicrafter.frame.name=Crafting Frame
+tile.rebornstorage.multicrafter.cpu.name=Crafting CPU
+tile.rebornstorage.multicrafter.storage.name=Crafting Storage
+
