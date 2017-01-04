@@ -29,5 +29,8 @@ public class ModItems
         GameRegistry.register(REBORN_STORAGE_PART);
 
         EnumHelper.addEnum(EnumItemStorageType.class, "256k", new Class[]{int.class, int.class, String.class}, new Object[]{6, 256000, "256k"});
+        EnumHelper.addEnum(EnumItemStorageType.class, "1024k", new Class[]{int.class, int.class, String.class}, new Object[]{7, 1024000, "1024k"});
+        EnumHelper.addEnum(EnumItemStorageType.class, "4096k", new Class[]{int.class, int.class, String.class}, new Object[]{8, 4096000, "4096k"});
+        EnumHelper.addEnum(EnumItemStorageType.class, "16384k", new Class[]{int.class, int.class, String.class}, new Object[]{9, 16384000, "16384k"});
     }
 }
