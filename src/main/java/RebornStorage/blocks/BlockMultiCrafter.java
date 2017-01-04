@@ -72,8 +72,8 @@ public class BlockMultiCrafter extends BlockMultiblockBase{
 				NetworkManager.sendToServer(new PacketGui(0, pos));
 				return true;
 			}
-
-		}
+            return true;
+        }
 		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 
