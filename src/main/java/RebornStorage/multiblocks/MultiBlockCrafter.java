@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import reborncore.common.multiblock.IMultiblockPart;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockControllerBase;
+import reborncore.common.util.Inventory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,9 +23,7 @@ import java.util.List;
  */
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
-//	public MultiBlockInventory inv = new MultiBlockInventory(5, "multicrafter", 1, this);
-
-	public HashMap<Integer, MultiBlockInventory> invs = new HashMap<>();
+	public HashMap<Integer, Inventory> invs = new HashMap<>();
 
 	public int powerUsage = 0;
 	public int speed = 0;
@@ -51,6 +50,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected void onMachineAssembled() {
+		invs.clear();
 		updateInfo();
 	}
 
@@ -59,10 +59,15 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		powerUsage = 0;
 		speed = 0;
 		pages = 0;
+		invs.clear();
 		for(IMultiblockPart part : connectedParts){
 			if(part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("storage")){
 				pages ++;
 				powerUsage += 5;
+				if(part instanceof TileMultiCrafter){
+					invs.put(invs.size() + 1, ((TileMultiCrafter) part).inv);
+				}
+
 			}
 			if(part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("cpu")){
 				powerUsage += 10;
@@ -71,13 +76,8 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		}
 	}
 
-	public MultiBlockInventory createOrGetInv(int page){
-		if(invs.containsKey(page)){
-			return invs.get(page);
-		}
-		MultiBlockInventory newInv = new MultiBlockInventory(78, "multicrafter." + page, 1, this);
-		invs.put(page, newInv);
-		return newInv;
+	public Inventory getInvForPage(int page){
+		return invs.get(page);
 	}
 
 	@Override
@@ -153,20 +153,12 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
-		nbtTagCompound.setInteger("pages", invs.size());
-		for(HashMap.Entry<Integer, MultiBlockInventory> entry : invs.entrySet()){
-			NBTTagCompound tagCompound = new NBTTagCompound();
-			entry.getValue().writeToNBT(tagCompound);
-			nbtTagCompound.setTag("page" + entry.getKey(), tagCompound);
-		}
+
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-		for (int i = 0; i < nbtTagCompound.getInteger("pages"); i++) {
-			MultiBlockInventory inventory = createOrGetInv(i);
-			inventory.readFromNBT(nbtTagCompound.getCompoundTag("page" + i));
-		}
+
 	}
 
 	@Override
@@ -182,21 +174,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
     //RS things:
 
 	public void tick(){
-			boolean shouldUpdate = false;
-			for(HashMap.Entry<Integer, MultiBlockInventory> entry : invs.entrySet()){
-				if(entry.getValue().hasChanged){
-					shouldUpdate = true;
-				}
-				entry.getValue().hasChanged = false;
-			}
 
-			if(shouldUpdate){
-				rebuildPatterns();
-				System.out.println(network);
-				if(network != null){
-					network.rebuildPatterns();
-				}
-			}
 	}
 
 	public List<ICraftingPattern> actualPatterns = new ArrayList();
@@ -207,7 +185,8 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		if(!isAssembled()){
 			return;
 		}
-		for(HashMap.Entry<Integer, MultiBlockInventory> entry : invs.entrySet()){
+		updateInfo();
+		for(HashMap.Entry<Integer, Inventory> entry : invs.entrySet()){
 			for (int i = 0; i < entry.getValue().getSizeInventory(); ++i) {
 				ItemStack patternStack = entry.getValue().getStackInSlot(i);
 				if (patternStack != null && patternStack.getItem() instanceof ICraftingPatternProvider) {

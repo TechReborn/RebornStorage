@@ -23,7 +23,7 @@ public class GuiHandler implements IGuiHandler {
 		{
 			if(getMultiBlock(world, x, y, z) != null)
 			{
-				return new ContainerMultiCrafter(player, getMultiBlock(world, x, y, z), ID - MULTI_CRAFTER_BASEPAGE);
+				return new ContainerMultiCrafter(player, getMultiBlock(world, x, y, z), ID - MULTI_CRAFTER_BASEPAGE + 1);
 			}
 		}
 		return null;
@@ -34,7 +34,7 @@ public class GuiHandler implements IGuiHandler {
 		if(ID >= MULTI_CRAFTER_BASEPAGE) {
 			if(getMultiBlock(world, x, y, z) != null)
 			{
-				return new GuiMultiCrafter(player, getMultiBlock(world, x, y, z), ID - MULTI_CRAFTER_BASEPAGE, new BlockPos(x, y, z));
+				return new GuiMultiCrafter(player, getMultiBlock(world, x, y, z), ID - MULTI_CRAFTER_BASEPAGE + 1, new BlockPos(x, y, z));
 			}
 		}
 		return null;

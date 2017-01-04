@@ -3,6 +3,7 @@ package RebornStorage.client.gui;
 import RebornStorage.multiblocks.MultiBlockCrafter;
 import RebornStorage.packet.PacketGui;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +23,7 @@ public class GuiMultiCrafter extends GuiContainer
 	GuiBuilder builder = new GuiBuilder(GuiBuilder.defaultTextureSheet);
 	MultiBlockCrafter crafter;
 
-	int page;
+	int page =1;
 	BlockPos pos;
     public static int maxSlotsPerPage = 78;
 
@@ -44,7 +45,10 @@ public class GuiMultiCrafter extends GuiContainer
 	{
 		builder.drawDefaultBackground(this, guiLeft, guiTop, xSize, ySize);
 		builder.drawPlayerSlots(this, guiLeft + xSize / 2, guiTop + 140, true);
-        drawSlots(13, 6, maxSlotsPerPage);
+		if(crafter.invs.size() != 0){
+			drawSlots(13, 6, maxSlotsPerPage);
+		}
+
 	}
 
     public void drawSlots(int col, int rows, int max)
@@ -64,16 +68,34 @@ public class GuiMultiCrafter extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        this.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Page " + page, 125, 130, 181651);
+
+	    if(crafter.invs.size() == 0){
+		    drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Multiblock must contain at least 1 storage block",  xSize /2 , 75, Color.RED.getRGB());
+	    } else {
+		    this.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Page " + page, 125, 130, 4210752);
+	    }
     }
+
+    @Override
+	public void drawCenteredString(FontRenderer fontRendererIn, String text, int x, int y, int color) {
+		fontRendererIn.drawString(text, (float)(x - fontRendererIn.getStringWidth(text) / 2), (float)y, color, false);
+	}
 
     @Override
 	public void initGui() {
         super.initGui();
 		this.buttonList.clear();
-        if(page != 0)
-            this.buttonList.add(new GuiButton(this.page-1, this.guiLeft+13, this.guiTop+172, 20, 20, "<"));
-		this.buttonList.add(new GuiButton(this.page+1, this.guiLeft+209, this.guiTop+172, 20, 20, ">"));
+	    if(crafter.invs.size() != 0){
+		    if(page > 1){
+			    this.buttonList.add(new GuiButton(this.page-2, this.guiLeft+13, this.guiTop+172, 20, 20, "<"));
+		    }
+		    if(crafter.invs.size() > page){
+			    this.buttonList.add(new GuiButton(this.page, this.guiLeft+209, this.guiTop+172, 20, 20, ">"));
+		    }
+
+
+	    }
+
 	}
 
 	@Override
