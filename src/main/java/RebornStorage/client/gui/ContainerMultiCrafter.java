@@ -1,5 +1,6 @@
 package RebornStorage.client.gui;
 
+import RebornStorage.client.SlotFiltered;
 import RebornStorage.multiblocks.MultiBlockCrafter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -36,7 +37,7 @@ public class ContainerMultiCrafter extends RebornContainer
 	    {
 		    for (int j1 = 0; j1 < 13; ++j1)
 		    {
-			    this.addSlotToContainer(new Slot(handler, i, 9 + j1 * 18, 21 + l * 18));
+			    this.addSlotToContainer(new SlotFiltered(handler, i, 9 + j1 * 18, 21 + l * 18));
 			    i++;
 		    }
 	    }
