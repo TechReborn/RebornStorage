@@ -14,16 +14,14 @@ import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockControllerBase;
 import reborncore.common.util.Inventory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Mark on 03/01/2017.
  */
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
-	public HashMap<Integer, Inventory> invs = new HashMap<>();
+	public Map<Integer, Inventory> invs = new TreeMap<>();
 
 	public int powerUsage = 0;
 	public int speed = 0;
@@ -60,14 +58,28 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		speed = 0;
 		pages = 0;
 		invs.clear();
-		int id =0;
 		for(IMultiblockPart part : connectedParts){
 			if(part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("storage")){
 				pages ++;
 				powerUsage += 5;
 				if(part instanceof TileMultiCrafter){
-					invs.put(id, ((TileMultiCrafter) part).inv);
-					id ++;
+					TileMultiCrafter tile = (TileMultiCrafter) part;
+					int id = 0;
+					boolean genId = false;
+					if(tile.page.isPresent()){
+						if(!invs.containsKey(tile.page.get())){
+							id = tile.page.get();
+						} else {
+							genId = true;
+						}
+					} else {
+						genId = true;
+					}
+					if(genId){
+						id = invs.size() + 1; //Does this need +1?
+						tile.page = Optional.of(id);
+					}
+					invs.put(id, tile.inv);
 				}
 
 			}
@@ -79,7 +91,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	public Inventory getInvForPage(int page){
-		System.out.println(page);
 		return invs.get(page -1);
 	}
 

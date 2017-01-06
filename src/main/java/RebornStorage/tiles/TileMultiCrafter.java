@@ -22,6 +22,7 @@ import reborncore.common.util.Inventory;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Mark on 03/01/2017.
@@ -186,6 +187,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	public Inventory inv;
+	public Optional<Integer> page = Optional.empty();
 
 	public TileMultiCrafter(String varient) {
 		if (varient.equals("storage")) {
@@ -207,6 +209,9 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if(inv != null){
 			inv.readFromNBT(data);
 		}
+		if(data.hasKey("page")){
+			page = Optional.of(data.getInteger("page"));
+		}
 	}
 
 	@Override
@@ -214,6 +219,9 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if(inv != null){
 			inv.writeToNBT(data);
 			data.setBoolean("hasInv", true);
+		}
+		if(page.isPresent()){
+			data.setInteger("page", page.get());
 		}
 		return super.writeToNBT(data);
 	}
