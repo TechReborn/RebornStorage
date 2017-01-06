@@ -41,6 +41,12 @@ repositories {
 	}
 }
 
+def ENV = System.getenv()
+if (ENV.BUILD_NUMBER) {
+	version = version + "." + "${System.getenv().BUILD_NUMBER}"
+}
+
+
 // define the properties file
 ext.configFile = file "project.properties"
 
