@@ -41,10 +41,7 @@ repositories {
 	}
 }
 
-def ENV = System.getenv()
-if (ENV.BUILD_NUMBER) {
-	version = version + "." + "${System.getenv().BUILD_NUMBER}"
-}
+
 
 
 // define the properties file
@@ -58,8 +55,9 @@ configFile.withReader {
 }
 
 version = "${config.mod_version}"
-if (hasProperty('appendBuildNumber')) {
-    version = version + "-" + appendBuildNumber.toString()
+def ENV = System.getenv()
+if (ENV.BUILD_NUMBER) {
+	version = version + "." + "${System.getenv().BUILD_NUMBER}"
 }
 
 group = "${config.group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
