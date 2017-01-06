@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 /**
  * Created by Gigabit101 on 03/01/2017.
  */
-@Mod(name = ModInfo.MOD_NAME, modid = ModInfo.MOD_ID, version = ModInfo.MOD_VERSION)
+@Mod(name = ModInfo.MOD_NAME, modid = ModInfo.MOD_ID, version = ModInfo.MOD_VERSION, dependencies = ModInfo.MOD_DEPENDENCUIES)
 public class RebornStorage
 {
     @SidedProxy(clientSide = ModInfo.CLIENT_PROXY_LOC, serverSide = ModInfo.COMMON_PROXY_LOC)
