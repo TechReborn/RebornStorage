@@ -41,7 +41,6 @@ public class ContainerMultiCrafter extends RebornContainer
 			    i++;
 		    }
 	    }
-	    System.out.println("count " + i);
     }
 
 	@Override

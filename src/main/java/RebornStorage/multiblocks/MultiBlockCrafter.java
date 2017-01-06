@@ -91,7 +91,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	public Inventory getInvForPage(int page){
-		return invs.get(page -1);
+		return invs.get(page);
 	}
 
 	@Override
