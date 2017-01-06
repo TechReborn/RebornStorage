@@ -3,30 +3,29 @@ package RebornStorage.items;
 import RebornStorage.lib.ModInfo;
 import com.raoulvdberge.refinedstorage.apiimpl.storage.item.ItemStorageNBT;
 import com.raoulvdberge.refinedstorage.block.EnumItemStorageType;
+import com.raoulvdberge.refinedstorage.item.*;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.EnumHelper;
 
 import java.util.List;
 
 /**
  * Created by Gigabit101 on 03/01/2017.
  */
-public class ItemRebornStorageCell extends ItemBase
+public class ItemRebornStorageCell extends ItemStorageDisk
 {
     public static final String[] types = new String[]{"", "", "", "", "", "256k", "1024k", "4096k", "16384k"};
 
     public ItemRebornStorageCell()
     {
-        setUnlocalizedName(ModInfo.MOD_ID + ".storagecell");
-        setHasSubtypes(true);
-        setRegistryName("storagecell");
+        this.setUnlocalizedName(ModInfo.MOD_ID + ".storagecell");
+        this.setHasSubtypes(true);
+        this.setRegistryName(ModInfo.MOD_ID, "storagecell");
     }
 
     @Override
@@ -34,9 +33,14 @@ public class ItemRebornStorageCell extends ItemBase
     {
         for (int meta = 5; meta < types.length; meta++)
         {
-//            list.add(new ItemStack(item, 1, meta));
             list.add(ItemStorageNBT.createStackWithNBT(new ItemStack(item, 1, meta)));
         }
+    }
+
+    @Override
+    public String getUnlocalizedName()
+    {
+        return "item." + ModInfo.MOD_ID + ":" + "storagecell";
     }
 
     @Override

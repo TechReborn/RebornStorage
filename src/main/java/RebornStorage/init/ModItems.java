@@ -4,6 +4,7 @@ import RebornStorage.items.ItemRebornStorageCell;
 import RebornStorage.items.ItemRebornStorageCellFluid;
 import RebornStorage.items.ItemStoragePart;
 import com.raoulvdberge.refinedstorage.block.EnumItemStorageType;
+import com.raoulvdberge.refinedstorage.item.ItemStorageDisk;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -13,7 +14,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
  */
 public class ModItems
 {
-    public static Item REBORN_STORAGE_CELL;
+    public static ItemStorageDisk REBORN_STORAGE_CELL;
     public static Item REBORN_STORAGE_CELL_FLUID;
     public static Item REBORN_STORAGE_PART;
 

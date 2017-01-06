@@ -29,7 +29,7 @@ public class RebornStorage
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event)
     {
-        ModItems.init();
+//        ModItems.init();
         ModBlocks.init();
         ModRecipes.init();
         proxy.registerRenders();

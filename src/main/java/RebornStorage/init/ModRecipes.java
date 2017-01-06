@@ -13,7 +13,7 @@ public class ModRecipes
 {
     public static void init()
     {
-        registerStorageCellRecipes();
+//        registerStorageCellRecipes();
         registerMultiblockRecipes();
     }
 
