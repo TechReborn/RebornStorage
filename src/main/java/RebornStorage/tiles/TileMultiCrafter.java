@@ -114,7 +114,9 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 			if (inv.hasChanged) {
 				inv.hasChanged = false;
 				MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-				multiBlockCrafter.rebuildPatterns();
+				if(multiBlockCrafter != null){
+					multiBlockCrafter.rebuildPatterns();
+				}
 			}
 		}
 
