@@ -68,6 +68,9 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	public void onMachineActivated() {
 		if (getMultiBlock() != null) {
 			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
+			if(multiBlockCrafter.network == null){
+				multiBlockCrafter.network = master;
+			}
 			multiBlockCrafter.rebuildPatterns();
 		}
 	}
@@ -76,6 +79,9 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	public void onMachineDeactivated() {
 		if (getMultiBlock() != null) {
 			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
+			if(multiBlockCrafter.network == null){
+				multiBlockCrafter.network = master;
+			}
 			multiBlockCrafter.rebuildPatterns();
 		}
 	}
@@ -99,9 +105,6 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	//RS stuff
-
-	protected int ticks;
-
 	public int getEnergyUsage() {
 		if (getMultiBlock() == null) {
 			return 0;
@@ -119,7 +122,15 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 				}
 			}
 		}
-
+		if(world.getWorldTime() % 100 == 0 &&master != null){
+			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
+			if(multiBlockCrafter != null){
+				if(multiBlockCrafter.network == null){
+					multiBlockCrafter.network = master;
+				}
+				multiBlockCrafter.rebuildPatterns();
+			}
+		}
 	}
 
 	public int getSpeedUpdateCount() {
@@ -145,6 +156,8 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		return getMultiBlock().actualPatterns;
 	}
 
+	INetworkMaster master;
+
 	@Override
 	public BlockPos getPosition() {
 		return getPos();
@@ -155,6 +168,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if (getMultiBlock() != null) {
 			getMultiBlock().onConnectionChange(iNetworkMaster, true, pos);
 		}
+		master = iNetworkMaster;
 
 	}
 
@@ -163,6 +177,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if (getMultiBlock() != null) {
 			getMultiBlock().onConnectionChange(iNetworkMaster, false, pos);
 		}
+		master = iNetworkMaster;
 	}
 
 	@Override
