@@ -195,25 +195,35 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	public INetworkMaster network;
 
 	public void rebuildPatterns() {
-		this.actualPatterns.clear();
-		if(!isAssembled()){
-			return;
-		}
-		updateInfo();
-		for(HashMap.Entry<Integer, Inventory> entry : invs.entrySet()){
-			for (int i = 0; i < entry.getValue().getSizeInventory(); ++i) {
-				ItemStack patternStack = entry.getValue().getStackInSlot(i);
-				if (patternStack != null && patternStack.getItem() instanceof ICraftingPatternProvider) {
-					ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, getReferenceTile());
-					if (pattern.isValid()) {
-						this.actualPatterns.add(pattern);
+		try
+		{
+			this.actualPatterns.clear();
+			if (!isAssembled())
+			{
+				return;
+			}
+			updateInfo();
+			for (HashMap.Entry<Integer, Inventory> entry : invs.entrySet())
+			{
+				for (int i = 0; i < entry.getValue().getSizeInventory(); ++i)
+				{
+					ItemStack patternStack = entry.getValue().getStackInSlot(i);
+					if (patternStack != null && patternStack.getItem() instanceof ICraftingPatternProvider)
+					{
+						ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, getReferenceTile());
+						if (pattern.isValid())
+						{
+							this.actualPatterns.add(pattern);
+						}
 					}
 				}
 			}
+			if (network != null)
+			{
+				network.rebuildPatterns();
+			}
 		}
-		if(network != null){
-			network.rebuildPatterns();
-		}
+		catch (Exception e){}
 	}
 
 	public void onConnectionChange(INetworkMaster network, boolean state, BlockPos pos) {
