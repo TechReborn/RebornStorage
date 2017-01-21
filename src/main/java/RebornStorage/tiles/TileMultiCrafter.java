@@ -122,15 +122,6 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 				}
 			}
 		}
-		if(world.getWorldTime() % 100 == 0 &&master != null){
-			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-			if(multiBlockCrafter != null){
-				if(multiBlockCrafter.network == null){
-					multiBlockCrafter.network = master;
-				}
-				multiBlockCrafter.rebuildPatterns();
-			}
-		}
 	}
 
 	public int getSpeedUpdateCount() {
