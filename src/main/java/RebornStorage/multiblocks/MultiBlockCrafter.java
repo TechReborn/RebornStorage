@@ -48,8 +48,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected void onMachineAssembled() {
-		invs.clear();
-		updateInfo();
+		rebuildPatterns();
 	}
 
 
@@ -106,7 +105,10 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected void onMachineDisassembled() {
-		System.out.println("Invalid");
+		actualPatterns.clear();
+		if (network != null) {
+			network.rebuildPatterns();
+		}
 	}
 
 	@Override
@@ -191,17 +193,17 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	}
 
-	public List<ICraftingPattern> actualPatterns = new ArrayList();
+	public List<ICraftingPattern> actualPatterns = new ArrayList<>();
 	public INetworkMaster network;
 
 	public void rebuildPatterns() {
-		try
+		if (worldObj.isRemote) {
+			return;
+		}
+
+		this.actualPatterns.clear();
+		if (isAssembled())
 		{
-			this.actualPatterns.clear();
-			if (!isAssembled())
-			{
-				return;
-			}
 			updateInfo();
 			for (HashMap.Entry<Integer, Inventory> entry : invs.entrySet())
 			{
@@ -218,12 +220,11 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 					}
 				}
 			}
-			if (network != null)
-			{
-				network.rebuildPatterns();
-			}
 		}
-		catch (Exception e){}
+		if (network != null)
+		{
+			network.rebuildPatterns();
+		}
 	}
 
 	public void onConnectionChange(INetworkMaster network, boolean state, BlockPos pos) {
@@ -231,8 +232,8 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 			network.getCraftingTasks().stream().filter((task) -> task.getPattern().getContainer().getPosition().equals(pos)).forEach(network::cancelCraftingTask);
 		}
 
-		rebuildPatterns();
 		this.network = network;
+		rebuildPatterns();
 	}
 
 	private TileMultiCrafter getReferenceTile(){
