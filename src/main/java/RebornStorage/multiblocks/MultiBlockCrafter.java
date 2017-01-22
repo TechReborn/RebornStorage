@@ -48,6 +48,8 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected void onMachineAssembled() {
+		invs.clear();
+		updateInfo();
 		rebuildPatterns();
 	}
 
