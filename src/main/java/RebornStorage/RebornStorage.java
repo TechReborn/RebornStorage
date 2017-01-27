@@ -40,8 +40,8 @@ public class RebornStorage
 	    MinecraftForge.EVENT_BUS.register(Packets.class);
     }
 
-    @Mod.EventHandler
-    public void serverStarted(FMLServerStartingEvent event){
-    	event.registerServerCommand(new CommandBuildMultiBlock());
-    }
+//    @Mod.EventHandler
+//    public void serverStarted(FMLServerStartingEvent event){
+//    	event.registerServerCommand(new CommandBuildMultiBlock());
+//    }
 }
