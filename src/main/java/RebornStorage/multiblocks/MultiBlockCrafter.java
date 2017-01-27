@@ -48,50 +48,58 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected void onMachineAssembled() {
-		invs.clear();
 		updateInfo();
 		rebuildPatterns();
 	}
 
-
-	public void updateInfo(){
+	public void updateInfo() {
 		powerUsage = 0;
 		speed = 0;
 		pages = 0;
 		invs.clear();
-		for(IMultiblockPart part : connectedParts){
-			if(part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("storage")){
-				pages ++;
+		TreeMap<Integer, TileMultiCrafter> collector = new TreeMap<>();
+		int append = 2745;
+		/*	we ned to collect all storages first and assign ids after every storage is known
+		 *	also we need them to be sorted ... so a treemap. 'append' is explained later
+	    */
+		for (IMultiblockPart part : connectedParts) {
+			if (part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("storage")) {
+				pages++;
 				powerUsage += 5;
-				if(part instanceof TileMultiCrafter){
-					TileMultiCrafter tile = (TileMultiCrafter) part;
-					int id = 0;
-					boolean genId = false;
-					if(tile.page.isPresent()){
-						if(!invs.containsKey(tile.page.get())){
-							id = tile.page.get();
-						} else {
-							genId = true;
-						}
-					} else {
-						genId = true;
-					}
-					if(genId){
-						id = invs.size() + 1; //Does this need +1?
-						tile.page = Optional.of(id);
-					}
-					invs.put(id, tile.inv);
+				TileMultiCrafter tile = (TileMultiCrafter) part;
+				/*	just colect the block instead of assinging ids now
+	            *	blocks without id get numerated by id 2745 and up
+	            *	because max size of a crafter is 16*16*16, internals are 14*14*14
+	            *	so the max id any storage can have is 2744
+	            *	this makes new added storages get appended last
+	            *	if you want new storages added before existing ones, set 'append' to '-2745' instead
+	            */
+				//				tile.page = Optional.of(pages);
+				//				invs.put(pages, tile.inv);
+				if (tile.page.isPresent()) {
+					collector.put(tile.page.get(), tile);
+				} else {
+					collector.put(append++, tile);
 				}
-
 			}
-			if(part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("cpu")){
+			if (part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("cpu")) {
 				powerUsage += 10;
 				speed++;
 			}
 		}
+		/*	now every storage is known and placed in an ordered map we just
+		 *	need to iterate over it and assing new ids in that order, starting by 1
+		 *	map.values() should preserve the order
+		 */
+		int newid = 0;
+		for (TileMultiCrafter tile : collector.values()) {
+			newid++;
+			tile.page = Optional.of(newid);
+			invs.put(newid, tile.inv);
+		}
 	}
 
-	public Inventory getInvForPage(int page){
+	public Inventory getInvForPage(int page) {
 		return invs.get(page);
 	}
 
@@ -189,9 +197,9 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		readFromNBT(nbtTagCompound);
 	}
 
-    //RS things:
+	//RS things:
 
-	public void tick(){
+	public void tick() {
 
 	}
 
@@ -204,27 +212,21 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		}
 
 		this.actualPatterns.clear();
-		if (isAssembled())
-		{
+		if (isAssembled()) {
 			updateInfo();
-			for (HashMap.Entry<Integer, Inventory> entry : invs.entrySet())
-			{
-				for (int i = 0; i < entry.getValue().getSizeInventory(); ++i)
-				{
+			for (HashMap.Entry<Integer, Inventory> entry : invs.entrySet()) {
+				for (int i = 0; i < entry.getValue().getSizeInventory(); ++i) {
 					ItemStack patternStack = entry.getValue().getStackInSlot(i);
-					if (patternStack != null && patternStack.getItem() instanceof ICraftingPatternProvider)
-					{
+					if (patternStack != null && patternStack.getItem() instanceof ICraftingPatternProvider) {
 						ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, getReferenceTile());
-						if (pattern.isValid())
-						{
+						if (pattern.isValid()) {
 							this.actualPatterns.add(pattern);
 						}
 					}
 				}
 			}
 		}
-		if (network != null)
-		{
+		if (network != null) {
 			network.rebuildPatterns();
 		}
 	}
@@ -238,7 +240,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		rebuildPatterns();
 	}
 
-	private TileMultiCrafter getReferenceTile(){
+	private TileMultiCrafter getReferenceTile() {
 		return (TileMultiCrafter) worldObj.getTileEntity(getReferenceCoord().toBlockPos());
 	}
 }

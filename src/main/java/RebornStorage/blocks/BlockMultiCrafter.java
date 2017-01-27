@@ -71,9 +71,12 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 	                                float hitZ) {
 		TileMultiCrafter tile = (TileMultiCrafter) worldIn.getTileEntity(pos);
 		if (tile.getMultiblockController() != null) {
-			if (!tile.getMultiblockController().isAssembled() && worldIn.isRemote) {
+			if (!tile.getMultiblockController().isAssembled()) {
 				if (tile.getMultiblockController().getLastValidationException() != null) {
-					ChatUtils.sendNoSpamMessages(42, new TextComponentString(tile.getMultiblockController().getLastValidationException().getMessage()));
+					if(worldIn.isRemote){
+						ChatUtils.sendNoSpamMessages(42, new TextComponentString(tile.getMultiblockController().getLastValidationException().getMessage()));
+					}
+					return false;
 				}
 			} else if (worldIn.isRemote) {
 				playerIn.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE, worldIn, pos.getX(), pos.getY(), pos.getZ());

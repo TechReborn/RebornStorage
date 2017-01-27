@@ -68,7 +68,7 @@ public class GuiMultiCrafter extends GuiContainer
 	    if(crafter.invs.size() == 0){
 		    drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Multiblock must contain at least 1 storage block",  xSize /2 , 75, Color.RED.getRGB());
 	    } else {
-		    this.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Page " + page, 125, 130, 4210752);
+		    this.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Page " + page + " of " + crafter.invs.size(), 125, 130, 4210752);
 	    }
     }
 
