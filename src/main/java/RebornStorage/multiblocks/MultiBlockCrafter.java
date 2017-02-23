@@ -218,7 +218,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 			for (HashMap.Entry<Integer, Inventory> entry : invs.entrySet()) {
 				for (int i = 0; i < entry.getValue().getSizeInventory(); ++i) {
 					ItemStack patternStack = entry.getValue().getStackInSlot(i);
-					if (patternStack != ItemStack.EMPTY && patternStack.getItem() instanceof ICraftingPatternProvider) {
+					if (!patternStack.isEmpty() && patternStack.getItem() instanceof ICraftingPatternProvider) {
 						ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, (ICraftingPatternContainer) getReferenceTile().getNode());
 						if (pattern.isValid()) {
 							this.actualPatterns.add(pattern);

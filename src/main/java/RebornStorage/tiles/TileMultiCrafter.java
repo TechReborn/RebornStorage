@@ -185,18 +185,12 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	@Nonnull
 	@Override
 	public INetworkNode getNode() {
-		INetworkNodeManager manager = API.instance().getNetworkNodeManager(getWorld().provider.getDimension());
-
-		NetworkNode node = (NetworkNode) manager.getNode(pos);
-
 		if (node == null) {
-			manager.setNode(pos, node = getNewNode());
+			node = getNewNode();
 		}
-
 		if (node.getHolder().world() == null) {
 			node.setHolder(this);
 		}
-
 		return node;
 	}
 
