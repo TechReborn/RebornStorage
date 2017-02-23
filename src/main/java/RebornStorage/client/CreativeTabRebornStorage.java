@@ -6,6 +6,7 @@ import RebornStorage.lib.ModInfo;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 /**
  * Created by Gigabit101 on 03/01/2017.
@@ -20,8 +21,8 @@ public class CreativeTabRebornStorage extends CreativeTabs
     }
 
     @Override
-    public Item getTabIconItem()
+    public ItemStack getTabIconItem()
     {
-        return Item.getItemFromBlock(ModBlocks.BLOCK_MULTI_CRAFTER);
+        return new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER);
     }
 }

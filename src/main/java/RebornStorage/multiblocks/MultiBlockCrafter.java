@@ -1,10 +1,13 @@
 package RebornStorage.multiblocks;
 
 import RebornStorage.blocks.BlockMultiCrafter;
+import RebornStorage.tiles.NetworkNodeMultiCrafter;
 import RebornStorage.tiles.TileMultiCrafter;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
+import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternContainer;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider;
 import com.raoulvdberge.refinedstorage.api.network.INetworkMaster;
+import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -117,7 +120,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	protected void onMachineDisassembled() {
 		actualPatterns.clear();
 		if (network != null) {
-			network.rebuildPatterns();
+			network.getCraftingManager().rebuild();
 		}
 	}
 
@@ -217,8 +220,8 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 			for (HashMap.Entry<Integer, Inventory> entry : invs.entrySet()) {
 				for (int i = 0; i < entry.getValue().getSizeInventory(); ++i) {
 					ItemStack patternStack = entry.getValue().getStackInSlot(i);
-					if (patternStack != null && patternStack.getItem() instanceof ICraftingPatternProvider) {
-						ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, getReferenceTile());
+					if (patternStack != ItemStack.EMPTY && patternStack.getItem() instanceof ICraftingPatternProvider) {
+						ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, (ICraftingPatternContainer) getReferenceTile().getNode());
 						if (pattern.isValid()) {
 							this.actualPatterns.add(pattern);
 						}
@@ -227,13 +230,15 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 			}
 		}
 		if (network != null) {
-			network.rebuildPatterns();
+			network.getCraftingManager().rebuild();
 		}
 	}
 
 	public void onConnectionChange(INetworkMaster network, boolean state, BlockPos pos) {
 		if (!state) {
-			network.getCraftingTasks().stream().filter((task) -> task.getPattern().getContainer().getPosition().equals(pos)).forEach(network::cancelCraftingTask);
+			network.getCraftingManager().getTasks().stream()
+				.filter(task -> task.getPattern().getContainer().getPosition().equals(pos))
+				.forEach(task -> network.getCraftingManager().cancel(task));
 		}
 
 		this.network = network;
