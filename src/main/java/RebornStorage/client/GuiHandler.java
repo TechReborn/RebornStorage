@@ -19,10 +19,8 @@ public class GuiHandler implements IGuiHandler {
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		if(ID >= MULTI_CRAFTER_BASEPAGE)
-		{
-			if(getMultiBlock(world, x, y, z) != null)
-			{
+		if (ID >= MULTI_CRAFTER_BASEPAGE) {
+			if (getMultiBlock(world, x, y, z) != null) {
 				return new ContainerMultiCrafter(player, getMultiBlock(world, x, y, z), ID - MULTI_CRAFTER_BASEPAGE + 1);
 			}
 		}
@@ -31,19 +29,17 @@ public class GuiHandler implements IGuiHandler {
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		if(ID >= MULTI_CRAFTER_BASEPAGE) {
-			if(getMultiBlock(world, x, y, z) != null)
-			{
+		if (ID >= MULTI_CRAFTER_BASEPAGE) {
+			if (getMultiBlock(world, x, y, z) != null) {
 				return new GuiMultiCrafter(player, getMultiBlock(world, x, y, z), ID - MULTI_CRAFTER_BASEPAGE + 1, new BlockPos(x, y, z));
 			}
 		}
 		return null;
 	}
 
-
-	public MultiBlockCrafter getMultiBlock(World world, int x, int y, int z){
+	public MultiBlockCrafter getMultiBlock(World world, int x, int y, int z) {
 		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-		if(tileEntity instanceof TileMultiCrafter){
+		if (tileEntity instanceof TileMultiCrafter) {
 			return (MultiBlockCrafter) ((TileMultiCrafter) tileEntity).getMultiblockController();
 		}
 		return null;

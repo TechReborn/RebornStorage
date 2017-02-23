@@ -12,7 +12,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,7 +31,6 @@ import reborncore.common.network.NetworkManager;
 import reborncore.common.util.ArrayUtils;
 import reborncore.common.util.ChatUtils;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -72,7 +70,7 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 		if (tile.getMultiblockController() != null) {
 			if (!tile.getMultiblockController().isAssembled()) {
 				if (tile.getMultiblockController().getLastValidationException() != null) {
-					if(worldIn.isRemote){
+					if (worldIn.isRemote) {
 						ChatUtils.sendNoSpamMessages(42, new TextComponentString(tile.getMultiblockController().getLastValidationException().getMessage()));
 					}
 					return false;
@@ -125,11 +123,11 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 
 		if (tileentity instanceof TileMultiCrafter) {
 			TileMultiCrafter tile = (TileMultiCrafter) tileentity;
-			if(tile.inv == null){
+			if (tile.inv == null) {
 				super.breakBlock(worldIn, pos, state);
 				return;
 			}
-			InventoryHelper.dropInventoryItems(worldIn, pos,  tile.inv);
+			InventoryHelper.dropInventoryItems(worldIn, pos, tile.inv);
 		}
 
 		super.breakBlock(worldIn, pos, state);

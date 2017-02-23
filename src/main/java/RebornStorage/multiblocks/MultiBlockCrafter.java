@@ -1,13 +1,11 @@
 package RebornStorage.multiblocks;
 
 import RebornStorage.blocks.BlockMultiCrafter;
-import RebornStorage.tiles.NetworkNodeMultiCrafter;
 import RebornStorage.tiles.TileMultiCrafter;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternContainer;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider;
 import com.raoulvdberge.refinedstorage.api.network.INetworkMaster;
-import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -71,7 +69,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 				powerUsage += 5;
 				TileMultiCrafter tile = (TileMultiCrafter) part;
 				/*	just colect the block instead of assinging ids now
-	            *	blocks without id get numerated by id 2745 and up
+		        *	blocks without id get numerated by id 2745 and up
 	            *	because max size of a crafter is 16*16*16, internals are 14*14*14
 	            *	so the max id any storage can have is 2744
 	            *	this makes new added storages get appended last

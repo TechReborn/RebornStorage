@@ -28,25 +28,25 @@ public class CommandBuildMultiBlock extends CommandBase {
 			for (int y = 0; y < size; y++) {
 				for (int z = 0; z < size; z++) {
 					int meta = 1;
-						if(x == 0 || z == 0 || x == size -1 || z == size-1){
-							if((x == 0 && z == 0) || (x == 0 && z == size-1) || (x == size-1 && z == 0) || (x == size-1 && z == size-1)){
+					if (x == 0 || z == 0 || x == size - 1 || z == size - 1) {
+						if ((x == 0 && z == 0) || (x == 0 && z == size - 1) || (x == size - 1 && z == 0) || (x == size - 1 && z == size - 1)) {
+							meta = 0;
+						} else {
+							if (y == 0 || y == size - 1) {
 								meta = 0;
 							} else {
-								if(y == 0 || y == size-1){
-									meta = 0;
-								} else {
-									meta = 1;
-								}
-
-							}
-
-						} else {
-							if(y == 0 || y == size-1){
 								meta = 1;
-							} else {
-								meta = 3;
 							}
+
 						}
+
+					} else {
+						if (y == 0 || y == size - 1) {
+							meta = 1;
+						} else {
+							meta = 3;
+						}
+					}
 
 					IBlockState state = ModBlocks.BLOCK_MULTI_CRAFTER.getStateFromMeta(meta);
 					sender.getEntityWorld().setBlockState(sender.getPosition().add(x, y, z), state);

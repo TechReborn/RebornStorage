@@ -2,8 +2,6 @@ package RebornStorage.tiles;
 
 import RebornStorage.blocks.BlockMultiCrafter;
 import RebornStorage.multiblocks.MultiBlockCrafter;
-import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
-import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider;
 import com.raoulvdberge.refinedstorage.api.network.INetworkMaster;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeManager;
@@ -12,16 +10,13 @@ import com.raoulvdberge.refinedstorage.apiimpl.API;
 import com.raoulvdberge.refinedstorage.apiimpl.network.node.INetworkNodeHolder;
 import com.raoulvdberge.refinedstorage.apiimpl.network.node.NetworkNode;
 import com.raoulvdberge.refinedstorage.proxy.CapabilityNetworkNodeProxy;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.IItemHandler;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.MultiblockValidationException;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockTileEntityBase;
@@ -29,8 +24,6 @@ import reborncore.common.util.Inventory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -79,7 +72,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	public void onMachineActivated() {
 		if (getMultiBlock() != null) {
 			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-			if(multiBlockCrafter.network == null){
+			if (multiBlockCrafter.network == null) {
 				multiBlockCrafter.network = master;
 			}
 			multiBlockCrafter.rebuildPatterns();
@@ -90,7 +83,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	public void onMachineDeactivated() {
 		if (getMultiBlock() != null) {
 			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-			if(multiBlockCrafter.network == null){
+			if (multiBlockCrafter.network == null) {
 				multiBlockCrafter.network = master;
 			}
 			multiBlockCrafter.rebuildPatterns();
@@ -116,11 +109,11 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	public void update() {
-		if(inv != null){
+		if (inv != null) {
 			if (inv.hasChanged) {
 				inv.hasChanged = false;
 				MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-				if(multiBlockCrafter != null){
+				if (multiBlockCrafter != null) {
 					multiBlockCrafter.rebuildPatterns();
 				}
 			}
@@ -146,24 +139,24 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	@Override
 	public void readFromNBT(NBTTagCompound data) {
 		super.readFromNBT(data);
-		if(inv == null && data.hasKey("hasInv")){
+		if (inv == null && data.hasKey("hasInv")) {
 			inv = new Inventory(78, "storageBlock", 1, this);
 		}
-		if(inv != null){
+		if (inv != null) {
 			inv.readFromNBT(data);
 		}
-		if(data.hasKey("page")){
+		if (data.hasKey("page")) {
 			page = Optional.of(data.getInteger("page"));
 		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound data) {
-		if(inv != null){
+		if (inv != null) {
 			inv.writeToNBT(data);
 			data.setBoolean("hasInv", true);
 		}
-		if(page.isPresent()){
+		if (page.isPresent()) {
 			data.setInteger("page", page.get());
 		}
 		return super.writeToNBT(data);
@@ -207,7 +200,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		return node;
 	}
 
-	public NetworkNodeMultiCrafter getNewNode(){
+	public NetworkNodeMultiCrafter getNewNode() {
 		return new NetworkNodeMultiCrafter(this);
 	}
 
@@ -249,7 +242,9 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	//	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing side) {
+	public boolean hasCapability(Capability<?> capability,
+	                             @Nullable
+		                             EnumFacing side) {
 		if (capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY) {
 			return true;
 		}
@@ -258,7 +253,9 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing side) {
+	public <T> T getCapability(Capability<T> capability,
+	                           @Nullable
+		                           EnumFacing side) {
 		if (capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY) {
 			return CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY.cast(this);
 		}

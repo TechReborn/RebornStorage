@@ -13,30 +13,28 @@ import reborncore.RebornRegistry;
 /**
  * Created by Gigabit101 on 03/01/2017.
  */
-public class ModBlocks
-{
+public class ModBlocks {
 	public static Block BLOCK_MULTI_CRAFTER;
 
-    public static void init()
-    {
-	    BLOCK_MULTI_CRAFTER = new BlockMultiCrafter();
-	    RebornRegistry.registerBlock(BLOCK_MULTI_CRAFTER, ItemBlockMultiCrafter.class, "multicrafter");
-	    GameRegistry.registerTileEntity(TileMultiCrafter.class, ModInfo.MOD_NAME + "TileMultiCrafter");
-	    registerNodes();
-    }
+	public static void init() {
+		BLOCK_MULTI_CRAFTER = new BlockMultiCrafter();
+		RebornRegistry.registerBlock(BLOCK_MULTI_CRAFTER, ItemBlockMultiCrafter.class, "multicrafter");
+		GameRegistry.registerTileEntity(TileMultiCrafter.class, ModInfo.MOD_NAME + "TileMultiCrafter");
+		registerNodes();
+	}
 
 	public static void registerNodes() {
 
 		try {
 			TileMultiCrafter tileInstance = TileMultiCrafter.class.newInstance();
 			String nodeId = tileInstance.getNewNode().getId();
-				API.instance().getNetworkNodeRegistry().add(nodeId, tag -> {
-					NetworkNode node = tileInstance.getNewNode();
+			API.instance().getNetworkNodeRegistry().add(nodeId, tag -> {
+				NetworkNode node = tileInstance.getNewNode();
 
-					node.read(tag);
+				node.read(tag);
 
-					return node;
-				});
+				return node;
+			});
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
