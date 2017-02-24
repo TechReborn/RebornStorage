@@ -10,8 +10,9 @@ import reborncore.common.util.CraftingHelper;
  * Created by Gigabit101 on 03/01/2017.
  */
 public class ModRecipes {
-	public static void init() {
-		//        registerStorageCellRecipes();
+	public static void init()
+	{
+		registerStorageCellRecipes();
 		registerMultiblockRecipes();
 	}
 
