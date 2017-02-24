@@ -206,6 +206,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	public List<ICraftingPattern> actualPatterns = new ArrayList<>();
 	public INetworkMaster network;
+	public ICraftingPatternContainer node;
 
 	public void rebuildPatterns() {
 		if (worldObj.isRemote) {
@@ -219,7 +220,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 				for (int i = 0; i < entry.getValue().getSizeInventory(); ++i) {
 					ItemStack patternStack = entry.getValue().getStackInSlot(i);
 					if (!patternStack.isEmpty() && patternStack.getItem() instanceof ICraftingPatternProvider) {
-						ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, (ICraftingPatternContainer) getReferenceTile().getNode());
+						ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, node);
 						if (pattern.isValid()) {
 							this.actualPatterns.add(pattern);
 						}

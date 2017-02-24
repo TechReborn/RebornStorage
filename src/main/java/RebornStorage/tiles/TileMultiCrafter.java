@@ -191,6 +191,11 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if (node.getHolder().world() == null) {
 			node.setHolder(this);
 		}
+		if(getMultiBlock() != null){
+			if(getMultiBlock().node != node){
+				getMultiBlock().node = node;
+			}
+		}
 		return node;
 	}
 
