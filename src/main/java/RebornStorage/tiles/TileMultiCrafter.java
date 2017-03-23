@@ -178,7 +178,8 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public boolean canConduct(EnumFacing enumFacing) {
-		return false;
+		// Only frame blocks can conduct (e.g. connect to network)
+		return getBlockMetadata() == 0;
 	}
 
 	@Override
