@@ -106,10 +106,18 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	//RS stuff
 	public int getEnergyUsage() {
-		if (getMultiBlock() == null) {
+		if (getMultiBlock() == null || !getMultiBlock().isConsumingPower()) {
 			return 0;
 		}
-		return getMultiBlock().powerUsage;
+
+		switch (getBlockState().getValue(BlockMultiCrafter.VARIANTS)) {
+			case "cpu":
+				return 10;
+			case "storage":
+				return 5;
+			default:
+				return 0;
+		}
 	}
 
 	public void update() {
@@ -178,8 +186,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public boolean canConduct(EnumFacing enumFacing) {
-		// Only frame blocks can conduct (e.g. connect to network)
-		return getBlockMetadata() == 0;
+		return true;
 	}
 
 	@Override
