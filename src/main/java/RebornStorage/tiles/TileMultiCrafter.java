@@ -106,10 +106,18 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	//RS stuff
 	public int getEnergyUsage() {
-		if (getMultiBlock() == null) {
+		if (getMultiBlock() == null || !getMultiBlock().isConsumingPower()) {
 			return 0;
 		}
-		return getMultiBlock().powerUsage;
+
+		switch (getBlockState().getValue(BlockMultiCrafter.VARIANTS)) {
+			case "cpu":
+				return 10;
+			case "storage":
+				return 5;
+			default:
+				return 0;
+		}
 	}
 
 	public void update() {
@@ -178,7 +186,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public boolean canConduct(EnumFacing enumFacing) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -251,24 +259,5 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		return writeToNBT(new NBTTagCompound());
 	}
 
-	public TileMultiCrafter() {
-	}
-
-	//TODO add better cap support for it
-	//	@Override
-	//	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-	//		if (getMultiblockController() != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-	//			return true;
-	//		}
-	//		return super.hasCapability(capability, facing);
-	//	}
-	//
-	//	@Override
-	//	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-	//		if (getMultiblockController() != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-	//			return (T) new InvWrapper(getMultiBlock().inv);
-	//		}
-	//		return super.getCapability(capability, facing);
-	//	}
-
+	public TileMultiCrafter() {}
 }

@@ -23,7 +23,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	public Map<Integer, Inventory> invs = new TreeMap<>();
 
-	public int powerUsage = 0;
+	private boolean consumingPower = false;
 	public int speed = 0;
 	public int pages = 0;
 
@@ -32,28 +32,22 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	@Override
-	public void onAttachedPartWithMultiblockData(IMultiblockPart iMultiblockPart, NBTTagCompound nbtTagCompound) {
-
-	}
+	public void onAttachedPartWithMultiblockData(IMultiblockPart iMultiblockPart, NBTTagCompound nbtTagCompound) {}
 
 	@Override
-	protected void onBlockAdded(IMultiblockPart iMultiblockPart) {
-
-	}
+	protected void onBlockAdded(IMultiblockPart iMultiblockPart) {}
 
 	@Override
-	protected void onBlockRemoved(IMultiblockPart iMultiblockPart) {
-
-	}
+	protected void onBlockRemoved(IMultiblockPart iMultiblockPart) {}
 
 	@Override
 	protected void onMachineAssembled() {
 		updateInfo();
 		rebuildPatterns();
+		consumingPower = true;
 	}
 
 	public void updateInfo() {
-		powerUsage = 0;
 		speed = 0;
 		pages = 0;
 		invs.clear();
@@ -65,7 +59,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		for (IMultiblockPart part : connectedParts) {
 			if (part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("storage")) {
 				pages++;
-				powerUsage += 5;
 				TileMultiCrafter tile = (TileMultiCrafter) part;
 				/*	just colect the block instead of assinging ids now
 	            *	blocks without id get numerated by id 2745 and up
@@ -83,7 +76,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 				}
 			}
 			if (part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("cpu")) {
-				powerUsage += 10;
 				speed++;
 			}
 		}
@@ -103,14 +95,18 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		return invs.get(page);
 	}
 
+	public boolean isConsumingPower() {
+		return consumingPower;
+	}
+
 	@Override
 	protected void onMachineRestored() {
-
+		consumingPower = true;
 	}
 
 	@Override
 	protected void onMachinePaused() {
-
+		consumingPower = false;
 	}
 
 	@Override
@@ -119,6 +115,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		if (network != null) {
 			network.rebuildPatterns();
 		}
+		consumingPower = false;
 	}
 
 	@Override
@@ -157,14 +154,10 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	@Override
-	protected void onAssimilate(MultiblockControllerBase multiblockControllerBase) {
-
-	}
+	protected void onAssimilate(MultiblockControllerBase multiblockControllerBase) {}
 
 	@Override
-	protected void onAssimilated(MultiblockControllerBase multiblockControllerBase) {
-
-	}
+	protected void onAssimilated(MultiblockControllerBase multiblockControllerBase) {}
 
 	@Override
 	protected boolean updateServer() {
@@ -173,19 +166,13 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	@Override
-	protected void updateClient() {
-
-	}
+	protected void updateClient() {}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbtTagCompound) {
-
-	}
+	public void writeToNBT(NBTTagCompound nbtTagCompound) {}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-
-	}
+	public void readFromNBT(NBTTagCompound nbtTagCompound) {}
 
 	@Override
 	public void formatDescriptionPacket(NBTTagCompound nbtTagCompound) {
@@ -199,9 +186,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	//RS things:
 
-	public void tick() {
-
-	}
+	public void tick() {}
 
 	public List<ICraftingPattern> actualPatterns = new ArrayList<>();
 	public INetworkMaster network;
