@@ -259,24 +259,5 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		return writeToNBT(new NBTTagCompound());
 	}
 
-	public TileMultiCrafter() {
-	}
-
-	//TODO add better cap support for it
-	//	@Override
-	//	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-	//		if (getMultiblockController() != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-	//			return true;
-	//		}
-	//		return super.hasCapability(capability, facing);
-	//	}
-	//
-	//	@Override
-	//	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-	//		if (getMultiblockController() != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-	//			return (T) new InvWrapper(getMultiBlock().inv);
-	//		}
-	//		return super.getCapability(capability, facing);
-	//	}
-
+	public TileMultiCrafter() {}
 }

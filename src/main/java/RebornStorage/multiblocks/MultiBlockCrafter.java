@@ -32,19 +32,13 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	@Override
-	public void onAttachedPartWithMultiblockData(IMultiblockPart iMultiblockPart, NBTTagCompound nbtTagCompound) {
-
-	}
+	public void onAttachedPartWithMultiblockData(IMultiblockPart iMultiblockPart, NBTTagCompound nbtTagCompound) {}
 
 	@Override
-	protected void onBlockAdded(IMultiblockPart iMultiblockPart) {
-
-	}
+	protected void onBlockAdded(IMultiblockPart iMultiblockPart) {}
 
 	@Override
-	protected void onBlockRemoved(IMultiblockPart iMultiblockPart) {
-
-	}
+	protected void onBlockRemoved(IMultiblockPart iMultiblockPart) {}
 
 	@Override
 	protected void onMachineAssembled() {
@@ -160,14 +154,10 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	@Override
-	protected void onAssimilate(MultiblockControllerBase multiblockControllerBase) {
-
-	}
+	protected void onAssimilate(MultiblockControllerBase multiblockControllerBase) {}
 
 	@Override
-	protected void onAssimilated(MultiblockControllerBase multiblockControllerBase) {
-
-	}
+	protected void onAssimilated(MultiblockControllerBase multiblockControllerBase) {}
 
 	@Override
 	protected boolean updateServer() {
@@ -176,19 +166,13 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	@Override
-	protected void updateClient() {
-
-	}
+	protected void updateClient() {}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbtTagCompound) {
-
-	}
+	public void writeToNBT(NBTTagCompound nbtTagCompound) {}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-
-	}
+	public void readFromNBT(NBTTagCompound nbtTagCompound) {}
 
 	@Override
 	public void formatDescriptionPacket(NBTTagCompound nbtTagCompound) {
@@ -202,9 +186,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	//RS things:
 
-	public void tick() {
-
-	}
+	public void tick() {}
 
 	public List<ICraftingPattern> actualPatterns = new ArrayList<>();
 	public INetworkMaster network;
