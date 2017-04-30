@@ -222,7 +222,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		}
 
 		this.network = network;
-		rebuildPatterns();
+		network.rebuildPatterns();
 	}
 
 	private TileMultiCrafter getReferenceTile() {
