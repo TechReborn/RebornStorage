@@ -192,18 +192,19 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	public INetworkMaster network;
 
 	public void rebuildPatterns() {
+
 		if (worldObj.isRemote) {
 			return;
 		}
-
 		this.actualPatterns.clear();
 		if (isAssembled()) {
 			updateInfo();
+			TileMultiCrafter baseTile = getReferenceTile();
 			for (HashMap.Entry<Integer, Inventory> entry : invs.entrySet()) {
 				for (int i = 0; i < entry.getValue().getSizeInventory(); ++i) {
 					ItemStack patternStack = entry.getValue().getStackInSlot(i);
 					if (patternStack != null && patternStack.getItem() instanceof ICraftingPatternProvider) {
-						ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, getReferenceTile());
+						ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, baseTile);
 						if (pattern.isValid()) {
 							this.actualPatterns.add(pattern);
 						}
