@@ -104,7 +104,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 				inv.hasChanged = false;
 				checkNodes();
 				API.instance().discoverNode(world, pos);
-				if (!world.isRemote && serverNode != null) {
+				if (!world.isRemote && serverNode != null && serverNode.getNetwork() != null && serverNode.getNetwork().getCraftingManager() != null) {
 					serverNode.getNetwork().getCraftingManager().rebuild();
 				}
 			}
@@ -137,7 +137,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	public void onLoad() {
 		checkNodes();
 		API.instance().discoverNode(world, pos);
-		if (!world.isRemote && serverNode != null) {
+		if (!world.isRemote && serverNode != null && serverNode.getNetwork() != null && serverNode.getNetwork().getCraftingManager() != null) {
 			serverNode.getNetwork().getCraftingManager().rebuild();
 		}
 	}
