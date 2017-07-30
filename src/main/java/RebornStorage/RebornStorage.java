@@ -4,6 +4,7 @@ import RebornStorage.client.GuiHandler;
 import RebornStorage.init.ModBlocks;
 import RebornStorage.init.ModItems;
 import RebornStorage.init.ModRecipes;
+import RebornStorage.lib.CommandBuildMultiBlock;
 import RebornStorage.lib.ModInfo;
 import RebornStorage.packet.Packets;
 import RebornStorage.proxys.CommonProxy;
@@ -11,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 /**
@@ -34,8 +36,8 @@ public class RebornStorage {
 		MinecraftForge.EVENT_BUS.register(Packets.class);
 	}
 
-	//    @Mod.EventHandler
-	//    public void serverStarted(FMLServerStartingEvent event){
-	//    	event.registerServerCommand(new CommandBuildMultiBlock());
-	//    }
+	@Mod.EventHandler
+	public void serverStarted(FMLServerStartingEvent event){
+		event.registerServerCommand(new CommandBuildMultiBlock());
+	}
 }
