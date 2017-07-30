@@ -134,15 +134,6 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	@Override
-	public void onLoad() {
-		checkNodes();
-		API.instance().discoverNode(world, pos);
-		if (!world.isRemote && serverNode != null && serverNode.getNetwork() != null && serverNode.getNetwork().getCraftingManager() != null) {
-			serverNode.getNetwork().getCraftingManager().rebuild();
-		}
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound data) {
 		super.readFromNBT(data);
 		if (inv == null && data.hasKey("hasInv")) {
