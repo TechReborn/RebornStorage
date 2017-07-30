@@ -16,18 +16,15 @@ import net.minecraftforge.client.model.ModelLoader;
 public class ModelHelper {
 	public static void init() {
 		int i;
-		for (i = 0; i < ItemRebornStorageCell.types.length; ++i)
-		{
+		for (i = 0; i < ItemRebornStorageCell.types.length; ++i) {
 			String[] name = ItemRebornStorageCell.types.clone();
 			registerItemModel(ModItems.REBORN_STORAGE_CELL, i, name[i]);
 		}
-		for (i = 0; i < ItemRebornStorageCellFluid.types.length; ++i)
-		{
+		for (i = 0; i < ItemRebornStorageCellFluid.types.length; ++i) {
 			String[] name = ItemRebornStorageCellFluid.types.clone();
 			registerItemModel(ModItems.REBORN_STORAGE_CELL_FLUID, i, name[i]);
 		}
-		for (i = 0; i < ItemStoragePart.types.length; ++i)
-		{
+		for (i = 0; i < ItemStoragePart.types.length; ++i) {
 			String[] name = ItemStoragePart.types.clone();
 			registerItemModel(ModItems.REBORN_STORAGE_PART, i, name[i]);
 		}

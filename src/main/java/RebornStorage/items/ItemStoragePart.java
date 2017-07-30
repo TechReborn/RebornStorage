@@ -2,7 +2,6 @@ package RebornStorage.items;
 
 import RebornStorage.lib.ModInfo;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -20,7 +19,7 @@ public class ItemStoragePart extends ItemBase {
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-		if(isInCreativeTab(tab)){
+		if (isInCreativeTab(tab)) {
 			for (int meta = 0; meta < types.length; meta++) {
 				list.add(new ItemStack(this, 1, meta));
 			}

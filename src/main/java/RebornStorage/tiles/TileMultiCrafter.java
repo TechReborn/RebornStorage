@@ -2,22 +2,16 @@ package RebornStorage.tiles;
 
 import RebornStorage.blocks.BlockMultiCrafter;
 import RebornStorage.multiblocks.MultiBlockCrafter;
-import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
-import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternContainer;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeManager;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeProxy;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
-import com.raoulvdberge.refinedstorage.apiimpl.network.node.NetworkNode;
 import com.raoulvdberge.refinedstorage.capability.CapabilityNetworkNodeProxy;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.IItemHandler;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.MultiblockValidationException;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockTileEntityBase;
@@ -25,7 +19,6 @@ import reborncore.common.util.Inventory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -111,19 +104,19 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 				inv.hasChanged = false;
 				checkNodes();
 				API.instance().discoverNode(world, pos);
-				if(!world.isRemote && serverNode != null){
+				if (!world.isRemote && serverNode != null) {
 					serverNode.getNetwork().getCraftingManager().rebuild();
 				}
 			}
 		}
 	}
 
-	public void checkNodes(){
-		if(getMultiBlock() == null){
+	public void checkNodes() {
+		if (getMultiBlock() == null) {
 			return;
 		}
 		MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-		if(world.isRemote){
+		if (world.isRemote) {
 			multiBlockCrafter.node = clientNode;
 		} else {
 			multiBlockCrafter.node = serverNode;
@@ -144,7 +137,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	public void onLoad() {
 		checkNodes();
 		API.instance().discoverNode(world, pos);
-		if(!world.isRemote && serverNode != null){
+		if (!world.isRemote && serverNode != null) {
 			serverNode.getNetwork().getCraftingManager().rebuild();
 		}
 	}
@@ -198,9 +191,9 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	@Nonnull
 	@Override
 	public INetworkNode getNode() {
-		if(!world.isRemote){
+		if (!world.isRemote) {
 			INetworkNodeManager manager = API.instance().getNetworkNodeManager(this.world);
-			NetworkNodeMultiCrafter node = (NetworkNodeMultiCrafter)manager.getNode(this.pos);
+			NetworkNodeMultiCrafter node = (NetworkNodeMultiCrafter) manager.getNode(this.pos);
 			if (node == null || !node.getId().equals("rebornstorage.multicrafter")) {
 				manager.setNode(this.pos, node = getNewNode());
 				manager.markForSaving();

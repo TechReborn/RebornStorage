@@ -67,7 +67,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 				powerUsage += 5;
 				TileMultiCrafter tile = (TileMultiCrafter) part;
 				/*	just colect the block instead of assinging ids now
-		        *	blocks without id get numerated by id 2745 and up
+			    *	blocks without id get numerated by id 2745 and up
 	            *	because max size of a crafter is 16*16*16, internals are 14*14*14
 	            *	so the max id any storage can have is 2744
 	            *	this makes new added storages get appended last
@@ -207,7 +207,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 			return;
 		}
 
-		if(worldObj.isRemote && node == null){
+		if (worldObj.isRemote && node == null) {
 			node = getReferenceTile().getNewNode();
 		}
 
