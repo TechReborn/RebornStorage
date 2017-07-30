@@ -7,6 +7,7 @@ import com.raoulvdberge.refinedstorage.api.storage.IStorageDiskProvider;
 import com.raoulvdberge.refinedstorage.api.storage.StorageDiskType;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +18,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -34,12 +36,14 @@ public class ItemRebornStorageCell extends ItemBase implements IStorageDiskProvi
 	}
 
 	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems)
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
 	{
-        for (int meta = 0; meta < EnumItemStorage.values().length; meta++)
-        {
-            subItems.add(API.instance().getDefaultStorageDiskBehavior().initDisk(StorageDiskType.ITEMS, new ItemStack(itemIn, 1, meta)));
-        }
+		if(isInCreativeTab(tab)){
+			for (int meta = 0; meta < EnumItemStorage.values().length; meta++)
+			{
+				subItems.add(API.instance().getDefaultStorageDiskBehavior().initDisk(StorageDiskType.ITEMS, new ItemStack(this, 1, meta)));
+			}
+		}
 	}
 
     @Override
@@ -53,7 +57,7 @@ public class ItemRebornStorageCell extends ItemBase implements IStorageDiskProvi
     }
 
     @Override
-    public void addInformation(ItemStack disk, EntityPlayer player, List<String> tooltip, boolean advanced) {
+    public void addInformation(ItemStack disk, World world, List<String> tooltip, ITooltipFlag flag) {
         IStorageDisk storage = create(disk);
         if (storage.isValid(disk))
         {
@@ -68,7 +72,7 @@ public class ItemRebornStorageCell extends ItemBase implements IStorageDiskProvi
         }
     }
 
-    @Override
+	@Override
     public void onCreated(ItemStack stack, World world, EntityPlayer player)
     {
         super.onCreated(stack, world, player);

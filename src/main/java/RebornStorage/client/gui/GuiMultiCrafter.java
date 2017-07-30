@@ -58,9 +58,9 @@ public class GuiMultiCrafter extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		if (crafter.invs.size() == 0) {
-			drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Multiblock must contain at least 1 storage block", xSize / 2, 75, Color.RED.getRGB());
+			drawCenteredString(Minecraft.getMinecraft().fontRenderer, "Multiblock must contain at least 1 storage block", xSize / 2, 75, Color.RED.getRGB());
 		} else {
-			this.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Page " + page + " of " + crafter.invs.size(), 125, 130, 4210752);
+			this.drawCenteredString(Minecraft.getMinecraft().fontRenderer, "Page " + page + " of " + crafter.invs.size(), 125, 130, 4210752);
 		}
 	}
 

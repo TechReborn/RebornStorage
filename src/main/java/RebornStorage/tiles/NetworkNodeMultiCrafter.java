@@ -2,7 +2,7 @@ package RebornStorage.tiles;
 
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternContainer;
-import com.raoulvdberge.refinedstorage.api.network.INetworkMaster;
+import com.raoulvdberge.refinedstorage.api.network.INetwork;
 import com.raoulvdberge.refinedstorage.apiimpl.network.node.NetworkNode;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
@@ -18,7 +18,7 @@ public class NetworkNodeMultiCrafter extends NetworkNode implements ICraftingPat
 	TileMultiCrafter crafter;
 
 	public NetworkNodeMultiCrafter(TileMultiCrafter crafter) {
-		super(crafter);
+		super(crafter.getWorld(), crafter.getPos());
 		this.crafter = crafter;
 	}
 
@@ -41,6 +41,19 @@ public class NetworkNodeMultiCrafter extends NetworkNode implements ICraftingPat
 			return new ArrayList<>();
 		}
 		return crafter.getMultiBlock().actualPatterns;
+	}
+
+	@Override
+	public boolean canUpdate() {
+		return true;
+	}
+
+	@Override
+	public void onConnected(INetwork network) {
+		if (crafter.getMultiBlock() != null) {
+			crafter.getMultiBlock().rebuildPatterns();
+		}
+		super.onConnected(network);
 	}
 
 	@Override
@@ -71,11 +84,4 @@ public class NetworkNodeMultiCrafter extends NetworkNode implements ICraftingPat
 		return "rebornstorage.multicrafter";
 	}
 
-	@Override
-	protected void onConnectedStateChange(INetworkMaster network, boolean state) {
-		if (crafter.getMultiBlock() != null) {
-			crafter.getMultiBlock().onConnectionChange(network, state, crafter.pos());
-		}
-		crafter.master = network;
-	}
 }

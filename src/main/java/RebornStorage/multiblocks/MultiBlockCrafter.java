@@ -5,10 +5,8 @@ import RebornStorage.tiles.TileMultiCrafter;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternContainer;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider;
-import com.raoulvdberge.refinedstorage.api.network.INetworkMaster;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import reborncore.common.multiblock.IMultiblockPart;
 import reborncore.common.multiblock.MultiblockControllerBase;
@@ -117,9 +115,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	@Override
 	protected void onMachineDisassembled() {
 		actualPatterns.clear();
-		if (network != null) {
-			network.getCraftingManager().rebuild();
-		}
 	}
 
 	@Override
@@ -205,12 +200,15 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	public List<ICraftingPattern> actualPatterns = new ArrayList<>();
-	public INetworkMaster network;
 	public ICraftingPatternContainer node;
 
 	public void rebuildPatterns() {
 		if (worldObj.isRemote) {
 			return;
+		}
+
+		if(worldObj.isRemote && node == null){
+			node = getReferenceTile().getNewNode();
 		}
 
 		this.actualPatterns.clear();
@@ -228,20 +226,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 				}
 			}
 		}
-		if (network != null) {
-			network.getCraftingManager().rebuild();
-		}
-	}
 
-	public void onConnectionChange(INetworkMaster network, boolean state, BlockPos pos) {
-		if (!state) {
-			network.getCraftingManager().getTasks().stream()
-				.filter(task -> task.getPattern().getContainer().getPosition().equals(pos))
-				.forEach(task -> network.getCraftingManager().cancel(task));
-		}
-
-		this.network = network;
-		rebuildPatterns();
 	}
 
 	private TileMultiCrafter getReferenceTile() {

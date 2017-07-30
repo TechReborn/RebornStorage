@@ -7,6 +7,7 @@ import com.raoulvdberge.refinedstorage.api.storage.IStorageDiskProvider;
 import com.raoulvdberge.refinedstorage.api.storage.StorageDiskType;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,12 +37,14 @@ public class ItemRebornStorageCellFluid extends ItemBase implements IStorageDisk
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
+	public void getSubItems( CreativeTabs tab, NonNullList<ItemStack> list)
     {
-		for (int meta = 0; meta < EnumFluidStorage.values().length; meta++)
-        {
-            list.add(API.instance().getDefaultStorageDiskBehavior().initDisk(StorageDiskType.FLUIDS, new ItemStack(item, 1, meta)));
-		}
+    	if(isInCreativeTab(tab)){
+		    for (int meta = 0; meta < EnumFluidStorage.values().length; meta++)
+		    {
+			    list.add(API.instance().getDefaultStorageDiskBehavior().initDisk(StorageDiskType.FLUIDS, new ItemStack(this, 1, meta)));
+		    }
+	    }
 	}
 
     @Override
@@ -55,7 +58,7 @@ public class ItemRebornStorageCellFluid extends ItemBase implements IStorageDisk
     }
 
     @Override
-    public void addInformation(ItemStack disk, EntityPlayer player, List<String> tooltip, boolean advanced)
+    public void addInformation(ItemStack disk, World world, List<String> tooltip, ITooltipFlag flag)
     {
         IStorageDisk storage = create(disk);
         if (storage.isValid(disk))

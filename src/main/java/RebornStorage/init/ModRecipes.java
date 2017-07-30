@@ -4,7 +4,7 @@ import com.raoulvdberge.refinedstorage.RSItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import reborncore.common.util.CraftingHelper;
+import reborncore.common.util.RebornCraftingHelper;
 
 /**
  * Created by Gigabit101 on 03/01/2017.
@@ -18,7 +18,7 @@ public class ModRecipes {
 
 	static void registerStorageCellRecipes() {
 		//Parts
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 0),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 0),
 			"DID",
 			"GRG",
 			"DGD",
@@ -27,7 +27,7 @@ public class ModRecipes {
 			'I', new ItemStack(RSItems.QUARTZ_ENRICHED_IRON, 1),
 			'R', new ItemStack(Items.REDSTONE, 1));
 
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 1),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 1),
 			"DID",
 			"GRG",
 			"DGD",
@@ -36,7 +36,7 @@ public class ModRecipes {
 			'I', new ItemStack(RSItems.QUARTZ_ENRICHED_IRON, 1),
 			'R', new ItemStack(Items.REDSTONE, 1));
 
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 2),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 2),
 			"DID",
 			"GRG",
 			"DGD",
@@ -45,7 +45,7 @@ public class ModRecipes {
 			'I', new ItemStack(RSItems.QUARTZ_ENRICHED_IRON, 1),
 			'R', new ItemStack(Items.REDSTONE, 1));
 
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 3),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 3),
 			"DID",
 			"GRG",
 			"DGD",
@@ -55,7 +55,7 @@ public class ModRecipes {
 			'R', new ItemStack(Items.REDSTONE, 1));
 
 		//Fluid Parts
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 0),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 0),
 			"DID",
 			"GRG",
 			"DGD",
@@ -64,7 +64,7 @@ public class ModRecipes {
 			'I', new ItemStack(RSItems.QUARTZ_ENRICHED_IRON, 1),
 			'R', new ItemStack(Items.BUCKET, 1));
 
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 1),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 1),
 			"DID",
 			"GRG",
 			"DGD",
@@ -73,7 +73,7 @@ public class ModRecipes {
 			'I', new ItemStack(RSItems.QUARTZ_ENRICHED_IRON, 1),
 			'R', new ItemStack(Items.BUCKET, 1));
 
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 2),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 2),
 			"DID",
 			"GRG",
 			"DGD",
@@ -82,7 +82,7 @@ public class ModRecipes {
 			'I', new ItemStack(RSItems.QUARTZ_ENRICHED_IRON, 1),
 			'R', new ItemStack(Items.BUCKET, 1));
 
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 3),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 3),
 			"DID",
 			"GRG",
 			"DGD",
@@ -104,7 +104,7 @@ public class ModRecipes {
 	}
 
 	static void registerDiskRecipe(ItemStack in, ItemStack out) {
-		CraftingHelper.addShapedOreRecipe(out,
+		RebornCraftingHelper.addShapedOreRecipe(out,
 			"GRG",
 			"RCR",
 			"III",
@@ -115,7 +115,7 @@ public class ModRecipes {
 	}
 
 	static void registerMultiblockRecipes() {
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, 0),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, 0),
 			"IGI",
 			"GCG",
 			"IGI",
@@ -123,7 +123,7 @@ public class ModRecipes {
 			'I', RSItems.QUARTZ_ENRICHED_IRON,
 			'C', new ItemStack(RSItems.PROCESSOR, 1, 4));
 
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, 1),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, 1),
 			"IGI",
 			"GCG",
 			"IGI",
@@ -131,7 +131,7 @@ public class ModRecipes {
 			'I', RSItems.QUARTZ_ENRICHED_IRON,
 			'C', new ItemStack(RSItems.PROCESSOR, 1, 3));
 
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, 2),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, 2),
 			"IQI",
 			"GCG",
 			"IQI",
@@ -140,7 +140,7 @@ public class ModRecipes {
 			'Q', Items.QUARTZ,
 			'C', new ItemStack(RSItems.PROCESSOR, 1, 3));
 
-		CraftingHelper.addShapedOreRecipe(new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, 3),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, 3),
 			"ITI",
 			"NCN",
 			"IGI",

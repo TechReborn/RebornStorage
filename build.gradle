@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -70,15 +70,15 @@ archivesBaseName = "${config.mod_name}-${config.minecraft_version}"
 minecraft {
     version = "${config.forge_version}"
     runDir = "run"
-    mappings = "snapshot_20161118"
+    mappings = "snapshot_20170624"
     replace '@VERSION@', project.version
 }
 
 dependencies {
-    deobfCompile ('RebornCore:RebornCore-1.11.2:+:universal'){
+    deobfCompile ('RebornCore:RebornCore-1.12:+:universal'){
 		transitive = false
 	}
-    deobfCompile ('refinedstorage:refinedstorage:1.4.1+'){
+    deobfCompile ('refinedstorage:refinedstorage:1.5.14+'){
 		transitive = false
 	}
 }

@@ -19,9 +19,11 @@ public class ItemStoragePart extends ItemBase {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-		for (int meta = 0; meta < types.length; meta++) {
-			list.add(new ItemStack(item, 1, meta));
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if(isInCreativeTab(tab)){
+			for (int meta = 0; meta < types.length; meta++) {
+				list.add(new ItemStack(this, 1, meta));
+			}
 		}
 	}
 
