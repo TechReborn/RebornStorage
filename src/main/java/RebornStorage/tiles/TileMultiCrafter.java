@@ -102,7 +102,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if (inv != null) {
 			if (inv.hasChanged) {
 				inv.hasChanged = false;
-				checkNodes();
+				checkNodes(true);
 				API.instance().discoverNode(world, pos);
 				if (!world.isRemote && serverNode != null && serverNode.getNetwork() != null && serverNode.getNetwork().getCraftingManager() != null) {
 					serverNode.getNetwork().getCraftingManager().rebuild();
@@ -111,7 +111,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		}
 	}
 
-	public void checkNodes() {
+	public void checkNodes(boolean rebuildPatterns) {
 		if (getMultiBlock() == null) {
 			return;
 		}
@@ -120,8 +120,10 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 			multiBlockCrafter.node = clientNode;
 		} else {
 			multiBlockCrafter.node = serverNode;
+			if(rebuildPatterns){
+				multiBlockCrafter.rebuildPatterns();
+			}
 		}
-		multiBlockCrafter.rebuildPatterns();
 	}
 
 	public Inventory inv;
@@ -190,14 +192,14 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 				manager.markForSaving();
 			}
 			serverNode = node;
-			checkNodes();
+			checkNodes(false);
 			return node;
 		}
 
 		if (clientNode == null) {
 			clientNode = getNewNode();
 		}
-		checkNodes();
+		checkNodes(false);
 		return clientNode;
 	}
 

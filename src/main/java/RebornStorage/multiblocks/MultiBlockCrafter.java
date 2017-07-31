@@ -8,6 +8,7 @@ import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import reborncore.RebornCore;
 import reborncore.common.multiblock.IMultiblockPart;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockControllerBase;
@@ -48,6 +49,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	@Override
 	protected void onMachineAssembled() {
 		updateInfo();
+		hasRebuiltRecently = false;
 		rebuildPatterns();
 	}
 
@@ -195,19 +197,25 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	//RS things:
 
-	public void tick() {
+	boolean hasRebuiltRecently = false;
 
+	public void tick() {
+		hasRebuiltRecently = false;
 	}
 
 	public List<ICraftingPattern> actualPatterns = new ArrayList<>();
 	public ICraftingPatternContainer node;
 
 	public void rebuildPatterns() {
+		if(hasRebuiltRecently){
+			return;
+		}
+		hasRebuiltRecently = true;
+		long start = System.currentTimeMillis();
 		if (worldObj.isRemote) {
 			return;
 		}
-
-		if (worldObj.isRemote && node == null) {
+		if (node == null) {
 			node = getReferenceTile().getNewNode();
 		}
 
@@ -226,7 +234,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 				}
 			}
 		}
-
+		RebornCore.logHelper.debug("pattern rebuild took" + (System.currentTimeMillis() - start) + " ms");
 	}
 
 	private TileMultiCrafter getReferenceTile() {
