@@ -7,10 +7,11 @@ item.rebornstorage.storagecell.4096k.name=4096k Storage Disk
 item.rebornstorage.storagecell.16384k.name=16384k Storage Disk
 
 //Fluid Disks
-item.rebornstorage.storagecellfluid.256k.name=256k Storage Disk Fluid
-item.rebornstorage.storagecellfluid.1024k.name=1024k Storage Disk Fluid
-item.rebornstorage.storagecellfluid.4096k.name=4096k Storage Disk Fluid
-item.rebornstorage.storagecellfluid.16384k.name=16384k Storage Disk Fluid
+item.rebornstorage.storagecellfluid.256k.name=256k Fluid Storage Disk
+item.rebornstorage.storagecellfluid.1024k.name=1024k Fluid Storage Disk
+item.rebornstorage.storagecellfluid.4096k.name=4096k Fluid Storage Disk
+item.rebornstorage.storagecellfluid.16384k.name=16384k Fluid Storage Disk
+item.rebornstorage.storagecellfluid.32768k.name=32768k Fluid Storage Disk
 
 //Storage Parts
 item.rebornstorage.storagepart.256k.name=256k Storage Part
@@ -18,6 +19,7 @@ item.rebornstorage.storagepart.1024k.name=1024k Storage Part
 item.rebornstorage.storagepart.4096k.name=4096k Storage Part
 item.rebornstorage.storagepart.16384k.name=16384k Storage Part
 
+//Fluid Storage Parts
 item.rebornstorage.storagepart.1024k_fluid.name=1024k Fluid Storage Part
 item.rebornstorage.storagepart.4096k_fluid.name=4096k Fluid Storage Part
 item.rebornstorage.storagepart.16384k_fluid.name=16384k Fluid Storage Part

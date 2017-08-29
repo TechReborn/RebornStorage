@@ -1,27 +1,19 @@
-
-// For those who want the bleeding edge
 buildscript {
     repositories {
         jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
-/*
-// for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
-plugins {
-    id "net.minecraftforge.gradle.forge" version "2.0.2"
+sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
 }
-*/
 
 repositories {
     maven {
@@ -33,8 +25,9 @@ repositories {
         url "http://mobiusstrip.eu/maven"
     }
 	maven {
-		url  "https://dl.bintray.com/raoulvdberge/dev/"
-	}
+        name = "refinedstorage"
+        url = "https://dl.bintray.com/raoulvdberge/dev/"
+    }
 	maven {
 		name = "Amadornes"
 		url "http://maven.amadornes.com/"
@@ -43,10 +36,17 @@ repositories {
         name "progwml"
         url "http://dvs1.progwml6.com/files/maven"
     }
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "modmaven.k-4u.nl"
+    }
 }
-
-
-
 
 // define the properties file
 ext.configFile = file "project.properties"
@@ -68,9 +68,9 @@ group = "${config.group_id}" // http://maven.apache.org/guides/mini/guide-naming
 archivesBaseName = "${config.mod_name}-${config.minecraft_version}"
 
 minecraft {
-    version = "${config.forge_version}"
+    version = "${config.minecraft_version}-${config.forge_version}"
     runDir = "run"
-    mappings = "snapshot_20170624"
+    mappings = "${config.mcp_mappings}"
     replace '@VERSION@', project.version
 }
 
@@ -78,7 +78,7 @@ dependencies {
     deobfCompile ('RebornCore:RebornCore-1.12:+:universal'){
 		transitive = false
 	}
-    deobfCompile ('refinedstorage:refinedstorage:1.5.14+'){
+    deobfCompile ('refinedstorage:refinedstorage:1.5.17+'){
 		transitive = false
 	}
 }

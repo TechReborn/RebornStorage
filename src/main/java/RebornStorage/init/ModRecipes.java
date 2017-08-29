@@ -54,7 +54,7 @@ public class ModRecipes {
 			'R', new ItemStack(Items.REDSTONE, 1));
 
 		//Fluid Parts
-		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 0),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 4),
 			"DID",
 			"GRG",
 			"DGD",
@@ -63,7 +63,7 @@ public class ModRecipes {
 			'I', new ItemStack(RSItems.QUARTZ_ENRICHED_IRON, 1),
 			'R', new ItemStack(Items.BUCKET, 1));
 
-		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 1),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 5),
 			"DID",
 			"GRG",
 			"DGD",
@@ -72,7 +72,7 @@ public class ModRecipes {
 			'I', new ItemStack(RSItems.QUARTZ_ENRICHED_IRON, 1),
 			'R', new ItemStack(Items.BUCKET, 1));
 
-		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 2),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 6),
 			"DID",
 			"GRG",
 			"DGD",
@@ -81,7 +81,7 @@ public class ModRecipes {
 			'I', new ItemStack(RSItems.QUARTZ_ENRICHED_IRON, 1),
 			'R', new ItemStack(Items.BUCKET, 1));
 
-		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 3),
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 7),
 			"DID",
 			"GRG",
 			"DGD",
@@ -99,7 +99,7 @@ public class ModRecipes {
 		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 4), new ItemStack(ModItems.REBORN_STORAGE_CELL, 1, 0));
 		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 5), new ItemStack(ModItems.REBORN_STORAGE_CELL, 1, 1));
 		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 6), new ItemStack(ModItems.REBORN_STORAGE_CELL, 1, 2));
-		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 3), new ItemStack(ModItems.REBORN_STORAGE_CELL, 1, 3));
+		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 7), new ItemStack(ModItems.REBORN_STORAGE_CELL, 1, 3));
 	}
 
 	static void registerDiskRecipe(ItemStack in, ItemStack out) {
