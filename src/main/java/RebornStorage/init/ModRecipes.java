@@ -96,10 +96,10 @@ public class ModRecipes {
 		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 2), new ItemStack(ModItems.REBORN_STORAGE_CELL, 1, 2));
 		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 3), new ItemStack(ModItems.REBORN_STORAGE_CELL, 1, 3));
 
-		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 4), new ItemStack(ModItems.REBORN_STORAGE_CELL, 1, 0));
-		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 5), new ItemStack(ModItems.REBORN_STORAGE_CELL, 1, 1));
-		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 6), new ItemStack(ModItems.REBORN_STORAGE_CELL, 1, 2));
-		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 7), new ItemStack(ModItems.REBORN_STORAGE_CELL, 1, 3));
+		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 4), new ItemStack(ModItems.REBORN_STORAGE_CELL_FLUID, 1, 0));
+		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 5), new ItemStack(ModItems.REBORN_STORAGE_CELL_FLUID, 1, 1));
+		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 6), new ItemStack(ModItems.REBORN_STORAGE_CELL_FLUID, 1, 2));
+		registerDiskRecipe(new ItemStack(ModItems.REBORN_STORAGE_PART, 1, 7), new ItemStack(ModItems.REBORN_STORAGE_CELL_FLUID, 1, 3));
 	}
 
 	static void registerDiskRecipe(ItemStack in, ItemStack out) {
