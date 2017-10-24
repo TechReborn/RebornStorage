@@ -1,5 +1,6 @@
 package RebornStorage.client;
 
+import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider;
 import com.raoulvdberge.refinedstorage.item.ItemPattern;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -19,7 +20,7 @@ public class SlotFiltered extends Slot {
 	public boolean isItemValid(
 		@Nullable
 			ItemStack stack) {
-		if (stack.getItem() instanceof ItemPattern) {
+		if (!stack.isEmpty() && stack.getItem() instanceof ICraftingPatternProvider) {
 			return true;
 		}
 		return false;
