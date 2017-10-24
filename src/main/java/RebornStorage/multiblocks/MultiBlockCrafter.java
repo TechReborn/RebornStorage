@@ -66,7 +66,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		for (IMultiblockPart part : connectedParts) {
 			if (part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("storage")) {
 				pages++;
-				powerUsage += 5;
+				powerUsage += 1;
 				TileMultiCrafter tile = (TileMultiCrafter) part;
 				/*	just colect the block instead of assinging ids now
 			    *	blocks without id get numerated by id 2745 and up
@@ -84,7 +84,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 				}
 			}
 			if (part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("cpu")) {
-				powerUsage += 10;
+				powerUsage += 2;
 				speed++;
 			}
 		}
