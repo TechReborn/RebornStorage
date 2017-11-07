@@ -129,6 +129,6 @@ task curseTools {
 		ant.java(jar: curseTools.getAbsolutePath(), fork: true, spawn: false) {
 			arg(value: jar.archivePath.getAbsolutePath())
 			arg(value: deobfJar.archivePath.getAbsolutePath())
-			arg(value: apiJar.archivePath.getAbsolutePath())
 		}
 	}
+}
