@@ -238,6 +238,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	private TileMultiCrafter getReferenceTile() {
-		return (TileMultiCrafter) worldObj.getTileEntity(getReferenceCoord().toBlockPos());
+		return (TileMultiCrafter) worldObj.getTileEntity(getReferenceCoord());
 	}
 }
