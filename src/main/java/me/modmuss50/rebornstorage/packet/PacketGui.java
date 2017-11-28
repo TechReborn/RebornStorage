@@ -2,7 +2,9 @@ package me.modmuss50.rebornstorage.packet;
 
 import me.modmuss50.rebornstorage.RebornStorage;
 import me.modmuss50.rebornstorage.client.GuiHandler;
+import me.modmuss50.rebornstorage.tiles.TileMultiCrafter;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import reborncore.common.network.ExtendedPacketBuffer;
@@ -42,5 +44,9 @@ public class PacketGui implements INetworkPacket<PacketGui> {
 	public void processData(PacketGui packetGui, MessageContext messageContext) {
 		EntityPlayer player = messageContext.getServerHandler().player;
 		player.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE + packetGui.page, player.world, packetGui.blockPos.getX(), packetGui.blockPos.getY(), packetGui.blockPos.getZ());
+		TileEntity tileEntity = player.world.getTileEntity(packetGui.blockPos);
+		if(tileEntity instanceof TileMultiCrafter){
+			((TileMultiCrafter) tileEntity).updateLastPage(page);
+		}
 	}
 }

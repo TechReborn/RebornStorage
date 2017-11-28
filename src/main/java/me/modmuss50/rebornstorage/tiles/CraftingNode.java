@@ -62,7 +62,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		if (isValidMultiBlock()) {
 			for (int i = 0; i < patterns.getSlots(); i++) {
 				ItemStack stack = patterns.getStackInSlot(i);
-				if (!stack.isEmpty()) {
+				if (!stack.isEmpty() && stack.getItem() instanceof ICraftingPatternProvider) {
 					ICraftingPattern pattern = ((ICraftingPatternProvider) stack.getItem()).create(world, stack, this);
 					if (pattern.isValid()) {
 						actualPatterns.add(pattern);

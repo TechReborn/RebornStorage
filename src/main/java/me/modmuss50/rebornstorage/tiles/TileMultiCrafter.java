@@ -15,6 +15,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import reborncore.common.multiblock.IMultiblockPart;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.MultiblockValidationException;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockTileEntityBase;
@@ -92,6 +93,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	public Optional<Integer> page = Optional.empty();
+	public Optional<Integer> lastPage = Optional.empty();
 
 	@Override
 	public void readFromNBT(NBTTagCompound data) {
@@ -113,12 +115,18 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		if (data.hasKey("page")) {
 			page = Optional.of(data.getInteger("page"));
 		}
+		if (data.hasKey("lastPage")) {
+			lastPage = Optional.of(data.getInteger("lastPage"));
+		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound data) {
 		if (page.isPresent()) {
 			data.setInteger("page", page.get());
+		}
+		if (lastPage.isPresent()) {
+			data.setInteger("lastPage", lastPage.get());
 		}
 		return super.writeToNBT(data);
 	}
@@ -150,6 +158,28 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 			stack = new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, ModBlocks.BLOCK_MULTI_CRAFTER.getMetaFromState(world.getBlockState(getPos())));
 		}
 		return stack;
+	}
+
+	public void updateLastPage(int page){
+		System.out.println("write" + world.isRemote);
+		if(getMultiBlock() != null){
+			for (IMultiblockPart part : getMultiBlock().connectedParts) {
+				TileMultiCrafter tile = (TileMultiCrafter) part;
+				tile.lastPage = Optional.of(page);
+			}
+		}
+		this.lastPage = Optional.of(page);
+	}
+
+	public int getValidLastPage(){
+		System.out.println("read" + world.isRemote);
+		if(lastPage.isPresent() && getMultiBlock() != null){
+			int page = lastPage.get();
+			if(page <= getMultiBlock().invs.size()){
+				return page;
+			}
+		}
+		return 0;
 	}
 
 	//RS API

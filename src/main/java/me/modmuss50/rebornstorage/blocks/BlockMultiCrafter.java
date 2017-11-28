@@ -78,9 +78,9 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 					}
 					return false;
 				}
-			} else if (worldIn.isRemote) {
-				playerIn.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE, worldIn, pos.getX(), pos.getY(), pos.getZ());
-				NetworkManager.sendToServer(new PacketGui(0, pos));
+			} else if (!worldIn.isRemote) {
+				//playerIn.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE + , worldIn, pos.getX(), pos.getY(), pos.getZ());
+				NetworkManager.sendToServer(new PacketGui(tile.getValidLastPage(), pos));
 				return true;
 			}
 			return true;
