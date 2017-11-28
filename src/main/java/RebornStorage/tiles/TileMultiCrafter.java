@@ -9,6 +9,7 @@ import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeProxy;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
 import com.raoulvdberge.refinedstorage.apiimpl.network.node.NetworkNode;
 import com.raoulvdberge.refinedstorage.capability.CapabilityNetworkNodeProxy;
+import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -18,6 +19,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.MultiblockValidationException;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import reborncore.common.util.Inventory;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -96,13 +98,19 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	@Override
 	public void readFromNBT(NBTTagCompound data) {
 		super.readFromNBT(data);
-//		if (inv == null && data.hasKey("hasInv")) {
-//			inv = new Inventory(78, "storageBlock", 1, this);
-//		}
-//		if (inv != null) {
-//			inv.readFromNBT(data);
-//		}
-		//TODO load old data into new format
+
+		//Old code to allow multiblocks in the old format to be automatticly updated.
+		if (data.hasKey("hasInv")) {
+			Inventory oldInv = new Inventory(78, "storageBlock", 1, this);
+			oldInv.readFromNBT(data);
+			ItemHandlerBase itemHandler = getNode().patterns;
+			for (int i = 0; i < oldInv.contents.length; i++) {
+				ItemStack stack = oldInv.getStackInSlot(i);
+				if(!stack.isEmpty()){
+					itemHandler.setStackInSlot(i, stack.copy());
+				}
+			}
+		}
 		if (data.hasKey("page")) {
 			page = Optional.of(data.getInteger("page"));
 		}
