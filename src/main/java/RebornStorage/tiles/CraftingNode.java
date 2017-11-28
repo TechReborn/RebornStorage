@@ -37,19 +37,28 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 		ICraftingPatternContainer patternContainer = this;
 
-		if(multiCrafter.inv == null){
-			return;
+		if(multiCrafter.inv != null && multiCrafter.getMultiBlock() != null){
+			patterns.addAll(Arrays.stream(multiCrafter.inv.contents)
+				.filter(stack -> !stack.isEmpty())
+				.map(stack -> ((ICraftingPatternProvider)stack.getItem()).create(multiCrafter.getWorld(), stack, patternContainer))
+				.filter(ICraftingPattern::isValid)
+				.collect(Collectors.toList()));
 		}
-		patterns.addAll(Arrays.stream(multiCrafter.inv.contents)
-			.filter(stack -> !stack.isEmpty())
-			.map(stack -> ((ICraftingPatternProvider)stack.getItem()).create(multiCrafter.getWorld(), stack, patternContainer))
-			.filter(ICraftingPattern::isValid)
-			.collect(Collectors.toList()));
 
 		if(getNetwork() != null){
 			getNetwork().getCraftingManager().rebuild();
 		}
 
+	}
+
+	protected void stateChange(INetwork network, boolean state) {
+		if (!state) {
+			network.getCraftingManager().getTasks().stream()
+				.filter((task) -> task.getPattern().getContainer().getPosition().equals(getPos()))
+				.forEach((task) -> network.getCraftingManager().cancel(task));
+			patterns.clear();
+		}
+		network.getCraftingManager().rebuild();
 	}
 
 	@Override
@@ -60,18 +69,21 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	@Nonnull
 	@Override
 	public ItemStack getItemStack() {
-		return new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER);
+		return multiCrafter.getStack();
 	}
 
 	@Override
 	public void onConnected(INetwork iNetwork) {
 		this.network = iNetwork;
+		stateChange(network, true);
 		rebuildPatterns();
 	}
 
 	@Override
 	public void onDisconnected(INetwork iNetwork) {
 		this.network = null;
+		patterns.clear();
+		stateChange(iNetwork, true);
 	}
 
 	@Override
@@ -120,7 +132,10 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	@Override
 	public int getSpeedUpdateCount() {
-		return 1; //TODO get this from the multiblock
+		if(multiCrafter.getMultiBlock() == null){
+			return 0;
+		}
+		return multiCrafter.getMultiBlock().speed;
 	}
 
 	@Override

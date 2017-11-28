@@ -1,9 +1,11 @@
 package RebornStorage.tiles;
 
 import RebornStorage.blocks.BlockMultiCrafter;
+import RebornStorage.init.ModBlocks;
 import RebornStorage.multiblocks.MultiBlockCrafter;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeProxy;
 import com.raoulvdberge.refinedstorage.capability.CapabilityNetworkNodeProxy;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -148,6 +150,15 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	public TileMultiCrafter() {
+	}
+
+	ItemStack stack = ItemStack.EMPTY;
+
+	public ItemStack getStack() {
+		if(stack.isEmpty()){
+			stack = new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, ModBlocks.BLOCK_MULTI_CRAFTER.getMetaFromState(world.getBlockState(getPos())));
+		}
+		return stack;
 	}
 
 	//RS API

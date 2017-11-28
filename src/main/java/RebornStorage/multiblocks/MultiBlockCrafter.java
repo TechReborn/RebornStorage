@@ -20,7 +20,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	public Map<Integer, Inventory> invs = new TreeMap<>();
 
-	public int powerUsage = 0;
 	public int speed = 0;
 	public int pages = 0;
 
@@ -49,7 +48,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	}
 
 	public void updateInfo() {
-		powerUsage = 0;
 		speed = 0;
 		pages = 0;
 		invs.clear();
@@ -61,7 +59,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		for (IMultiblockPart part : connectedParts) {
 			if (part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("storage")) {
 				pages++;
-				powerUsage += 1;
 				TileMultiCrafter tile = (TileMultiCrafter) part;
 				/*	just colect the block instead of assinging ids now
 			    *	blocks without id get numerated by id 2745 and up
@@ -79,7 +76,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 				}
 			}
 			if (part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("cpu")) {
-				powerUsage += 2;
 				speed++;
 			}
 		}
@@ -111,7 +107,10 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected void onMachineDisassembled() {
-
+		for (IMultiblockPart part : connectedParts) {
+			TileMultiCrafter tile = (TileMultiCrafter) part;
+			tile.getNode().rebuildPatterns();
+		}
 	}
 
 	@Override
