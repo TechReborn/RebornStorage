@@ -37,7 +37,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 		ICraftingPatternContainer patternContainer = this;
 
-		if(multiCrafter.inv == null || multiCrafter.inv.isEmpty()){
+		if(multiCrafter.inv == null){
 			return;
 		}
 		patterns.addAll(Arrays.stream(multiCrafter.inv.contents)
