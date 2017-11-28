@@ -56,7 +56,7 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileMultiCrafter(getStateFromMeta(meta).getValue(VARIANTS));
+		return new TileMultiCrafter();
 	}
 
 	@Override
@@ -135,11 +135,16 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 
 		if (tileentity instanceof TileMultiCrafter) {
 			TileMultiCrafter tile = (TileMultiCrafter) tileentity;
-			if (tile.inv == null) {
+			if (tile.getNode().patterns == null) {
 				super.breakBlock(worldIn, pos, state);
 				return;
 			}
-			InventoryHelper.dropInventoryItems(worldIn, pos, tile.inv);
+			for (int i = 0; i < tile.getNode().patterns.getSlots(); i++) {
+				ItemStack stack = tile.getNode().patterns.getStackInSlot(i);
+				if(!stack.isEmpty()){
+					InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack.copy());
+				}
+			}
 		}
 
 		INetworkNodeManager manager = API.instance().getNetworkNodeManager(worldIn);

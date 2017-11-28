@@ -2,9 +2,7 @@ package RebornStorage.multiblocks;
 
 import RebornStorage.blocks.BlockMultiCrafter;
 import RebornStorage.tiles.TileMultiCrafter;
-import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
-import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternContainer;
-import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider;
+import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -21,9 +19,8 @@ import java.util.*;
  */
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
-	public Map<Integer, Inventory> invs = new TreeMap<>();
+	public Map<Integer, ItemHandlerBase> invs = new TreeMap<>();
 
-	public int powerUsage = 0;
 	public int speed = 0;
 	public int pages = 0;
 
@@ -49,12 +46,9 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	@Override
 	protected void onMachineAssembled() {
 		updateInfo();
-		hasRebuiltRecently = false;
-		rebuildPatterns();
 	}
 
 	public void updateInfo() {
-		powerUsage = 0;
 		speed = 0;
 		pages = 0;
 		invs.clear();
@@ -66,7 +60,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		for (IMultiblockPart part : connectedParts) {
 			if (part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("storage")) {
 				pages++;
-				powerUsage += 1;
 				TileMultiCrafter tile = (TileMultiCrafter) part;
 				/*	just colect the block instead of assinging ids now
 			    *	blocks without id get numerated by id 2745 and up
@@ -77,6 +70,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	            */
 				//				tile.page = Optional.of(pages);
 				//				invs.put(pages, tile.inv);
+				tile.getNode().rebuildPatterns();
 				if (tile.page.isPresent()) {
 					collector.put(tile.page.get(), tile);
 				} else {
@@ -84,7 +78,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 				}
 			}
 			if (part.getBlockState().getValue(BlockMultiCrafter.VARIANTS).equals("cpu")) {
-				powerUsage += 2;
 				speed++;
 			}
 		}
@@ -96,11 +89,11 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		for (TileMultiCrafter tile : collector.values()) {
 			newid++;
 			tile.page = Optional.of(newid);
-			invs.put(newid, tile.inv);
+			invs.put(newid, tile.getNode().patterns);
 		}
 	}
 
-	public Inventory getInvForPage(int page) {
+	public ItemHandlerBase getInvForPage(int page) {
 		return invs.get(page);
 	}
 
@@ -116,7 +109,10 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected void onMachineDisassembled() {
-		actualPatterns.clear();
+		for (IMultiblockPart part : connectedParts) {
+			TileMultiCrafter tile = (TileMultiCrafter) part;
+			tile.getNode().rebuildPatterns();
+		}
 	}
 
 	@Override
@@ -166,8 +162,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected boolean updateServer() {
-		tick();
-		return true;
+		return false;
 	}
 
 	@Override
@@ -193,51 +188,5 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	@Override
 	public void decodeDescriptionPacket(NBTTagCompound nbtTagCompound) {
 		readFromNBT(nbtTagCompound);
-	}
-
-	//RS things:
-
-	boolean hasRebuiltRecently = false;
-
-	public void tick() {
-		hasRebuiltRecently = false;
-	}
-
-	public List<ICraftingPattern> actualPatterns = new ArrayList<>();
-	public ICraftingPatternContainer node;
-
-	public void rebuildPatterns() {
-		if(hasRebuiltRecently){
-			return;
-		}
-		hasRebuiltRecently = true;
-		long start = System.currentTimeMillis();
-		if (worldObj.isRemote) {
-			return;
-		}
-		if (node == null) {
-			node = getReferenceTile().getNewNode();
-		}
-
-		this.actualPatterns.clear();
-		if (isAssembled()) {
-			updateInfo();
-			for (HashMap.Entry<Integer, Inventory> entry : invs.entrySet()) {
-				for (int i = 0; i < entry.getValue().getSizeInventory(); ++i) {
-					ItemStack patternStack = entry.getValue().getStackInSlot(i);
-					if (!patternStack.isEmpty() && patternStack.getItem() instanceof ICraftingPatternProvider) {
-						ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, node);
-						if (pattern.isValid()) {
-							this.actualPatterns.add(pattern);
-						}
-					}
-				}
-			}
-		}
-		RebornCore.logHelper.debug("pattern rebuild took" + (System.currentTimeMillis() - start) + " ms");
-	}
-
-	private TileMultiCrafter getReferenceTile() {
-		return (TileMultiCrafter) worldObj.getTileEntity(getReferenceCoord());
 	}
 }

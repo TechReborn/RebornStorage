@@ -1,12 +1,15 @@
 package RebornStorage.tiles;
 
+import RebornStorage.RebornStorage;
 import RebornStorage.blocks.BlockMultiCrafter;
+import RebornStorage.init.ModBlocks;
 import RebornStorage.multiblocks.MultiBlockCrafter;
-import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeManager;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeProxy;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
+import com.raoulvdberge.refinedstorage.apiimpl.network.node.NetworkNode;
 import com.raoulvdberge.refinedstorage.capability.CapabilityNetworkNodeProxy;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -15,9 +18,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.MultiblockValidationException;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockTileEntityBase;
-import reborncore.common.util.Inventory;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
@@ -25,9 +26,6 @@ import java.util.Optional;
  * Created by Mark on 03/01/2017.
  */
 public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implements INetworkNodeProxy {
-
-	NetworkNodeMultiCrafter clientNode;
-	NetworkNodeMultiCrafter serverNode;
 
 	@Override
 	public void isGoodForFrame() throws MultiblockValidationException {
@@ -66,18 +64,12 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public void onMachineActivated() {
-		if (getMultiBlock() != null) {
-			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-			multiBlockCrafter.rebuildPatterns();
-		}
+		getNode().rebuildPatterns();
 	}
 
 	@Override
 	public void onMachineDeactivated() {
-		if (getMultiBlock() != null) {
-			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-			multiBlockCrafter.rebuildPatterns();
-		}
+		getNode().rebuildPatterns();
 	}
 
 	String getVarient() {
@@ -98,52 +90,19 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		return (MultiBlockCrafter) getMultiblockController();
 	}
 
-	public void update() {
-		if (inv != null) {
-			if (inv.hasChanged) {
-				inv.hasChanged = false;
-				checkNodes(true);
-				API.instance().discoverNode(world, pos);
-				if (!world.isRemote && serverNode != null && serverNode.getNetwork() != null && serverNode.getNetwork().getCraftingManager() != null) {
-					serverNode.getNetwork().getCraftingManager().rebuild();
-				}
-			}
-		}
-	}
 
-	public void checkNodes(boolean rebuildPatterns) {
-		if (getMultiBlock() == null) {
-			return;
-		}
-		MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-		if (world.isRemote) {
-			multiBlockCrafter.node = clientNode;
-		} else {
-			multiBlockCrafter.node = serverNode;
-			if(rebuildPatterns){
-				multiBlockCrafter.rebuildPatterns();
-			}
-		}
-	}
-
-	public Inventory inv;
 	public Optional<Integer> page = Optional.empty();
-
-	public TileMultiCrafter(String varient) {
-		if (varient.equals("storage")) {
-			inv = new Inventory(78, "storageBlock", 1, this);
-		}
-	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound data) {
 		super.readFromNBT(data);
-		if (inv == null && data.hasKey("hasInv")) {
-			inv = new Inventory(78, "storageBlock", 1, this);
-		}
-		if (inv != null) {
-			inv.readFromNBT(data);
-		}
+//		if (inv == null && data.hasKey("hasInv")) {
+//			inv = new Inventory(78, "storageBlock", 1, this);
+//		}
+//		if (inv != null) {
+//			inv.readFromNBT(data);
+//		}
+		//TODO load old data into new format
 		if (data.hasKey("page")) {
 			page = Optional.of(data.getInteger("page"));
 		}
@@ -151,10 +110,6 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound data) {
-		if (inv != null) {
-			inv.writeToNBT(data);
-			data.setBoolean("hasInv", true);
-		}
 		if (page.isPresent()) {
 			data.setInteger("page", page.get());
 		}
@@ -181,51 +136,61 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	public TileMultiCrafter() {
 	}
 
-	@Nonnull
-	@Override
-	public INetworkNode getNode() {
-		if (!world.isRemote) {
-			INetworkNodeManager manager = API.instance().getNetworkNodeManager(this.world);
-			NetworkNodeMultiCrafter node = (NetworkNodeMultiCrafter) manager.getNode(this.pos);
-			if (node == null || !node.getId().equals("rebornstorage.multicrafter")) {
-				manager.setNode(this.pos, node = getNewNode());
-				manager.markForSaving();
-			}
-			serverNode = node;
-			checkNodes(false);
-			return node;
-		}
+	ItemStack stack = ItemStack.EMPTY;
 
-		if (clientNode == null) {
-			clientNode = getNewNode();
+	public ItemStack getStack() {
+		if(stack.isEmpty()){
+			stack = new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, ModBlocks.BLOCK_MULTI_CRAFTER.getMetaFromState(world.getBlockState(getPos())));
 		}
-		checkNodes(false);
-		return clientNode;
+		return stack;
 	}
 
-	public NetworkNodeMultiCrafter getNewNode() {
-		return new NetworkNodeMultiCrafter(this);
+	//RS API
+
+	CraftingNode node;
+	CraftingNode clientNode;
+
+	@Override
+	public CraftingNode getNode(){
+		if(world.isRemote){
+			if(clientNode == null){
+				clientNode = new CraftingNode(world, getPos());
+			}
+			return clientNode;
+		}
+		INetworkNodeManager manager = API.instance().getNetworkNodeManager(this.world);
+		CraftingNode node = (CraftingNode)manager.getNode(this.pos);
+		if (node == null || !node.getId().equals(RebornStorage.MULTI_BLOCK_ID)) {
+			manager.setNode(this.pos, node = new CraftingNode(world, getPos()));
+			manager.markForSaving();
+		}
+
+		return node;
 	}
 
 	@Override
 	public boolean hasCapability(Capability<?> capability,
 	                             @Nullable
-		                             EnumFacing side) {
-		if (capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY) {
+		                             EnumFacing facing) {
+		if(capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY){
 			return true;
 		}
-
-		return super.hasCapability(capability, side);
+		return super.hasCapability(capability, facing);
 	}
 
+	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability,
 	                           @Nullable
-		                           EnumFacing side) {
-		if (capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY) {
-			return CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY.cast(this);
+		                           EnumFacing facing) {
+		if(capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY){
+			return (T) this;
 		}
+		return super.getCapability(capability, facing);
+	}
 
-		return super.getCapability(capability, side);
+	@Override
+	public void update() {
+
 	}
 }
