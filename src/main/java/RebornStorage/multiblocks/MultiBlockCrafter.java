@@ -2,9 +2,6 @@ package RebornStorage.multiblocks;
 
 import RebornStorage.blocks.BlockMultiCrafter;
 import RebornStorage.tiles.TileMultiCrafter;
-import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
-import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternContainer;
-import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -116,7 +113,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected void onMachineDisassembled() {
-		actualPatterns.clear();
+
 	}
 
 	@Override
@@ -203,8 +200,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		hasRebuiltRecently = false;
 	}
 
-	public List<ICraftingPattern> actualPatterns = new ArrayList<>();
-	public ICraftingPatternContainer node;
+
 
 	public void rebuildPatterns() {
 		if(hasRebuiltRecently){
@@ -215,25 +211,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		if (worldObj.isRemote) {
 			return;
 		}
-		if (node == null) {
-			node = getReferenceTile().getNewNode();
-		}
 
-		this.actualPatterns.clear();
-		if (isAssembled()) {
-			updateInfo();
-			for (HashMap.Entry<Integer, Inventory> entry : invs.entrySet()) {
-				for (int i = 0; i < entry.getValue().getSizeInventory(); ++i) {
-					ItemStack patternStack = entry.getValue().getStackInSlot(i);
-					if (!patternStack.isEmpty() && patternStack.getItem() instanceof ICraftingPatternProvider) {
-						ICraftingPattern pattern = ((ICraftingPatternProvider) patternStack.getItem()).create(worldObj, patternStack, node);
-						if (pattern.isValid()) {
-							this.actualPatterns.add(pattern);
-						}
-					}
-				}
-			}
-		}
 		RebornCore.logHelper.debug("pattern rebuild took" + (System.currentTimeMillis() - start) + " ms");
 	}
 
