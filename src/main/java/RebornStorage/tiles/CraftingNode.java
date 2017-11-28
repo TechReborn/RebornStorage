@@ -1,6 +1,7 @@
 package RebornStorage.tiles;
 
 import RebornStorage.RebornStorage;
+import RebornStorage.multiblocks.MultiBlockCrafter;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternContainer;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider;
@@ -58,7 +59,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	public void rebuildPatterns() {
 		this.actualPatterns.clear();
-		if(getTile().getMultiBlock() != null){
+		if(isValidMultiBlock()){
 			for (int i = 0; i < patterns.getSlots(); i++) {
 				ItemStack stack = patterns.getStackInSlot(i);
 				if(!stack.isEmpty()){
@@ -78,8 +79,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	protected void stateChange(INetwork network, boolean state) {
 		if (!state) {
-			network.getCraftingManager().getTasks().stream()
-				.filter((task) -> task.getPattern().getContainer().getPosition().equals(getPos()))
+			network.getCraftingManager().getTasks()
 				.forEach((task) -> network.getCraftingManager().cancel(task));
 			actualPatterns.clear();
 		}
@@ -88,6 +88,18 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	public TileMultiCrafter getTile(){
 		return (TileMultiCrafter) world.getTileEntity(pos);
+	}
+
+	public boolean isValidMultiBlock(){
+		TileMultiCrafter tileMultiCrafter = getTile();
+		if(tileMultiCrafter == null){
+			return false;
+		}
+		MultiBlockCrafter multiBlockCrafter = getTile().getMultiBlock();
+		if(multiBlockCrafter == null){
+			return false;
+		}
+		return multiBlockCrafter.isAssembled();
 	}
 
 	@Override
@@ -164,7 +176,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	@Override
 	public int getSpeedUpdateCount() {
-		if(getTile().getMultiBlock() == null){
+		if(!isValidMultiBlock()){
 			return 0;
 		}
 		return getTile().getMultiBlock().speed;

@@ -70,6 +70,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	            */
 				//				tile.page = Optional.of(pages);
 				//				invs.put(pages, tile.inv);
+				tile.getNode().rebuildPatterns();
 				if (tile.page.isPresent()) {
 					collector.put(tile.page.get(), tile);
 				} else {

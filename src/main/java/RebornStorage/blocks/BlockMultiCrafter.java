@@ -139,8 +139,12 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 				super.breakBlock(worldIn, pos, state);
 				return;
 			}
-			//TODO fix this
-			//InventoryHelper.dropInventoryItems(worldIn, pos, tile.getNode().patterns);
+			for (int i = 0; i < tile.getNode().patterns.getSlots(); i++) {
+				ItemStack stack = tile.getNode().patterns.getStackInSlot(i);
+				if(!stack.isEmpty()){
+					InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack.copy());
+				}
+			}
 		}
 
 		INetworkNodeManager manager = API.instance().getNetworkNodeManager(worldIn);
