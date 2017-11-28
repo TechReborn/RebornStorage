@@ -1,9 +1,13 @@
 package RebornStorage.tiles;
 
+import RebornStorage.RebornStorage;
 import RebornStorage.blocks.BlockMultiCrafter;
 import RebornStorage.init.ModBlocks;
 import RebornStorage.multiblocks.MultiBlockCrafter;
+import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeManager;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeProxy;
+import com.raoulvdberge.refinedstorage.apiimpl.API;
+import com.raoulvdberge.refinedstorage.apiimpl.network.node.NetworkNode;
 import com.raoulvdberge.refinedstorage.capability.CapabilityNetworkNodeProxy;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -87,34 +91,19 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		return (MultiBlockCrafter) getMultiblockController();
 	}
 
-	public void update() {
-		if (inv != null) {
-			if (inv.hasChanged) {
-				inv.hasChanged = false;
-				getNode().rebuildPatterns();
-			}
-		}
-	}
 
-
-	public Inventory inv;
 	public Optional<Integer> page = Optional.empty();
-
-	public TileMultiCrafter(String varient) {
-		if (varient.equals("storage")) {
-			inv = new Inventory(78, "storageBlock", 1, this);
-		}
-	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound data) {
 		super.readFromNBT(data);
-		if (inv == null && data.hasKey("hasInv")) {
-			inv = new Inventory(78, "storageBlock", 1, this);
-		}
-		if (inv != null) {
-			inv.readFromNBT(data);
-		}
+//		if (inv == null && data.hasKey("hasInv")) {
+//			inv = new Inventory(78, "storageBlock", 1, this);
+//		}
+//		if (inv != null) {
+//			inv.readFromNBT(data);
+//		}
+		//TODO load old data into new format
 		if (data.hasKey("page")) {
 			page = Optional.of(data.getInteger("page"));
 		}
@@ -122,10 +111,6 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound data) {
-		if (inv != null) {
-			inv.writeToNBT(data);
-			data.setBoolean("hasInv", true);
-		}
 		if (page.isPresent()) {
 			data.setInteger("page", page.get());
 		}
@@ -169,11 +154,17 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	@Override
 	public CraftingNode getNode(){
 		if(world.isRemote){
-			clientNode = new CraftingNode(this);
+			clientNode = new CraftingNode(world, getPos());
 			return clientNode;
-		} else if (node == null){
-			node = new CraftingNode(this);
 		}
+
+		INetworkNodeManager manager = API.instance().getNetworkNodeManager(this.world);
+		CraftingNode node = (CraftingNode)manager.getNode(this.pos);
+		if (node == null || !node.getId().equals(RebornStorage.MULTI_BLOCK_ID)) {
+			manager.setNode(this.pos, node = new CraftingNode(world, getPos()));
+			manager.markForSaving();
+		}
+
 		return node;
 	}
 
@@ -196,5 +187,10 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 			return (T) this;
 		}
 		return super.getCapability(capability, facing);
+	}
+
+	@Override
+	public void update() {
+
 	}
 }

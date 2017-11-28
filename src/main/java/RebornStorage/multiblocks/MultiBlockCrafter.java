@@ -2,6 +2,7 @@ package RebornStorage.multiblocks;
 
 import RebornStorage.blocks.BlockMultiCrafter;
 import RebornStorage.tiles.TileMultiCrafter;
+import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -18,7 +19,7 @@ import java.util.*;
  */
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
-	public Map<Integer, Inventory> invs = new TreeMap<>();
+	public Map<Integer, ItemHandlerBase> invs = new TreeMap<>();
 
 	public int speed = 0;
 	public int pages = 0;
@@ -87,11 +88,11 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		for (TileMultiCrafter tile : collector.values()) {
 			newid++;
 			tile.page = Optional.of(newid);
-			invs.put(newid, tile.inv);
+			invs.put(newid, tile.getNode().patterns);
 		}
 	}
 
-	public Inventory getInvForPage(int page) {
+	public ItemHandlerBase getInvForPage(int page) {
 		return invs.get(page);
 	}
 
