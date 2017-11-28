@@ -2,6 +2,8 @@ package RebornStorage.tiles;
 
 import RebornStorage.blocks.BlockMultiCrafter;
 import RebornStorage.multiblocks.MultiBlockCrafter;
+import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
+import com.raoulvdberge.refinedstorage.capability.CapabilityNetworkNodeProxy;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -153,4 +155,39 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase  {
 	public TileMultiCrafter() {
 	}
 
+	//RS API
+
+	CraftingNode node;
+	CraftingNode clientNode;
+
+	public INetworkNode getNode(){
+		if(world.isRemote){
+			clientNode = new CraftingNode(this);
+			return clientNode;
+		} else if (node == null){
+			node = new CraftingNode(this);
+		}
+		return node;
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability,
+	                             @Nullable
+		                             EnumFacing facing) {
+		if(capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY){
+			return true;
+		}
+		return super.hasCapability(capability, facing);
+	}
+
+	@Nullable
+	@Override
+	public <T> T getCapability(Capability<T> capability,
+	                           @Nullable
+		                           EnumFacing facing) {
+		if(capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY){
+			return (T) getNode();
+		}
+		return super.getCapability(capability, facing);
+	}
 }
