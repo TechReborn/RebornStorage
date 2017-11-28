@@ -31,7 +31,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	INetwork network;
 	int ticks = 0;
 
-	public ItemHandlerBase patterns = new ItemHandlerBase(9, new ItemHandlerListenerNetworkNode(this), s -> s.getItem() instanceof ICraftingPatternProvider && ((ICraftingPatternProvider) s.getItem()).create(world, s, this).isValid()) {
+	public ItemHandlerBase patterns = new ItemHandlerBase(6*13, new ItemHandlerListenerNetworkNode(this), s -> s.getItem() instanceof ICraftingPatternProvider && ((ICraftingPatternProvider) s.getItem()).create(world, s, this).isValid()) {
 		@Override
 		protected void onContentsChanged(int slot) {
 			super.onContentsChanged(slot);

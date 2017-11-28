@@ -9,7 +9,7 @@ import RebornStorage.lib.ModInfo;
 import RebornStorage.packet.Packets;
 import RebornStorage.proxys.CommonProxy;
 import RebornStorage.tiles.CraftingNode;
-import com.raoulvdberge.refinedstorage.apiimpl.network.node.NetworkNode;
+import com.raoulvdberge.refinedstorage.apiimpl.API;
 import com.raoulvdberge.refinedstorage.util.StackUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -40,7 +40,7 @@ public class RebornStorage {
 		NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
 		MinecraftForge.EVENT_BUS.register(Packets.class);
 
-		RSHelper.API.getNetworkNodeRegistry().add(MULTI_BLOCK_ID, (tag, world, pos) -> {
+		API.instance().getNetworkNodeRegistry().add(MULTI_BLOCK_ID, (tag, world, pos) -> {
 			CraftingNode node = new CraftingNode(world, pos);
 			StackUtils.readItems(node.patterns, 0, tag);
 			return node;

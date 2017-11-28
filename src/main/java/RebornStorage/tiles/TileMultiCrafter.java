@@ -18,7 +18,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.MultiblockValidationException;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockTileEntityBase;
-import reborncore.common.util.Inventory;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -154,10 +153,11 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	@Override
 	public CraftingNode getNode(){
 		if(world.isRemote){
-			clientNode = new CraftingNode(world, getPos());
+			if(clientNode == null){
+				clientNode = new CraftingNode(world, getPos());
+			}
 			return clientNode;
 		}
-
 		INetworkNodeManager manager = API.instance().getNetworkNodeManager(this.world);
 		CraftingNode node = (CraftingNode)manager.getNode(this.pos);
 		if (node == null || !node.getId().equals(RebornStorage.MULTI_BLOCK_ID)) {
