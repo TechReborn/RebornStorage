@@ -88,4 +88,11 @@ public class GuiMultiCrafter extends GuiContainer {
 		super.actionPerformed(button);
 		NetworkManager.sendToServer(new PacketGui(button.id, pos));
 	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
+	}
 }

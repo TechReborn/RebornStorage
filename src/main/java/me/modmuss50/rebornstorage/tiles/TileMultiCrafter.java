@@ -108,6 +108,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 					itemHandler.setStackInSlot(i, stack.copy());
 				}
 			}
+			getNode().markDirty();
 		}
 		if (data.hasKey("page")) {
 			page = Optional.of(data.getInteger("page"));
