@@ -46,8 +46,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	@Override
 	protected void onMachineAssembled() {
 		updateInfo();
-		hasRebuiltRecently = false;
-		rebuildPatterns();
 	}
 
 	public void updateInfo() {
@@ -163,8 +161,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected boolean updateServer() {
-		tick();
-		return true;
+		return false;
 	}
 
 	@Override
@@ -190,32 +187,5 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	@Override
 	public void decodeDescriptionPacket(NBTTagCompound nbtTagCompound) {
 		readFromNBT(nbtTagCompound);
-	}
-
-	//RS things:
-
-	boolean hasRebuiltRecently = false;
-
-	public void tick() {
-		hasRebuiltRecently = false;
-	}
-
-
-
-	public void rebuildPatterns() {
-		if(hasRebuiltRecently){
-			return;
-		}
-		hasRebuiltRecently = true;
-		long start = System.currentTimeMillis();
-		if (worldObj.isRemote) {
-			return;
-		}
-
-		RebornCore.logHelper.debug("pattern rebuild took" + (System.currentTimeMillis() - start) + " ms");
-	}
-
-	private TileMultiCrafter getReferenceTile() {
-		return (TileMultiCrafter) worldObj.getTileEntity(getReferenceCoord());
 	}
 }

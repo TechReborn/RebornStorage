@@ -2,7 +2,7 @@ package RebornStorage.tiles;
 
 import RebornStorage.blocks.BlockMultiCrafter;
 import RebornStorage.multiblocks.MultiBlockCrafter;
-import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
+import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeProxy;
 import com.raoulvdberge.refinedstorage.capability.CapabilityNetworkNodeProxy;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -20,7 +20,7 @@ import java.util.Optional;
 /**
  * Created by Mark on 03/01/2017.
  */
-public class TileMultiCrafter extends RectangularMultiblockTileEntityBase  {
+public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implements INetworkNodeProxy {
 
 	@Override
 	public void isGoodForFrame() throws MultiblockValidationException {
@@ -59,18 +59,12 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase  {
 
 	@Override
 	public void onMachineActivated() {
-		if (getMultiBlock() != null) {
-			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-			multiBlockCrafter.rebuildPatterns();
-		}
+		getNode().rebuildPatterns();
 	}
 
 	@Override
 	public void onMachineDeactivated() {
-		if (getMultiBlock() != null) {
-			MultiBlockCrafter multiBlockCrafter = getMultiBlock();
-			multiBlockCrafter.rebuildPatterns();
-		}
+		getNode().rebuildPatterns();
 	}
 
 	String getVarient() {
@@ -95,6 +89,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase  {
 		if (inv != null) {
 			if (inv.hasChanged) {
 				inv.hasChanged = false;
+				getNode().rebuildPatterns();
 			}
 		}
 	}
@@ -160,7 +155,8 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase  {
 	CraftingNode node;
 	CraftingNode clientNode;
 
-	public INetworkNode getNode(){
+	@Override
+	public CraftingNode getNode(){
 		if(world.isRemote){
 			clientNode = new CraftingNode(this);
 			return clientNode;
@@ -186,7 +182,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase  {
 	                           @Nullable
 		                           EnumFacing facing) {
 		if(capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY){
-			return (T) getNode();
+			return (T) this;
 		}
 		return super.getCapability(capability, facing);
 	}
