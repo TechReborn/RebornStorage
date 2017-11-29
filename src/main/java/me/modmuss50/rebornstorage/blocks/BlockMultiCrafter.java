@@ -130,6 +130,7 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 		return new ItemStack(this, 1, getMetaFromState(state));
 	}
 
+	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
@@ -154,6 +155,8 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 		if (node.getNetwork() != null) {
 			node.getNetwork().getNodeGraph().rebuild();
 		}
+
+		worldIn.removeTileEntity(pos);
 
 		super.breakBlock(worldIn, pos, state);
 	}
