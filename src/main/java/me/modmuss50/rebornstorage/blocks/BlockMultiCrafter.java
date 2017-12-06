@@ -79,7 +79,7 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 					return false;
 				}
 			} else if (!worldIn.isRemote) {
-				NetworkManager.sendToServer(new PacketGui(tile.getValidLastPage(), pos));
+				new PacketGui(tile.getValidLastPage(), pos).openGUI(playerIn);
 				return true;
 			}
 			return true;

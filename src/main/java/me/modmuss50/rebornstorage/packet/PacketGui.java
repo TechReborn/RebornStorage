@@ -42,9 +42,12 @@ public class PacketGui implements INetworkPacket<PacketGui> {
 
 	@Override
 	public void processData(PacketGui packetGui, MessageContext messageContext) {
-		EntityPlayer player = messageContext.getServerHandler().player;
-		player.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE + packetGui.page, player.world, packetGui.blockPos.getX(), packetGui.blockPos.getY(), packetGui.blockPos.getZ());
-		TileEntity tileEntity = player.world.getTileEntity(packetGui.blockPos);
+		packetGui.openGUI(messageContext.getServerHandler().player);
+	}
+
+	public void openGUI(EntityPlayer player){
+		player.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE + page, player.world, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+		TileEntity tileEntity = player.world.getTileEntity(blockPos);
 		if(tileEntity instanceof TileMultiCrafter){
 			((TileMultiCrafter) tileEntity).updateLastPage(page);
 		}
