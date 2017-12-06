@@ -94,7 +94,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 			return (TileMultiCrafter) tileEntity;
 		}
 		//TODO have a way for users to see this?
-		RebornCore.logHelper.debug(tileEntity.getClass() + " is not an instance of TileMultiCrafter, this is an error and your RebornStorage multiblock may not work. Please report to the mod author");
+		RebornCore.logHelper.debug(tileEntity + " is not an instance of TileMultiCrafter, this is an error and your RebornStorage multiblock may not work. Please report to the mod author");
 		return null;
 	}
 

@@ -161,7 +161,6 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	public void updateLastPage(int page){
-		System.out.println("write" + world.isRemote);
 		if(getMultiBlock() != null){
 			for (IMultiblockPart part : getMultiBlock().connectedParts) {
 				TileMultiCrafter tile = (TileMultiCrafter) part;
@@ -172,7 +171,6 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	public int getValidLastPage(){
-		System.out.println("read" + world.isRemote);
 		if(lastPage.isPresent() && getMultiBlock() != null){
 			int page = lastPage.get();
 			if(page <= getMultiBlock().invs.size()){
