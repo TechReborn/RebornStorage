@@ -60,7 +60,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	public void rebuildPatterns() {
 		this.actualPatterns.clear();
-		if (isValidMultiBlock()) {
+		if (!world.isRemote && isValidMultiBlock()) {
 			for (int i = 0; i < patterns.getSlots(); i++) {
 				ItemStack stack = patterns.getStackInSlot(i);
 				if (!stack.isEmpty() && stack.getItem() instanceof ICraftingPatternProvider) {
