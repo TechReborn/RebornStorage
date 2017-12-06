@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
+import reborncore.RebornCore;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -86,8 +87,15 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		network.getCraftingManager().rebuild();
 	}
 
+	@Nullable
 	public TileMultiCrafter getTile() {
-		return (TileMultiCrafter) world.getTileEntity(pos);
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if(tileEntity instanceof TileMultiCrafter){
+			return (TileMultiCrafter) tileEntity;
+		}
+		//TODO have a way for users to see this?
+		RebornCore.logHelper.debug(tileEntity.getClass() + " is not an instance of TileMultiCrafter, this is an error and your RebornStorage multiblock may not work. Please report to the mod author");
+		return null;
 	}
 
 	public boolean isValidMultiBlock() {
