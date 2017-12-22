@@ -135,14 +135,12 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 
 		if (tileentity instanceof TileMultiCrafter) {
 			TileMultiCrafter tile = (TileMultiCrafter) tileentity;
-			if (tile.getNode().patterns == null) {
-				super.breakBlock(worldIn, pos, state);
-				return;
-			}
-			for (int i = 0; i < tile.getNode().patterns.getSlots(); i++) {
-				ItemStack stack = tile.getNode().patterns.getStackInSlot(i);
-				if (!stack.isEmpty()) {
-					InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack.copy());
+			if (tile.getNode().patterns != null) {
+				for (int i = 0; i < tile.getNode().patterns.getSlots(); i++) {
+					ItemStack stack = tile.getNode().patterns.getStackInSlot(i);
+					if (!stack.isEmpty()) {
+						InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack.copy());
+					}
 				}
 			}
 		}
