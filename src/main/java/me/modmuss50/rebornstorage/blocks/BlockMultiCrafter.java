@@ -1,15 +1,13 @@
 package me.modmuss50.rebornstorage.blocks;
 
-import me.modmuss50.rebornstorage.RebornStorage;
-import me.modmuss50.rebornstorage.client.CreativeTabRebornStorage;
-import me.modmuss50.rebornstorage.client.GuiHandler;
-import me.modmuss50.rebornstorage.lib.ModInfo;
-import me.modmuss50.rebornstorage.packet.PacketGui;
-import me.modmuss50.rebornstorage.tiles.TileMultiCrafter;
 import com.google.common.collect.Lists;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeManager;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
+import me.modmuss50.rebornstorage.client.CreativeTabRebornStorage;
+import me.modmuss50.rebornstorage.lib.ModInfo;
+import me.modmuss50.rebornstorage.packet.PacketGui;
+import me.modmuss50.rebornstorage.tiles.TileMultiCrafter;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +28,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import reborncore.common.blocks.PropertyString;
 import reborncore.common.multiblock.BlockMultiblockBase;
-import reborncore.common.network.NetworkManager;
 import reborncore.common.util.ArrayUtils;
 import reborncore.common.util.ChatUtils;
 
@@ -73,7 +70,7 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 		if (tile.getMultiblockController() != null) {
 			if (!tile.getMultiblockController().isAssembled()) {
 				if (tile.getMultiblockController().getLastValidationException() != null) {
-					if (worldIn.isRemote) {
+					if (worldIn.isRemote && playerIn.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
 						ChatUtils.sendNoSpamMessages(42, new TextComponentString(tile.getMultiblockController().getLastValidationException().getMessage()));
 					}
 					return false;
