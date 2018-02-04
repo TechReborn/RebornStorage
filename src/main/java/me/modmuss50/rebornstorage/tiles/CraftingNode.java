@@ -1,7 +1,5 @@
 package me.modmuss50.rebornstorage.tiles;
 
-import me.modmuss50.rebornstorage.RebornStorage;
-import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternContainer;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider;
@@ -11,9 +9,12 @@ import com.raoulvdberge.refinedstorage.apiimpl.API;
 import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
 import com.raoulvdberge.refinedstorage.inventory.ItemHandlerListenerNetworkNode;
 import com.raoulvdberge.refinedstorage.util.StackUtils;
+import me.modmuss50.rebornstorage.RebornStorage;
+import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -23,6 +24,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
@@ -33,7 +37,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	INetwork network;
 	int ticks = 0;
 
-	public ItemHandlerBase patterns = new ItemHandlerBase(6 * 13, new ItemHandlerListenerNetworkNode(this), s -> s.getItem() instanceof ICraftingPatternProvider && ((ICraftingPatternProvider) s.getItem()).create(world, s, this).isValid()) {
+	public ExtendedItemHandler patterns = new ExtendedItemHandler(6 * 13, new ItemHandlerListenerNetworkNode(this), s -> s.getItem() instanceof ICraftingPatternProvider && ((ICraftingPatternProvider) s.getItem()).create(world, s, this).isValid()) {
 		@Override
 		protected void onContentsChanged(int slot) {
 			super.onContentsChanged(slot);
@@ -53,6 +57,24 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		}
 	};
 
+	//Allows me to to get the stack list
+	public abstract static class ExtendedItemHandler extends ItemHandlerBase {
+
+		public ExtendedItemHandler(int size,
+		                           @Nullable
+			                           Consumer<Integer> listener, Predicate<ItemStack>... validators) {
+			super(size, listener, validators);
+		}
+
+		public ExtendedItemHandler(int size, Predicate<ItemStack>... validators) {
+			super(size, validators);
+		}
+
+		public NonNullList<ItemStack> getStacks(){
+			return stacks;
+		}
+	}
+
 	public CraftingNode(World world, BlockPos pos) {
 		this.world = world;
 		this.pos = pos;
@@ -60,22 +82,17 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	public void rebuildPatterns() {
 		this.actualPatterns.clear();
-		if (!world.isRemote && isValidMultiBlock()) {
-			for (int i = 0; i < patterns.getSlots(); i++) {
-				ItemStack stack = patterns.getStackInSlot(i);
-				if (!stack.isEmpty() && stack.getItem() instanceof ICraftingPatternProvider) {
-					ICraftingPattern pattern = ((ICraftingPatternProvider) stack.getItem()).create(world, stack, this);
-					if (pattern.isValid()) {
-						actualPatterns.add(pattern);
-					}
-				}
-			}
+		final CraftingNode node = this;
+		if (!world.isRemote && isValidMultiBlock() && !patterns.isEmpty()) {
+			actualPatterns.addAll(patterns.getStacks().parallelStream()
+				.filter(stack -> stack.getItem() instanceof ICraftingPatternProvider)
+				.map(stack -> ((ICraftingPatternProvider) stack.getItem()).create(world, stack, node))
+				.filter(ICraftingPattern::isValid)
+				.collect(Collectors.toList()));
 		}
-
 		if (getNetwork() != null) {
 			getNetwork().getCraftingManager().rebuild();
 		}
-
 	}
 
 	protected void stateChange(INetwork network, boolean state) {
