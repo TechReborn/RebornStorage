@@ -1,14 +1,15 @@
 package me.modmuss50.rebornstorage.tiles;
 
-import me.modmuss50.rebornstorage.RebornStorage;
-import me.modmuss50.rebornstorage.blocks.BlockMultiCrafter;
-import me.modmuss50.rebornstorage.init.ModBlocks;
-import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeManager;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeProxy;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
 import com.raoulvdberge.refinedstorage.capability.CapabilityNetworkNodeProxy;
 import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
+import me.modmuss50.rebornstorage.RebornStorage;
+import me.modmuss50.rebornstorage.blocks.BlockMultiCrafter;
+import me.modmuss50.rebornstorage.init.ModBlocks;
+import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -75,7 +76,11 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	}
 
 	String getVarient() {
-		return world.getBlockState(pos).getValue(BlockMultiCrafter.VARIANTS);
+		IBlockState state = world.getBlockState(pos);
+		if(!(state.getBlock() instanceof BlockMultiCrafter)){
+			return "unknown";
+		}
+		return state.getValue(BlockMultiCrafter.VARIANTS);
 	}
 
 	@Override
