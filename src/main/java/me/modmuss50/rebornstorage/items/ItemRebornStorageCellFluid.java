@@ -54,9 +54,9 @@ public class ItemRebornStorageCellFluid extends ItemBase implements IStorageDisk
 		IStorageDisk storage = create(disk);
 		if (storage.isValid(disk)) {
 			if (storage.getCapacity() == -1) {
-				tooltip.add(I18n.format("misc.refinedstorage:storage.stored", storage.getStored()));
+				tooltip.add(I18n.format("misc.refinedstorage:storage.stored", API.instance().getQuantityFormatter().format(storage.getStored())));
 			} else {
-				tooltip.add(I18n.format("misc.refinedstorage:storage.stored_capacity", storage.getStored(), storage.getCapacity()));
+				tooltip.add(I18n.format("misc.refinedstorage:storage.stored_capacity", API.instance().getQuantityFormatter().format(storage.getStored()), API.instance().getQuantityFormatter().format(storage.getCapacity())));
 			}
 		}
 	}

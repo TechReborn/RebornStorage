@@ -75,7 +75,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 		getNode().rebuildPatterns();
 	}
 
-	String getVarient() {
+	public String getVarient() {
 		IBlockState state = world.getBlockState(pos);
 		if(!(state.getBlock() instanceof BlockMultiCrafter)){
 			return "unknown";

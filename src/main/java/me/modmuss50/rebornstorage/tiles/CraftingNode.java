@@ -1,5 +1,6 @@
 package me.modmuss50.rebornstorage.tiles;
 
+import com.raoulvdberge.refinedstorage.util.StackUtils;
 import me.modmuss50.rebornstorage.RebornStorage;
 import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
@@ -10,13 +11,13 @@ import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
 import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
 import com.raoulvdberge.refinedstorage.inventory.ItemHandlerListenerNetworkNode;
-import com.raoulvdberge.refinedstorage.util.StackUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import reborncore.RebornCore;
 
 import javax.annotation.Nonnull;
@@ -203,6 +204,19 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	@Override
 	public List<ICraftingPattern> getPatterns() {
 		return actualPatterns;
+	}
+
+	@Override
+	public IItemHandlerModifiable getPatternInventory() {
+	    if(isValidMultiBlock() && getTile().getVarient() != null && getTile().getVarient().equals("storage")) {
+            return patterns;
+        }
+        return null;
+	}
+
+	@Override
+	public String getName() {
+		return "MultiBlock Crafter";
 	}
 
 	@Override
