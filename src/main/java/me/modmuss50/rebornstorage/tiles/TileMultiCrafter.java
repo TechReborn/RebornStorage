@@ -7,6 +7,7 @@ import com.raoulvdberge.refinedstorage.capability.CapabilityNetworkNodeProxy;
 import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
 import me.modmuss50.rebornstorage.RebornStorage;
 import me.modmuss50.rebornstorage.blocks.BlockMultiCrafter;
+import me.modmuss50.rebornstorage.client.gui.GuiMultiCrafter;
 import me.modmuss50.rebornstorage.init.ModBlocks;
 import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.minecraft.block.state.IBlockState;
@@ -16,6 +17,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import reborncore.common.multiblock.IMultiblockPart;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.MultiblockValidationException;
@@ -28,7 +31,7 @@ import java.util.Optional;
 /**
  * Created by Mark on 03/01/2017.
  */
-public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implements INetworkNodeProxy {
+public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implements INetworkNodeProxy, IItemHandler {
 
 	@Override
 	public void isGoodForFrame() throws MultiblockValidationException {
@@ -212,7 +215,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	public boolean hasCapability(Capability<?> capability,
 	                             @Nullable
 		                             EnumFacing facing) {
-		if (capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY) {
+		if (capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return true;
 		}
 		return super.hasCapability(capability, facing);
@@ -223,7 +226,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	public <T> T getCapability(Capability<T> capability,
 	                           @Nullable
 		                           EnumFacing facing) {
-		if (capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY) {
+		if (capability == CapabilityNetworkNodeProxy.NETWORK_NODE_PROXY_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return (T) this;
 		}
 		return super.getCapability(capability, facing);
@@ -232,5 +235,36 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 	@Override
 	public void update() {
 
+	}
+
+	@Override
+	public ItemStack extractItem(int slot, int amount, boolean simulate) {
+		int page = slot / GuiMultiCrafter.maxSlotsPerPage + 1;
+		slot %= GuiMultiCrafter.maxSlotsPerPage;
+		return getMultiBlock().getInvForPage(page).extractItem(slot, amount, simulate);
+	}
+
+	@Override
+	public int getSlotLimit(int slot) {
+		return 1;
+	}
+
+	@Override
+	public int getSlots() {
+		return GuiMultiCrafter.maxSlotsPerPage * getMultiBlock().pages;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot) {
+		int page = slot / GuiMultiCrafter.maxSlotsPerPage + 1;
+		slot %= GuiMultiCrafter.maxSlotsPerPage;
+		return getMultiBlock().getInvForPage(page).getStackInSlot(slot);
+	}
+
+	@Override
+	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+		int page = slot / GuiMultiCrafter.maxSlotsPerPage + 1;
+		slot %= GuiMultiCrafter.maxSlotsPerPage;
+		return getMultiBlock().getInvForPage(page).insertItem(slot, stack, simulate);
 	}
 }
