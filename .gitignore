@@ -1,7 +1,11 @@
+.classpath
+.project
+.settings
 *.iml
 *.ipr
 *.iws
 /.idea/
+/bin/
 /build/
 /.gradle/
 /assets/
@@ -10,4 +14,5 @@
 /classes/
 out/
 dep/
-
+RebornStorage_Client.launch
+RebornStorage_Server.launch

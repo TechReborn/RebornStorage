@@ -3,6 +3,7 @@ package me.modmuss50.rebornstorage.init;
 import me.modmuss50.rebornstorage.blocks.BlockMultiCrafter;
 import me.modmuss50.rebornstorage.blocks.ItemBlockMultiCrafter;
 import me.modmuss50.rebornstorage.lib.ModInfo;
+import me.modmuss50.rebornstorage.tiles.TileIoPort;
 import me.modmuss50.rebornstorage.tiles.TileMultiCrafter;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -18,6 +19,7 @@ public class ModBlocks {
 		BLOCK_MULTI_CRAFTER = new BlockMultiCrafter();
 		RebornRegistry.registerBlock(BLOCK_MULTI_CRAFTER, ItemBlockMultiCrafter.class, "multicrafter");
 		GameRegistry.registerTileEntity(TileMultiCrafter.class, ModInfo.MOD_NAME + "TileMultiCrafter");
+		GameRegistry.registerTileEntity(TileIoPort.class, ModInfo.MOD_NAME + "TileIoPort");
 	}
 
 }
