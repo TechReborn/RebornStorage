@@ -27,6 +27,11 @@
         "textures": {
           "all": "rebornstorage:blocks/storage"
         }
+      },
+      "io": {
+        "textures": {
+          "all": "rebornstorage:blocks/io"
+        }
       }
     }
   }

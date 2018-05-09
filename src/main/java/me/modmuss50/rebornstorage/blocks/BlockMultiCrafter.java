@@ -7,6 +7,7 @@ import com.raoulvdberge.refinedstorage.apiimpl.API;
 import me.modmuss50.rebornstorage.client.CreativeTabRebornStorage;
 import me.modmuss50.rebornstorage.lib.ModInfo;
 import me.modmuss50.rebornstorage.packet.PacketGui;
+import me.modmuss50.rebornstorage.tiles.TileIoPort;
 import me.modmuss50.rebornstorage.tiles.TileMultiCrafter;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -38,7 +39,7 @@ import java.util.List;
  */
 public class BlockMultiCrafter extends BlockMultiblockBase {
 
-	public static final String[] types = new String[] { "frame", "heat", "cpu", "storage" };
+	public static final String[] types = new String[] { "frame", "heat", "cpu", "storage", "io" };
 	private static final List<String> typesList = Lists.newArrayList(ArrayUtils.arrayToLowercase(types));
 
 	public static final PropertyString VARIANTS = new PropertyString("type", types);
@@ -53,6 +54,10 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		IBlockState state = this.getStateFromMeta(meta);
+		if(state.getBlock() instanceof BlockMultiCrafter && state.getValue(BlockMultiCrafter.VARIANTS).equals("io")) {
+			return new TileIoPort();
+		}
 		return new TileMultiCrafter();
 	}
 

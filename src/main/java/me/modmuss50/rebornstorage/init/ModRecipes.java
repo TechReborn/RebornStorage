@@ -148,5 +148,13 @@ public class ModRecipes {
 			'N', RSItems.CORE,
 			'C', new ItemStack(RSItems.PROCESSOR, 1, 4),
 			'G', new ItemStack(RSItems.STORAGE_PART, 1, 0));
+		
+		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER, 1, 4),
+			"IGI",
+			"GCG",
+			"IGI",
+			'G', new ItemStack(Blocks.IRON_BARS),
+			'I', RSItems.QUARTZ_ENRICHED_IRON,
+			'C', new ItemStack(RSItems.PROCESSOR, 1, 4));
 	}
 }

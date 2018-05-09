@@ -16,6 +16,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
 import reborncore.common.multiblock.IMultiblockPart;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.MultiblockValidationException;
@@ -39,7 +40,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public void isGoodForSides() throws MultiblockValidationException {
-		if (!getVarient().equals("heat")) {
+		if (!getVarient().equals("heat") && !getVarient().equals("io")) {
 			throw new MultiblockValidationException(getVarient() + " is not valid for the sides of the block");
 		}
 	}
