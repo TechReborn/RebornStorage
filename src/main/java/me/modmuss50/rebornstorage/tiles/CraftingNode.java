@@ -24,6 +24,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
@@ -34,10 +36,69 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	INetwork network;
 	int ticks = 0;
 
-	public ItemHandlerBase patterns = new ItemHandlerBase(6 * 13, new ItemHandlerListenerNetworkNode(this), s -> s.getItem() instanceof ICraftingPatternProvider && ((ICraftingPatternProvider) s.getItem()).create(world, s, this).isValid()) {
+	// An item handler that caches the first available and last used slots.
+	public abstract class CachingItemHandler extends ItemHandlerBase {
+		private int firstAvailable = 0;
+		private int lastUsed = -1;
+
+		public CachingItemHandler(int size, @Nullable Consumer<Integer> listener, Predicate<ItemStack>... validators) {
+			super(size, listener, validators);
+		}
+
+		@Override
+		protected void onLoad() {
+			super.onLoad();
+			firstAvailable = getSlots();
+			lastUsed = -1;
+			for (int i = 0; i < getSlots(); i++) {
+				if (getStackInSlot(i).isEmpty()) {
+				    firstAvailable = Integer.min(firstAvailable, i);
+				} else {
+				    lastUsed = Integer.max(lastUsed, i);
+				}
+			}
+		}
+
 		@Override
 		protected void onContentsChanged(int slot) {
 			super.onContentsChanged(slot);
+			for (int i = slot; i < firstAvailable && i >= 0 && getStackInSlot(i).isEmpty(); i--) {
+				firstAvailable = i;
+			}
+			for (int i = slot; i == firstAvailable && i < getSlots() && !getStackInSlot(i).isEmpty(); i++) {
+				firstAvailable = i + 1;
+			}
+			for (int i = slot; i > lastUsed && i < getSlots() && !getStackInSlot(i).isEmpty(); i++) {
+				lastUsed = i;
+			}
+			for (int i = slot; i == lastUsed && i >= 0 && getStackInSlot(i).isEmpty(); i--) {
+				lastUsed = i - 1;
+			}
+		}
+
+		public int getFirstAvailable() {
+			return firstAvailable;
+		}
+
+		public int getLastUsed() {
+			return lastUsed;
+		}
+
+		public boolean isEmpty() {
+			return lastUsed == -1;
+		}
+
+		public boolean isFull() {
+			return firstAvailable == getSlots();
+		}
+	}
+
+	public CachingItemHandler patterns = new CachingItemHandler(6 * 13, new ItemHandlerListenerNetworkNode(this), s -> s.getItem() instanceof ICraftingPatternProvider && ((ICraftingPatternProvider) s.getItem()).create(world, s, this).isValid()) {
+		@Override
+		protected void onContentsChanged(int slot) {
+			super.onContentsChanged(slot);
+
+			markDirty();
 
 			if (!world.isRemote) {
 				rebuildPatterns();

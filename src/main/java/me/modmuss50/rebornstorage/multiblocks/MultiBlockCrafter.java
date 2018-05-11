@@ -1,6 +1,7 @@
 package me.modmuss50.rebornstorage.multiblocks;
 
 import me.modmuss50.rebornstorage.blocks.BlockMultiCrafter;
+import me.modmuss50.rebornstorage.tiles.CraftingNode.CachingItemHandler;
 import me.modmuss50.rebornstorage.tiles.TileMultiCrafter;
 import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,7 +19,7 @@ import java.util.TreeMap;
  */
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
-	public Map<Integer, ItemHandlerBase> invs = new TreeMap<>();
+	public Map<Integer, CachingItemHandler> invs = new TreeMap<>();
 
 	public int speed = 0;
 	public int pages = 0;
@@ -92,7 +93,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		}
 	}
 
-	public ItemHandlerBase getInvForPage(int page) {
+	public CachingItemHandler getInvForPage(int page) {
 		return invs.get(page);
 	}
 
