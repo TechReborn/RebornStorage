@@ -2,7 +2,8 @@ package me.modmuss50.rebornstorage.tiles;
 
 import javax.annotation.Nullable;
 
-import me.modmuss50.rebornstorage.client.gui.GuiMultiCrafter;
+import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
+import me.modmuss50.rebornstorage.tiles.CraftingNode.CachingItemHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -34,11 +35,63 @@ public class TileIoPort extends TileMultiCrafter implements IItemHandler {
 		return super.getCapability(capability, facing);
 	}
 
+	private class Slot {
+		private IItemHandler inv;
+		private int slot;
+
+		Slot(IItemHandler inv, int slot) {
+		this.inv = inv;
+		this.slot = slot;
+		}
+
+		public ItemStack extractItem(int amount, boolean simulate) {
+		return inv.extractItem(slot, amount, simulate);
+		}
+
+		public ItemStack getStack() {
+		return inv.getStackInSlot(slot);
+		}
+
+		public ItemStack insertItem(ItemStack stack, boolean simulate) {
+		return inv.insertItem(slot, stack, simulate);
+		}
+	}
+
+	private Slot getFirstAvailable() {
+		MultiBlockCrafter multiBlock = getMultiBlock();
+		if (multiBlock == null || !multiBlock.isAssembled()) {
+			return null;
+		}
+		for (int i = 1; i <= multiBlock.pages; ++i) {
+			CachingItemHandler inv = multiBlock.getInvForPage(i);
+			if (!inv.isFull()) {
+				return new Slot(inv, inv.getFirstAvailable());
+			}
+		}
+		return null;
+	}
+
+	private Slot getLastUsed() {
+		MultiBlockCrafter multiBlock = getMultiBlock();
+		if (multiBlock == null || !multiBlock.isAssembled()) {
+			return null;
+		}
+		for (int i = multiBlock.pages; i >= 1; --i) {
+			CachingItemHandler inv = multiBlock.getInvForPage(i);
+			if (!inv.isEmpty()) {
+				return new Slot(inv, inv.getLastUsed());
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
-		int page = slot / GuiMultiCrafter.maxSlotsPerPage + 1;
-		slot %= GuiMultiCrafter.maxSlotsPerPage;
-		return getMultiBlock().getInvForPage(page).extractItem(slot, amount, simulate);
+		if (slot != 1) {
+			return ItemStack.EMPTY;
+		}
+		Slot lastUsed = getLastUsed();
+		return lastUsed == null ? ItemStack.EMPTY : lastUsed.extractItem(amount, simulate);
 	}
 
 	@Override
@@ -48,20 +101,25 @@ public class TileIoPort extends TileMultiCrafter implements IItemHandler {
 
 	@Override
 	public int getSlots() {
-		return GuiMultiCrafter.maxSlotsPerPage * getMultiBlock().pages;
+		// Slot 0 is used for insertion and slot 1 is used for extraction.
+		return 2;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		int page = slot / GuiMultiCrafter.maxSlotsPerPage + 1;
-		slot %= GuiMultiCrafter.maxSlotsPerPage;
-		return getMultiBlock().getInvForPage(page).getStackInSlot(slot);
+		if (slot != 1) {
+			return ItemStack.EMPTY;
+		}
+		Slot lastUsed = getLastUsed();
+		return lastUsed == null ? ItemStack.EMPTY : lastUsed.getStack();
 	}
 
 	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-		int page = slot / GuiMultiCrafter.maxSlotsPerPage + 1;
-		slot %= GuiMultiCrafter.maxSlotsPerPage;
-		return getMultiBlock().getInvForPage(page).insertItem(slot, stack, simulate);
+		if (slot != 0) {
+			return stack;
+		}
+		Slot firstAvailable = getFirstAvailable();
+		return firstAvailable == null ? stack : firstAvailable.insertItem(stack, simulate);
 	}
 }
