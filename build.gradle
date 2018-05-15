@@ -26,7 +26,8 @@ repositories {
         url "http://mobiusstrip.eu/maven"
     }
 	maven {
-		url  "https://dl.bintray.com/raoulvdberge/dev/"
+		name "Raoulvdberge"
+		url  "https://repo.raoulvdberge.com/"
 	}
 	maven {
 		name = "Amadornes"
@@ -69,7 +70,7 @@ dependencies {
     deobfCompile ('RebornCore:RebornCore-1.12.2:+:universal'){
 		transitive = false
 	}
-    deobfCompile ('refinedstorage:refinedstorage:1.5.33+'){
+    deobfCompile ('refinedstorage:refinedstorage:1.5.34+'){
 		transitive = false
 	}
 }
