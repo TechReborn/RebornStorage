@@ -1,8 +1,5 @@
 package me.modmuss50.rebornstorage.tiles;
 
-import com.raoulvdberge.refinedstorage.util.StackUtils;
-import me.modmuss50.rebornstorage.RebornStorage;
-import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPattern;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternContainer;
 import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider;
@@ -11,9 +8,13 @@ import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
 import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
 import com.raoulvdberge.refinedstorage.inventory.ItemHandlerListenerNetworkNode;
+import com.raoulvdberge.refinedstorage.util.StackUtils;
+import me.modmuss50.rebornstorage.RebornStorage;
+import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -24,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -35,6 +37,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	@Nullable
 	INetwork network;
 	int ticks = 0;
+	private UUID uuid;
 
 	// An item handler that caches the first available and last used slots.
 	public abstract class CachingItemHandler extends ItemHandlerBase {
@@ -253,12 +256,22 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	}
 
 	@Override
-	public IItemHandler getFacingInventory() {
+	public IItemHandler getConnectedInventory() {
+		return null;
+	}
+
+	@Override
+	public TileEntity getConnectedTile() {
 		return null;
 	}
 
 	@Override
 	public TileEntity getFacingTile() {
+		return null;
+	}
+
+	@Override
+	public EnumFacing getDirection() {
 		return null;
 	}
 
@@ -285,13 +298,23 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		return pos;
 	}
 
+	@Nullable
+	@Override
+	public ICraftingPatternContainer getRootContainer() {
+		return null;
+	}
+
 	@Override
 	public boolean isBlocked() {
 		return false;
 	}
 
 	@Override
-	public void setBlocked(boolean b) {
-
+	public UUID getUuid() {
+		if(uuid == null){
+			uuid = UUID.randomUUID();
+		}
+		return uuid;
 	}
+
 }
