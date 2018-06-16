@@ -248,7 +248,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	}
 
 	@Override
-	public int getSpeedUpdateCount() {
+	public int getSpeedUpgradeCount() {
 		if (!isValidMultiBlock()) {
 			return 0;
 		}
@@ -302,11 +302,6 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	@Override
 	public ICraftingPatternContainer getRootContainer() {
 		return null;
-	}
-
-	@Override
-	public boolean isBlocked() {
-		return false;
 	}
 
 	@Override

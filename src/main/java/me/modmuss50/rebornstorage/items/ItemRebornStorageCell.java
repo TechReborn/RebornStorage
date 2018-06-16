@@ -1,28 +1,20 @@
 package me.modmuss50.rebornstorage.items;
 
+import com.raoulvdberge.refinedstorage.api.storage.disk.IStorageDisk;
+import com.raoulvdberge.refinedstorage.api.storage.disk.StorageDiskType;
+import com.raoulvdberge.refinedstorage.apiimpl.API;
+import com.raoulvdberge.refinedstorage.block.ItemStorageType;
 import me.modmuss50.rebornstorage.init.EnumItemStorage;
 import me.modmuss50.rebornstorage.lib.ModInfo;
-import com.raoulvdberge.refinedstorage.api.storage.IStorageDisk;
-import com.raoulvdberge.refinedstorage.api.storage.IStorageDiskProvider;
-import com.raoulvdberge.refinedstorage.api.storage.StorageDiskType;
-import com.raoulvdberge.refinedstorage.apiimpl.API;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * Created by Gigabit101 on 03/01/2017.
  */
-public class ItemRebornStorageCell extends ItemBase implements IStorageDiskProvider<ItemStack> {
+public class ItemRebornStorageCell extends ItemRebornStorageCellBase {
 	public static final String[] types = new String[] { "256k", "1024k", "4096k", "16384k" };
 
 	public ItemRebornStorageCell() {
@@ -35,51 +27,9 @@ public class ItemRebornStorageCell extends ItemBase implements IStorageDiskProvi
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
 		if (isInCreativeTab(tab)) {
 			for (int meta = 0; meta < EnumItemStorage.values().length; meta++) {
-				subItems.add(API.instance().getDefaultStorageDiskBehavior().initDisk(StorageDiskType.ITEMS, new ItemStack(this, 1, meta)));
+				subItems.add(new ItemStack(this, 1, meta));
 			}
 		}
-	}
-
-	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-		super.onUpdate(stack, world, entity, slot, selected);
-		if (!stack.hasTagCompound()) {
-			API.instance().getDefaultStorageDiskBehavior().initDisk(StorageDiskType.ITEMS, stack);
-		}
-	}
-
-	@Override
-	public void addInformation(ItemStack disk, World world, List<String> tooltip, ITooltipFlag flag) {
-		IStorageDisk storage = create(disk);
-		if (storage.isValid(disk)) {
-			if (storage.getCapacity() == -1) {
-				tooltip.add(I18n.format("misc.refinedstorage:storage.stored", API.instance().getQuantityFormatter().format(storage.getStored())));
-			} else {
-				tooltip.add(I18n.format("misc.refinedstorage:storage.stored_capacity", API.instance().getQuantityFormatter().format(storage.getStored()), API.instance().getQuantityFormatter().format(storage.getCapacity())));
-			}
-		}
-	}
-
-	@Override
-	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-		super.onCreated(stack, world, player);
-		API.instance().getDefaultStorageDiskBehavior().initDisk(StorageDiskType.ITEMS, stack);
-	}
-
-	@Override
-	public int getEntityLifespan(ItemStack stack, World world) {
-		return Integer.MAX_VALUE;
-	}
-
-	@Override
-	public NBTTagCompound getNBTShareTag(ItemStack stack) {
-		return API.instance().getDefaultStorageDiskBehavior().getShareTag(StorageDiskType.ITEMS, stack);
-	}
-
-	@Nonnull
-	@Override
-	public IStorageDisk<ItemStack> create(ItemStack disk) {
-		return API.instance().getDefaultStorageDiskBehavior().createItemStorage(disk.getTagCompound(), EnumItemStorage.getById(disk.getItemDamage()).getCap());
 	}
 
 	@Override
@@ -94,5 +44,20 @@ public class ItemRebornStorageCell extends ItemBase implements IStorageDiskProvi
 			meta = 0;
 		}
 		return super.getUnlocalizedName() + "." + types[meta];
+	}
+
+	@Override
+	public int getCapacity(ItemStack disk) {
+		return ItemStorageType.getById(disk.getItemDamage()).getCapacity();
+	}
+
+	@Override
+	public StorageDiskType getType() {
+		return StorageDiskType.ITEM;
+	}
+
+	@Override
+	public IStorageDisk createDefaultDisk(World world, int capacity) {
+		return API.instance().createDefaultItemDisk(world, capacity);
 	}
 }
