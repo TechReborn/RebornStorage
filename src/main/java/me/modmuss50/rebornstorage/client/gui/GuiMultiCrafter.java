@@ -116,11 +116,10 @@ public class GuiMultiCrafter extends GuiContainer {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		super.keyTyped(typedChar, keyCode);
-		String text = textField.getText();
-		textField.textboxKeyTyped(typedChar, keyCode);
-		if(!textField.getText().equals(text)){
+		if(textField.textboxKeyTyped(typedChar, keyCode)){
 			NetworkManager.sendToServer(new PacketSetPageName(pos, page -1, textField.getText()));
+		} else {
+			super.keyTyped(typedChar, keyCode);
 		}
 	}
 

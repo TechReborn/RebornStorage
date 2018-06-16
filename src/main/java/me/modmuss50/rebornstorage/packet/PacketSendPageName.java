@@ -31,6 +31,5 @@ public class PacketSendPageName implements INetworkPacket<PacketSendPageName> {
 	@Override
 	public void processData(PacketSendPageName message, MessageContext context) {
 		GuiMultiCrafter.pageName = pageName;
-		System.out.println("Sent:" + pageName);
 	}
 }

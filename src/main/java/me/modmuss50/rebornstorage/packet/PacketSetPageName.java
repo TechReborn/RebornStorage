@@ -55,8 +55,6 @@ public class PacketSetPageName implements INetworkPacket<PacketSetPageName> {
 			multiBlockCrafter.pageNameMap.remove(pageID);
 			multiBlockCrafter.pageNameMap.put(pageID, pageName);
 			tileEntity.markDirty();
-			System.out.println("Set:" + multiBlockCrafter.pageNameMap.get(pageID) + "&" + pageID);
-
 		});
 	}
 }

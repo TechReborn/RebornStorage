@@ -178,12 +178,10 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 		pageNameMap.forEach((integer, s) -> nbtTagCompound.setString("page_" + integer, s));
-		System.out.println(nbtTagCompound);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-		System.out.println(nbtTagCompound);
 		nbtTagCompound.getKeySet().stream()
 			.filter(s -> s.startsWith("page_"))
 			.forEach(s -> {
