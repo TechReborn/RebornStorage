@@ -10,18 +10,21 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 
+import java.util.Arrays;
+import java.util.function.Function;
+
 /**
  * Created by Gigabit101 on 03/01/2017.
  */
 public class ModelHelper {
 	public static void init() {
 		int i;
-		for (i = 0; i < ItemRebornStorageCell.types.length; ++i) {
-			String[] name = ItemRebornStorageCell.types.clone();
+		for (i = 0; i < EnumItemStorage.values().length; ++i) {
+			String[] name = getNames(EnumItemStorage.class);
 			registerItemModel(ModItems.REBORN_STORAGE_CELL, i, name[i]);
 		}
-		for (i = 0; i < ItemRebornStorageCellFluid.types.length; ++i) {
-			String[] name = ItemRebornStorageCellFluid.types.clone();
+		for (i = 0; i < EnumFluidStorage.values().length; ++i) {
+			String[] name = getNames(EnumFluidStorage.class);
 			registerItemModel(ModItems.REBORN_STORAGE_CELL_FLUID, i, name[i]);
 		}
 		for (i = 0; i < ItemStoragePart.types.length; ++i) {
@@ -50,5 +53,12 @@ public class ModelHelper {
 	static void registerItemModel(Item i, int meta, String variant) {
 		ResourceLocation loc = i.getRegistryName();
 		ModelLoader.setCustomModelResourceLocation(i, meta, new ModelResourceLocation(loc, "type=" + variant));
+	}
+
+	static String[] getNames(Class<? extends Enum<?>> e) {
+		return Arrays.stream(e.getEnumConstants())
+			.map(Enum::name)
+			.map(s -> s.toLowerCase().replace("type_", ""))
+			.toArray(String[]::new);
 	}
 }

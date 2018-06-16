@@ -9,22 +9,22 @@
   },
   "variants": {
     "type": {
-      "1024k": {
+      "16384k": {
         "textures": {
           "layer0": "rebornstorage:items/disks/1024k_fluid"
         }
       },
-      "4096k": {
+      "32768k": {
         "textures": {
           "layer0": "rebornstorage:items/disks/4096k_fluid"
         }
       },
-      "16384k": {
+      "131m": {
         "textures": {
           "layer0": "rebornstorage:items/disks/16384k_fluid"
         }
       },
-      "32768k": {
+      "524m": {
         "textures": {
           "layer0": "rebornstorage:items/disks/32768k_fluid"
         }

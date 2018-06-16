@@ -9,7 +9,7 @@ import net.minecraft.util.NonNullList;
  * Created by Gigabit101 on 03/01/2017.
  */
 public class ItemStoragePart extends ItemBase {
-	public static final String[] types = new String[] { "256k", "1024k", "4096k", "16384k", "1024k_fluid", "4096k_fluid", "16384k_fluid", "32768k_fluid" };
+	public static final String[] types = new String[] { "256k", "1024k", "4096k", "16384k", "16384k_fluid", "32768k_fluid", "131m_fluid", "524m_fluid" };
 
 	public ItemStoragePart() {
 		setUnlocalizedName(ModInfo.MOD_ID + ".storagepart");

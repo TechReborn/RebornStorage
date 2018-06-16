@@ -4,10 +4,10 @@ package me.modmuss50.rebornstorage.init;
  * Created by Gigabit101 on 24/02/2017.
  */
 public enum EnumFluidStorage {
-	TYPE_1024K(0, "1024k", 1024000),
-	TYPE_4096K(1, "4096K", 4096000),
-	TYPE_16384K(2, "16384K", 16384000),
-	TYPE_32768K(3, "32768K", 32768000);
+	TYPE_16384K(0, "16384K", 16384000),
+	TYPE_32768K(1, "32768K", 32768000),
+	TYPE_131M(2, "131m", 131072000),
+	TYPE_524M(3, "524m", 524288000);
 
 	int meta;
 	String name;
