@@ -2,9 +2,11 @@ package me.modmuss50.rebornstorage.client.gui;
 
 import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
 import me.modmuss50.rebornstorage.packet.PacketGui;
+import me.modmuss50.rebornstorage.packet.PacketSetPageName;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -21,9 +23,12 @@ public class GuiMultiCrafter extends GuiContainer {
 	GuiBuilder builder = new GuiBuilder(GuiBuilder.defaultTextureSheet);
 	MultiBlockCrafter crafter;
 
+	GuiTextField textField;
+
 	int page = 0;
 	BlockPos pos;
 	public static int maxSlotsPerPage = 78;
+	public static String pageName;
 
 	public GuiMultiCrafter(EntityPlayer player, MultiBlockCrafter crafter, int page, BlockPos pos) {
 		super(new ContainerMultiCrafter(player, crafter, page));
@@ -35,13 +40,33 @@ public class GuiMultiCrafter extends GuiContainer {
 	}
 
 	@Override
+	public void initGui() {
+		super.initGui();
+		this.buttonList.clear();
+		if (crafter.invs.size() != 0) {
+			if (page > 1) {
+				this.buttonList.add(new GuiButton(this.page - 2, this.guiLeft + 13, this.guiTop + 172, 20, 20, "<"));
+			}
+			if (crafter.invs.size() > page) {
+				this.buttonList.add(new GuiButton(this.page, this.guiLeft + 209, this.guiTop + 172, 20, 20, ">"));
+			}
+		}
+
+
+		textField = new GuiTextField(101, fontRenderer, this.guiLeft + 9, this.guiTop + 6, 200, 10);
+		textField.setMaxStringLength(50);
+		if(!pageName.isEmpty()){
+			textField.setText(pageName);
+		}
+	}
+
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		builder.drawDefaultBackground(this, guiLeft, guiTop, xSize, ySize);
 		builder.drawPlayerSlots(this, guiLeft + xSize / 2, guiTop + 140, true);
 		if (crafter.invs.size() != 0) {
 			drawSlots(13, 6, maxSlotsPerPage);
 		}
-
 	}
 
 	public void drawSlots(int col, int rows, int max) {
@@ -70,20 +95,6 @@ public class GuiMultiCrafter extends GuiContainer {
 	}
 
 	@Override
-	public void initGui() {
-		super.initGui();
-		this.buttonList.clear();
-		if (crafter.invs.size() != 0) {
-			if (page > 1) {
-				this.buttonList.add(new GuiButton(this.page - 2, this.guiLeft + 13, this.guiTop + 172, 20, 20, "<"));
-			}
-			if (crafter.invs.size() > page) {
-				this.buttonList.add(new GuiButton(this.page, this.guiLeft + 209, this.guiTop + 172, 20, 20, ">"));
-			}
-		}
-	}
-
-	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
 		super.actionPerformed(button);
 		NetworkManager.sendToServer(new PacketGui(button.id, pos));
@@ -93,6 +104,29 @@ public class GuiMultiCrafter extends GuiContainer {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
+		textField.drawTextBox();
 		this.renderHoveredToolTip(mouseX, mouseY);
+	}
+
+	@Override
+	public void updateScreen() {
+		super.updateScreen();
+		textField.updateCursorCounter();
+	}
+
+	@Override
+	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		super.keyTyped(typedChar, keyCode);
+		String text = textField.getText();
+		textField.textboxKeyTyped(typedChar, keyCode);
+		if(!textField.getText().equals(text)){
+			NetworkManager.sendToServer(new PacketSetPageName(pos, page -1, textField.getText()));
+		}
+	}
+
+	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		super.mouseClicked(mouseX, mouseY, mouseButton);
+		textField.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 }

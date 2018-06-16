@@ -10,9 +10,13 @@ import reborncore.common.multiblock.IMultiblockPart;
 import reborncore.common.multiblock.MultiblockControllerBase;
 import reborncore.common.multiblock.rectangular.RectangularMultiblockControllerBase;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Created by Mark on 03/01/2017.
@@ -20,6 +24,7 @@ import java.util.TreeMap;
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	public Map<Integer, CachingItemHandler> invs = new TreeMap<>();
+	public Map<Integer, String> pageNameMap = new HashMap<>();
 
 	public int speed = 0;
 	public int pages = 0;
@@ -30,7 +35,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	public void onAttachedPartWithMultiblockData(IMultiblockPart iMultiblockPart, NBTTagCompound nbtTagCompound) {
-
+		readFromNBT(nbtTagCompound);
 	}
 
 	@Override
@@ -172,12 +177,20 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
-
+		pageNameMap.forEach((integer, s) -> nbtTagCompound.setString("page_" + integer, s));
+		System.out.println(nbtTagCompound);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-
+		System.out.println(nbtTagCompound);
+		nbtTagCompound.getKeySet().stream()
+			.filter(s -> s.startsWith("page_"))
+			.forEach(s -> {
+				int page = Integer.parseInt(s.replace("page_", ""));
+				pageNameMap.remove(page);
+				pageNameMap.put(page, nbtTagCompound.getString(s));
+			});
 	}
 
 	@Override
@@ -189,4 +202,6 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	public void decodeDescriptionPacket(NBTTagCompound nbtTagCompound) {
 		readFromNBT(nbtTagCompound);
 	}
+
+
 }

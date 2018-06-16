@@ -4,11 +4,13 @@ import me.modmuss50.rebornstorage.RebornStorage;
 import me.modmuss50.rebornstorage.client.GuiHandler;
 import me.modmuss50.rebornstorage.tiles.TileMultiCrafter;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import reborncore.common.network.ExtendedPacketBuffer;
 import reborncore.common.network.INetworkPacket;
+import reborncore.common.network.NetworkManager;
 
 import java.io.IOException;
 
@@ -46,10 +48,12 @@ public class PacketGui implements INetworkPacket<PacketGui> {
 	}
 
 	public void openGUI(EntityPlayer player){
-		player.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE + page, player.world, blockPos.getX(), blockPos.getY(), blockPos.getZ());
 		TileEntity tileEntity = player.world.getTileEntity(blockPos);
 		if(tileEntity instanceof TileMultiCrafter){
-			((TileMultiCrafter) tileEntity).updateLastPage(page);
+			TileMultiCrafter tileMultiCrafter = (TileMultiCrafter) tileEntity;
+			tileMultiCrafter.updateLastPage(page);
+			NetworkManager.sendToPlayer(new PacketSendPageName(tileMultiCrafter.getMultiBlock().pageNameMap.getOrDefault(page, "")), (EntityPlayerMP) player);
 		}
+		player.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE + page, player.world, blockPos.getX(), blockPos.getY(), blockPos.getZ());
 	}
 }
