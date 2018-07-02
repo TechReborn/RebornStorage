@@ -1,7 +1,7 @@
 package me.modmuss50.rebornstorage.items;
 
+import com.raoulvdberge.refinedstorage.api.storage.StorageType;
 import com.raoulvdberge.refinedstorage.api.storage.disk.IStorageDisk;
-import com.raoulvdberge.refinedstorage.api.storage.disk.StorageDiskType;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
 import me.modmuss50.rebornstorage.init.EnumItemStorage;
 import me.modmuss50.rebornstorage.lib.ModInfo;
@@ -50,8 +50,8 @@ public class ItemRebornStorageCell extends ItemRebornStorageCellBase {
 	}
 
 	@Override
-	public StorageDiskType getType() {
-		return StorageDiskType.ITEM;
+	public StorageType getType() {
+		return StorageType.ITEM;
 	}
 
 	@Override
