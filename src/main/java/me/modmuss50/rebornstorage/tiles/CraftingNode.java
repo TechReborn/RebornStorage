@@ -146,7 +146,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	protected void stateChange(INetwork network, boolean state) {
 		if (!state) {
 			network.getCraftingManager().getTasks()
-				.forEach((task) -> network.getCraftingManager().cancel(task));
+				.forEach((task) -> network.getCraftingManager().cancel(task.getId()));
 			actualPatterns.clear();
 		}
 		network.getCraftingManager().rebuild();
