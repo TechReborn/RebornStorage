@@ -43,6 +43,9 @@ public class RebornStorage {
 		API.instance().getNetworkNodeRegistry().add(MULTI_BLOCK_ID, (tag, world, pos) -> {
 			CraftingNode node = new CraftingNode(world, pos);
 			StackUtils.readItems(node.patterns, 0, tag);
+			if (API.instance().getOneSixMigrationHelper().migratePatternInventory(node.patterns)) {
+				node.markDirty();
+			}
 			return node;
 		});
 
