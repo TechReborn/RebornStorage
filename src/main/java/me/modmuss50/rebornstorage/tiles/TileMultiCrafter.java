@@ -4,7 +4,7 @@ import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeManager;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeProxy;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
 import com.raoulvdberge.refinedstorage.capability.CapabilityNetworkNodeProxy;
-import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
+import com.raoulvdberge.refinedstorage.inventory.item.ItemHandlerBase;
 import me.modmuss50.rebornstorage.RebornStorage;
 import me.modmuss50.rebornstorage.blocks.BlockMultiCrafter;
 import me.modmuss50.rebornstorage.init.ModBlocks;

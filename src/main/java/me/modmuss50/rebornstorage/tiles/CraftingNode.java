@@ -6,8 +6,8 @@ import com.raoulvdberge.refinedstorage.api.autocrafting.ICraftingPatternProvider
 import com.raoulvdberge.refinedstorage.api.network.INetwork;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
-import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
-import com.raoulvdberge.refinedstorage.inventory.ItemHandlerListenerNetworkNode;
+import com.raoulvdberge.refinedstorage.inventory.item.ItemHandlerBase;
+import com.raoulvdberge.refinedstorage.inventory.listener.ListenerNetworkNode;
 import com.raoulvdberge.refinedstorage.util.StackUtils;
 import me.modmuss50.rebornstorage.RebornStorage;
 import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import reborncore.RebornCore;
@@ -96,7 +97,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		}
 	}
 
-	public CachingItemHandler patterns = new CachingItemHandler(6 * 13, new ItemHandlerListenerNetworkNode(this), s -> s.getItem() instanceof ICraftingPatternProvider && ((ICraftingPatternProvider) s.getItem()).create(world, s, this).isValid()) {
+	public CachingItemHandler patterns = new CachingItemHandler(6 * 13, new ListenerNetworkNode(this), s -> s.getItem() instanceof ICraftingPatternProvider && ((ICraftingPatternProvider) s.getItem()).create(world, s, this).isValid()) {
 		@Override
 		protected void onContentsChanged(int slot) {
 			super.onContentsChanged(slot);
@@ -257,6 +258,12 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	@Override
 	public IItemHandler getConnectedInventory() {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public IFluidHandler getConnectedFluidInventory() {
 		return null;
 	}
 

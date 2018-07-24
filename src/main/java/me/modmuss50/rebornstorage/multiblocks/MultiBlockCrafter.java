@@ -3,7 +3,6 @@ package me.modmuss50.rebornstorage.multiblocks;
 import me.modmuss50.rebornstorage.blocks.BlockMultiCrafter;
 import me.modmuss50.rebornstorage.tiles.CraftingNode.CachingItemHandler;
 import me.modmuss50.rebornstorage.tiles.TileMultiCrafter;
-import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import reborncore.common.multiblock.IMultiblockPart;

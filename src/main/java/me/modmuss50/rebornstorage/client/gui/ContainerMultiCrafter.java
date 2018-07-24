@@ -1,8 +1,8 @@
 package me.modmuss50.rebornstorage.client.gui;
 
+import com.raoulvdberge.refinedstorage.inventory.item.ItemHandlerBase;
 import me.modmuss50.rebornstorage.client.SlotFiltered;
 import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
-import com.raoulvdberge.refinedstorage.inventory.ItemHandlerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import reborncore.common.container.RebornContainer;
 
