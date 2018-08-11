@@ -201,20 +201,13 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 			return clientNode;
 		}
 		INetworkNodeManager manager = API.instance().getNetworkNodeManager(this.world);
-		INetworkNode rawNode = manager.getNode(this.pos);
-		if (rawNode == null || !(rawNode instanceof CraftingNode)) {
-			if (clientNode == null) {
-				clientNode = new CraftingNode(world, getPos());
-			}
-			return clientNode;
-		}
-		CraftingNode node = (CraftingNode) rawNode;
+		INetworkNode node = manager.getNode(this.pos);
 		if (node == null || !node.getId().equals(RebornStorage.MULTI_BLOCK_ID)) {
 			manager.setNode(this.pos, node = new CraftingNode(world, getPos()));
 			manager.markForSaving();
 		}
 
-		return node;
+		return (CraftingNode) node;
 	}
 
 	@Override
