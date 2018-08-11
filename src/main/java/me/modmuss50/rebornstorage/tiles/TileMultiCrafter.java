@@ -1,5 +1,6 @@
 package me.modmuss50.rebornstorage.tiles;
 
+import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeManager;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeProxy;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
@@ -200,7 +201,14 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 			return clientNode;
 		}
 		INetworkNodeManager manager = API.instance().getNetworkNodeManager(this.world);
-		CraftingNode node = (CraftingNode) manager.getNode(this.pos);
+		INetworkNode rawNode = manager.getNode(this.pos);
+		if (rawNode == null || !(rawNode instanceof CraftingNode)) {
+			if (clientNode == null) {
+				clientNode = new CraftingNode(world, getPos());
+			}
+			return clientNode;
+		}
+		CraftingNode node = (CraftingNode) rawNode;
 		if (node == null || !node.getId().equals(RebornStorage.MULTI_BLOCK_ID)) {
 			manager.setNode(this.pos, node = new CraftingNode(world, getPos()));
 			manager.markForSaving();
