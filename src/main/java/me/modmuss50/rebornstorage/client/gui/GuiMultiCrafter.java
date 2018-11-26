@@ -2,11 +2,9 @@ package me.modmuss50.rebornstorage.client.gui;
 
 import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
 import me.modmuss50.rebornstorage.packet.PacketGui;
-import me.modmuss50.rebornstorage.packet.PacketSetPageName;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -23,12 +21,9 @@ public class GuiMultiCrafter extends GuiContainer {
 	GuiBuilder builder = new GuiBuilder(GuiBuilder.defaultTextureSheet);
 	MultiBlockCrafter crafter;
 
-	GuiTextField textField;
-
 	int page = 0;
 	BlockPos pos;
 	public static int maxSlotsPerPage = 78;
-	public static String pageName;
 
 	public GuiMultiCrafter(EntityPlayer player, MultiBlockCrafter crafter, int page, BlockPos pos) {
 		super(new ContainerMultiCrafter(player, crafter, page));
@@ -50,13 +45,6 @@ public class GuiMultiCrafter extends GuiContainer {
 			if (crafter.invs.size() > page) {
 				this.buttonList.add(new GuiButton(this.page, this.guiLeft + 209, this.guiTop + 172, 20, 20, ">"));
 			}
-		}
-
-
-		textField = new GuiTextField(101, fontRenderer, this.guiLeft + 9, this.guiTop + 6, 200, 10);
-		textField.setMaxStringLength(50);
-		if(!pageName.isEmpty()){
-			textField.setText(pageName);
 		}
 	}
 
@@ -104,28 +92,7 @@ public class GuiMultiCrafter extends GuiContainer {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
-		textField.drawTextBox();
 		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	@Override
-	public void updateScreen() {
-		super.updateScreen();
-		textField.updateCursorCounter();
-	}
-
-	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(textField.textboxKeyTyped(typedChar, keyCode)){
-			NetworkManager.sendToServer(new PacketSetPageName(pos, page -1, textField.getText()));
-		} else {
-			super.keyTyped(typedChar, keyCode);
-		}
-	}
-
-	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		super.mouseClicked(mouseX, mouseY, mouseButton);
-		textField.mouseClicked(mouseX, mouseY, mouseButton);
-	}
 }

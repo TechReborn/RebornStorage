@@ -12,7 +12,5 @@ public class Packets {
 	@SubscribeEvent
 	public static void loadPackets(RegisterPacketEvent event) {
 		event.registerPacket(PacketGui.class, Side.SERVER);
-		event.registerPacket(PacketSetPageName.class, Side.SERVER);
-		event.registerPacket(PacketSendPageName.class, Side.CLIENT);
 	}
 }

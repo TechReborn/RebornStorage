@@ -23,7 +23,6 @@ import java.util.function.Predicate;
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	public Map<Integer, CachingItemHandler> invs = new TreeMap<>();
-	public Map<Integer, String> pageNameMap = new HashMap<>();
 
 	public int speed = 0;
 	public int pages = 0;
@@ -176,18 +175,12 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
-		pageNameMap.forEach((integer, s) -> nbtTagCompound.setString("page_" + integer, s));
+
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-		nbtTagCompound.getKeySet().stream()
-			.filter(s -> s.startsWith("page_"))
-			.forEach(s -> {
-				int page = Integer.parseInt(s.replace("page_", ""));
-				pageNameMap.remove(page);
-				pageNameMap.put(page, nbtTagCompound.getString(s));
-			});
+
 	}
 
 	@Override
