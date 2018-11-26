@@ -39,11 +39,16 @@ public class GuiMultiCrafter extends GuiContainer {
 		super.initGui();
 		this.buttonList.clear();
 		if (crafter.invs.size() != 0) {
-			if (page > 1) {
-				this.buttonList.add(new GuiButton(this.page - 2, this.guiLeft + 13, this.guiTop + 172, 20, 20, "<"));
+			GuiButton buttonNext = new GuiButton(this.page, this.guiLeft + 209, this.guiTop + 172, 20, 20, ">");
+			GuiButton buttonBack = new GuiButton(this.page - 2, this.guiLeft + 13, this.guiTop + 172, 20, 20, "<");
+			this.buttonList.add(buttonBack);
+			this.buttonList.add(buttonNext);
+
+			if (crafter.invs.size() == page) {
+				buttonNext.enabled = false;
 			}
-			if (crafter.invs.size() > page) {
-				this.buttonList.add(new GuiButton(this.page, this.guiLeft + 209, this.guiTop + 172, 20, 20, ">"));
+			if (page == 1) {
+				buttonBack.enabled = false;
 			}
 		}
 	}
@@ -73,8 +78,13 @@ public class GuiMultiCrafter extends GuiContainer {
 		if (crafter.invs.size() == 0) {
 			drawCenteredString(Minecraft.getMinecraft().fontRenderer, "Multiblock must contain at least 1 storage block", xSize / 2, 75, Color.RED.getRGB());
 		} else {
-			this.drawCenteredString(Minecraft.getMinecraft().fontRenderer, "Page " + page + " of " + crafter.invs.size(), 125, 130, 4210752);
+			this.drawCenteredString(Minecraft.getMinecraft().fontRenderer, "Page " + page + " of " + crafter.invs.size(), 125, 222, 4210752);
 		}
+
+		this.drawCenteredString(Minecraft.getMinecraft().fontRenderer, "Inventory", 69, 130, 4210752);
+		this.drawCenteredString(Minecraft.getMinecraft().fontRenderer, "Multi-Block Crafter", 57, 8, 4210752);
+
+		this.drawCenteredString(Minecraft.getMinecraft().fontRenderer, crafter.speed + " CPUs", 220, 8, 4210752);
 	}
 
 	@Override
