@@ -16,6 +16,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -52,6 +53,9 @@ public class RebornStorage {
 			}
 			return node;
 		});
+
+		//Stops inv sorter from working in the container, fixing possible crashes
+		FMLInterModComms.sendMessage("inventorysorter", "containerblacklist", "me.modmuss50.rebornstorage.client.gui.ContainerMultiCrafter");
 
 	}
 
