@@ -47,7 +47,7 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 	public BlockMultiCrafter() {
 		super(Material.IRON);
 		setCreativeTab(CreativeTabRebornStorage.INSTANCE);
-		setUnlocalizedName(ModInfo.MOD_ID + ".multicrafter");
+		setTranslationKey(ModInfo.MOD_ID + ".multicrafter");
 		this.setDefaultState(this.getStateFromMeta(0));
 		setHardness(2F);
 	}

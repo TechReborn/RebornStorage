@@ -62,7 +62,7 @@ archivesBaseName = "${config.mod_name}-${config.minecraft_version}"
 minecraft {
     version = "${config.forge_version}"
     runDir = "run"
-    mappings = "snapshot_20171003"
+    mappings = "stable_39"
     replace '@VERSION@', project.version
 }
 
@@ -70,7 +70,7 @@ dependencies {
     deobfCompile ('RebornCore:RebornCore-1.12.2:+:universal'){
 		transitive = false
 	}
-    deobfCompile ('refinedstorage:refinedstorage:1.6.1-+'){
+    deobfCompile ('refinedstorage:refinedstorage:1.6.12-+'){
 		transitive = false
 	}
 }

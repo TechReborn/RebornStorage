@@ -52,7 +52,6 @@ public class PacketGui implements INetworkPacket<PacketGui> {
 		if(tileEntity instanceof TileMultiCrafter){
 			TileMultiCrafter tileMultiCrafter = (TileMultiCrafter) tileEntity;
 			tileMultiCrafter.updateLastPage(page);
-			NetworkManager.sendToPlayer(new PacketSendPageName(tileMultiCrafter.getMultiBlock().pageNameMap.getOrDefault(page, "")), (EntityPlayerMP) player);
 		}
 		player.openGui(RebornStorage.INSTANCE, GuiHandler.MULTI_CRAFTER_BASEPAGE + page, player.world, blockPos.getX(), blockPos.getY(), blockPos.getZ());
 	}

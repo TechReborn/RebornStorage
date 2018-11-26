@@ -16,7 +16,8 @@ public class CreativeTabRebornStorage extends CreativeTabs {
 	}
 
 	@Override
-	public ItemStack getTabIconItem() {
+	public ItemStack createIcon() {
 		return new ItemStack(ModBlocks.BLOCK_MULTI_CRAFTER);
 	}
+
 }

@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class ItemRebornStorageCell extends ItemRebornStorageCellBase {
 
 	public ItemRebornStorageCell() {
-		this.setUnlocalizedName(ModInfo.MOD_ID + ".storagecell");
+		this.setTranslationKey(ModInfo.MOD_ID + ".storagecell");
 		this.setHasSubtypes(true);
 		this.setRegistryName(ModInfo.MOD_ID, "storagecell");
 	}
@@ -31,17 +31,17 @@ public class ItemRebornStorageCell extends ItemRebornStorageCellBase {
 	}
 
 	@Override
-	public String getUnlocalizedName() {
+	public String getTranslationKey() {
 		return "item." + ModInfo.MOD_ID + ":" + "storagecell";
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemStack) {
+	public String getTranslationKey(ItemStack itemStack) {
 		int meta = itemStack.getItemDamage();
 		if (meta < 0 || meta >= EnumItemStorage.values().length) {
 			meta = 0;
 		}
-		return super.getUnlocalizedName() + "." + EnumItemStorage.getById(meta).getName().toLowerCase();
+		return super.getTranslationKey() + "." + EnumItemStorage.getById(meta).getName().toLowerCase();
 	}
 
 	@Override

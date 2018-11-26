@@ -12,7 +12,7 @@ public class ItemStoragePart extends ItemBase {
 	public static final String[] types = new String[] { "256k", "1024k", "4096k", "16384k", "16384k_fluid", "32768k_fluid", "131m_fluid", "524m_fluid" };
 
 	public ItemStoragePart() {
-		setUnlocalizedName(ModInfo.MOD_ID + ".storagepart");
+		setTranslationKey(ModInfo.MOD_ID + ".storagepart");
 		setHasSubtypes(true);
 		setRegistryName("storagepart");
 	}
@@ -27,11 +27,11 @@ public class ItemStoragePart extends ItemBase {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemStack) {
+	public String getTranslationKey(ItemStack itemStack) {
 		int meta = itemStack.getItemDamage();
 		if (meta < 0 || meta >= types.length) {
 			meta = 0;
 		}
-		return super.getUnlocalizedName() + "." + types[meta];
+		return super.getTranslationKey() + "." + types[meta];
 	}
 }

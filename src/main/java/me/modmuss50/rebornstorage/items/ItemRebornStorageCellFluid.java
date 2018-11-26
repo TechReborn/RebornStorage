@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class ItemRebornStorageCellFluid extends ItemRebornStorageCellBase {
 
 	public ItemRebornStorageCellFluid() {
-		setUnlocalizedName(ModInfo.MOD_ID + ".storagecellfluid");
+		setTranslationKey(ModInfo.MOD_ID + ".storagecellfluid");
 		setHasSubtypes(true);
 		setRegistryName("storagecellfluid");
 	}
@@ -31,12 +31,12 @@ public class ItemRebornStorageCellFluid extends ItemRebornStorageCellBase {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemStack) {
+	public String getTranslationKey(ItemStack itemStack) {
 		int meta = itemStack.getItemDamage();
 		if (meta < 0 || meta >= EnumFluidStorage.values().length) {
 			meta = 0;
 		}
-		return super.getUnlocalizedName() + "." + EnumFluidStorage.getById(meta).getName().toLowerCase();
+		return super.getTranslationKey() + "." + EnumFluidStorage.getById(meta).getName().toLowerCase();
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import com.raoulvdberge.refinedstorage.inventory.item.ItemHandlerBase;
 import com.raoulvdberge.refinedstorage.inventory.listener.ListenerNetworkNode;
 import com.raoulvdberge.refinedstorage.util.StackUtils;
 import me.modmuss50.rebornstorage.RebornStorage;
+import me.modmuss50.rebornstorage.lib.ModInfo;
 import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +22,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import reborncore.RebornCore;
+import reborncore.common.registration.RebornRegistry;
+import reborncore.common.registration.impl.ConfigRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,6 +33,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+@RebornRegistry(modID = ModInfo.MOD_ID)
 public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	World world;
@@ -39,6 +43,9 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	INetwork network;
 	int ticks = 0;
 	private UUID uuid;
+
+	@ConfigRegistry(comment = "This is the crafting speed of the cpus, the higher the number the more crafting cpus will be needed to achieve greater speeds")
+	public static int craftingSpeed = 15;
 
 	// An item handler that caches the first available and last used slots.
 	public abstract class CachingItemHandler extends ItemHandlerBase {
@@ -252,7 +259,20 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	}
 
 	@Override
-	public int getSpeedUpgradeCount() {
+	public int getUpdateInterval() {
+		return Math.max(craftingSpeed - getCraftingCpus(), 1);
+	}
+
+	@Override
+	public int getMaximumSuccessfulCraftingUpdates() {
+		//Dont do anything if we have less cpus than the craftings speed
+		if(getCraftingCpus() < craftingSpeed){
+			return 1;
+		}
+		return Math.max(getCraftingCpus() / Math.max(craftingSpeed, 1), 1);
+	}
+
+	public int getCraftingCpus() {
 		if (!isValidMultiBlock()) {
 			return 0;
 		}
