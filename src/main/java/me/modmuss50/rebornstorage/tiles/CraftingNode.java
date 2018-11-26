@@ -203,7 +203,10 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	@Override
 	public boolean canUpdate() {
-		return true;
+		if (network != null) {
+			return network.canRun();
+		}
+		return false;
 	}
 
 	@Nullable
