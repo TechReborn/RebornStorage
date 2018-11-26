@@ -1,14 +1,21 @@
 package me.modmuss50.rebornstorage.items;
 
+import com.raoulvdberge.refinedstorage.RSItems;
 import com.raoulvdberge.refinedstorage.api.storage.disk.IStorageDisk;
 import com.raoulvdberge.refinedstorage.api.storage.disk.IStorageDiskProvider;
 import com.raoulvdberge.refinedstorage.api.storage.disk.IStorageDiskSyncData;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
+import me.modmuss50.rebornstorage.init.ModItems;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -74,6 +81,28 @@ public abstract class ItemRebornStorageCellBase extends ItemBase implements ISto
 	@Override
 	public boolean isValid(ItemStack disk) {
 		return disk.hasTagCompound() && disk.getTagCompound().hasUniqueId(NBT_ID);
+	}
+
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ItemStack stack = playerIn.getHeldItem(handIn);
+		if(!worldIn.isRemote && playerIn.isSneaking()){
+			IStorageDisk disk = API.instance().getStorageDiskManager(worldIn).getByStack(stack);
+			if(disk != null && disk.getStored() == 0){
+				ItemStack part = new ItemStack(ModItems.REBORN_STORAGE_PART, 1, stack.getItemDamage() + (this.getClass() == ItemRebornStorageCellFluid.class ? 4 : 0));
+
+				if (!playerIn.inventory.addItemStackToInventory(part.copy())) {
+					InventoryHelper.spawnItemStack(worldIn, playerIn.getPosition().getX(), playerIn.getPosition().getY(), playerIn.getPosition().getZ(), part);
+				}
+
+				API.instance().getStorageDiskManager(worldIn).remove(getId(stack));
+				API.instance().getStorageDiskManager(worldIn).markForSaving();
+
+				return new ActionResult<>(EnumActionResult.SUCCESS, new ItemStack(RSItems.STORAGE_HOUSING));
+			}
+
+		}
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
 
 }
