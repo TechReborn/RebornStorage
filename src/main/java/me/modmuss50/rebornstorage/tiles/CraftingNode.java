@@ -10,6 +10,7 @@ import com.raoulvdberge.refinedstorage.inventory.item.ItemHandlerBase;
 import com.raoulvdberge.refinedstorage.inventory.listener.ListenerNetworkNode;
 import com.raoulvdberge.refinedstorage.util.StackUtils;
 import me.modmuss50.rebornstorage.RebornStorage;
+import me.modmuss50.rebornstorage.RebornStorageEventHandler;
 import me.modmuss50.rebornstorage.lib.ModInfo;
 import me.modmuss50.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.minecraft.item.ItemStack;
@@ -43,6 +44,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	INetwork network;
 	int ticks = 0;
 	private UUID uuid;
+	private TileEntity cachedTile = null;
 
 	@ConfigRegistry(comment = "This is the crafting speed of the cpus, the higher the number the more crafting cpus will be needed to achieve greater speeds")
 	public static int craftingSpeed = 15;
@@ -146,7 +148,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		}
 
 		if (getNetwork() != null) {
-			getNetwork().getCraftingManager().rebuild();
+			RebornStorageEventHandler.queue(network.getCraftingManager());
 		}
 
 	}
@@ -157,17 +159,19 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 				.forEach((task) -> network.getCraftingManager().cancel(task.getId()));
 			actualPatterns.clear();
 		}
-		network.getCraftingManager().rebuild();
+		RebornStorageEventHandler.queue(network.getCraftingManager());
 	}
 
 	@Nullable
 	public TileMultiCrafter getTile() {
-		TileEntity tileEntity = world.getTileEntity(pos);
-		if(tileEntity instanceof TileMultiCrafter){
-			return (TileMultiCrafter) tileEntity;
+		if(this.cachedTile == null){
+			cachedTile = world.getTileEntity(pos);
+		}
+		if(cachedTile instanceof TileMultiCrafter){
+			return (TileMultiCrafter) cachedTile;
 		}
 		//TODO have a way for users to see this?
-		RebornCore.logHelper.debug(tileEntity + " is not an instance of TileMultiCrafter, this is an error and your RebornStorage multiblock may not work. Please report to the mod author");
+		RebornCore.logHelper.debug(cachedTile + " is not an instance of TileMultiCrafter, this is an error and your RebornStorage multiblock may not work. Please report to the mod author");
 		return null;
 	}
 
