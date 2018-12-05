@@ -44,7 +44,6 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	INetwork network;
 	int ticks = 0;
 	private UUID uuid;
-	private TileEntity cachedTile = null;
 
 	@ConfigRegistry(comment = "This is the crafting speed of the cpus, the higher the number the more crafting cpus will be needed to achieve greater speeds")
 	public static int craftingSpeed = 15;
@@ -118,7 +117,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 			}
 
 			if (network != null) {
-				network.getCraftingManager().rebuild();
+				RebornStorageEventHandler.queue(network.getCraftingManager());
 			}
 		}
 
@@ -164,14 +163,12 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	@Nullable
 	public TileMultiCrafter getTile() {
-		if(this.cachedTile == null){
-			cachedTile = world.getTileEntity(pos);
-		}
-		if(cachedTile instanceof TileMultiCrafter){
-			return (TileMultiCrafter) cachedTile;
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if(tileEntity instanceof TileMultiCrafter){
+			return (TileMultiCrafter) tileEntity;
 		}
 		//TODO have a way for users to see this?
-		RebornCore.logHelper.debug(cachedTile + " is not an instance of TileMultiCrafter, this is an error and your RebornStorage multiblock may not work. Please report to the mod author");
+		RebornCore.logHelper.debug(tileEntity + " is not an instance of TileMultiCrafter, this is an error and your RebornStorage multiblock may not work. Please report to the mod author");
 		return null;
 	}
 
