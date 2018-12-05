@@ -29,6 +29,7 @@ import reborncore.common.registration.impl.ConfigRegistry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -44,10 +45,14 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	INetwork network;
 	int ticks = 0;
 	private UUID uuid;
+	private boolean needsRebuild = false;
 
 	@ConfigRegistry(comment = "This is the crafting speed of the cpus, the higher the number the more crafting cpus will be needed to achieve greater speeds")
 	public static int craftingSpeed = 15;
 
+
+	@ConfigRegistry(comment = "The number of seconds between a pattern rebuild when inserting items, a higher number will reduce the load on the server, but patterns may take longer to show")
+	public static int invUpdateTime = 5;
 
 
 	// An item handler that caches the first available and last used slots.
@@ -55,6 +60,8 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		private int firstAvailable = 0;
 		private int lastUsed = -1;
 		protected CraftingNode craftingNode;
+
+		protected HashMap<Integer, ICraftingPattern> craftingPatternMap = new HashMap<>();
 
 		public CachingItemHandler(CraftingNode craftingNode, int size, @Nullable Consumer<Integer> listener, Predicate<ItemStack>... validators) {
 			super(size, listener, validators);
@@ -90,6 +97,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 			for (int i = slot; i == lastUsed && i >= 0 && getStackInSlot(i).isEmpty(); i--) {
 				lastUsed = i - 1;
 			}
+			craftingPatternMap.remove(slot); //When the slot changes un cache it
 		}
 
 		public int getFirstAvailable() {
@@ -113,12 +121,8 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		@Override
 		protected void onContentsChanged(int slot) {
 			super.onContentsChanged(slot);
-
 			markDirty();
-
-			if (!world.isRemote) {
-				rebuildPatterns("inv slot change");
-			}
+			needsRebuild = true;
 		}
 
 		@Override
@@ -135,14 +139,25 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	public void rebuildPatterns(String reason) {
 		this.actualPatterns.clear();
 		if (!world.isRemote && isValidMultiBlock()) {
-			for (int i = 0; i < patterns.getSlots(); i++) {
-				ItemStack stack = patterns.getStackInSlot(i);
-				if (!stack.isEmpty() && stack.getItem() instanceof ICraftingPatternProvider) {
-					ICraftingPattern pattern = ((ICraftingPatternProvider) stack.getItem()).create(world, stack, this);
-					if (pattern.isValid()) {
-						actualPatterns.add(pattern);
+			if(!patterns.isEmpty()){
+				for (int i = 0; i < patterns.getSlots(); i++) {
+					ItemStack stack = patterns.getStackInSlot(i);
+					if (!stack.isEmpty() && stack.getItem() instanceof ICraftingPatternProvider) {
+						if(patterns.craftingPatternMap.containsKey(i)){
+							actualPatterns.add(patterns.craftingPatternMap.get(i));
+						} else {
+							ICraftingPattern pattern = ((ICraftingPatternProvider) stack.getItem()).create(world, stack, this);
+							if (pattern.isValid()) {
+								actualPatterns.add(pattern);
+								patterns.craftingPatternMap.put(i, pattern);
+							}
+						}
+					} else {
+						patterns.craftingPatternMap.remove(i);
 					}
 				}
+			} else {
+				patterns.craftingPatternMap.clear();
 			}
 		}
 
@@ -228,6 +243,10 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		ticks++;
 		if (ticks == 1) {
 			rebuildPatterns("first tick rebuild");
+		}
+		if(needsRebuild && world.getTotalWorldTime() % (invUpdateTime * 20) == 0){
+			rebuildPatterns("inv slot change");
+			needsRebuild = false;
 		}
 	}
 

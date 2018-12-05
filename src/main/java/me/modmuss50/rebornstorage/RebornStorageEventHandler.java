@@ -27,6 +27,9 @@ public class RebornStorageEventHandler {
 	private static Queue<Pair<ICraftingManager, RebuildReason>> rebuildQueue = new LinkedList<>();
 
 	public static void queue(ICraftingManager craftingManager, CraftingNode node, String reason){
+		if(node.getWorld().isRemote){
+			return;
+		}
 		for(ICraftingManager queued : rebuildQueue.stream().map(Pair::getLeft).collect(Collectors.toList())){
 			if(queued.equals(craftingManager)){
 				return;
@@ -37,7 +40,7 @@ public class RebornStorageEventHandler {
 
 	@SubscribeEvent
 	public static void tick(TickEvent.WorldTickEvent event){
-		if(event.phase == TickEvent.Phase.END && event.world.provider.getDimension() == 0){
+		if(event.phase == TickEvent.Phase.END && event.world.provider.getDimension() == 0 && !event.world.isRemote){
 			Pair<ICraftingManager, RebuildReason> rebuildReasonPair = rebuildQueue.poll();
 			if(rebuildReasonPair != null){
 				if(debugLogging){
