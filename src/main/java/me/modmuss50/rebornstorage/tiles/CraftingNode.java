@@ -48,13 +48,17 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	@ConfigRegistry(comment = "This is the crafting speed of the cpus, the higher the number the more crafting cpus will be needed to achieve greater speeds")
 	public static int craftingSpeed = 15;
 
+
+
 	// An item handler that caches the first available and last used slots.
 	public abstract class CachingItemHandler extends ItemHandlerBase {
 		private int firstAvailable = 0;
 		private int lastUsed = -1;
+		protected CraftingNode craftingNode;
 
-		public CachingItemHandler(int size, @Nullable Consumer<Integer> listener, Predicate<ItemStack>... validators) {
+		public CachingItemHandler(CraftingNode craftingNode, int size, @Nullable Consumer<Integer> listener, Predicate<ItemStack>... validators) {
 			super(size, listener, validators);
+			this.craftingNode = craftingNode;
 		}
 
 		@Override
@@ -105,7 +109,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		}
 	}
 
-	public CachingItemHandler patterns = new CachingItemHandler(6 * 13, new ListenerNetworkNode(this), s -> s.getItem() instanceof ICraftingPatternProvider && ((ICraftingPatternProvider) s.getItem()).create(world, s, this).isValid()) {
+	public CachingItemHandler patterns = new CachingItemHandler(this, 6 * 13, new ListenerNetworkNode(this), s -> s.getItem() instanceof ICraftingPatternProvider && ((ICraftingPatternProvider) s.getItem()).create(world, s, this).isValid()) {
 		@Override
 		protected void onContentsChanged(int slot) {
 			super.onContentsChanged(slot);
@@ -113,11 +117,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 			markDirty();
 
 			if (!world.isRemote) {
-				rebuildPatterns();
-			}
-
-			if (network != null) {
-				RebornStorageEventHandler.queue(network.getCraftingManager());
+				rebuildPatterns("inv slot change");
 			}
 		}
 
@@ -132,7 +132,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		this.pos = pos;
 	}
 
-	public void rebuildPatterns() {
+	public void rebuildPatterns(String reason) {
 		this.actualPatterns.clear();
 		if (!world.isRemote && isValidMultiBlock()) {
 			for (int i = 0; i < patterns.getSlots(); i++) {
@@ -147,18 +147,18 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		}
 
 		if (getNetwork() != null) {
-			RebornStorageEventHandler.queue(network.getCraftingManager());
+			RebornStorageEventHandler.queue(network.getCraftingManager(), this, reason);
 		}
 
 	}
 
-	protected void stateChange(INetwork network, boolean state) {
+	protected void stateChange(INetwork network, boolean state, String reason) {
 		if (!state) {
 			network.getCraftingManager().getTasks()
 				.forEach((task) -> network.getCraftingManager().cancel(task.getId()));
 			actualPatterns.clear();
 		}
-		RebornStorageEventHandler.queue(network.getCraftingManager());
+		RebornStorageEventHandler.queue(network.getCraftingManager(), this, reason);
 	}
 
 	@Nullable
@@ -198,15 +198,15 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	@Override
 	public void onConnected(INetwork iNetwork) {
 		this.network = iNetwork;
-		stateChange(network, true);
-		rebuildPatterns();
+		stateChange(network, true, "connected to network");
+		rebuildPatterns("connected to network");
 	}
 
 	@Override
 	public void onDisconnected(INetwork iNetwork) {
 		this.network = null;
 		actualPatterns.clear();
-		stateChange(iNetwork, true);
+		stateChange(iNetwork, true, "disconnected from network");
 	}
 
 	@Override
@@ -227,7 +227,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	public void update() {
 		ticks++;
 		if (ticks == 1) {
-			rebuildPatterns();
+			rebuildPatterns("first tick rebuild");
 		}
 	}
 

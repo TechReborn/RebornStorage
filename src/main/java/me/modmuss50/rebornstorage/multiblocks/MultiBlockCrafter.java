@@ -48,10 +48,10 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
 	@Override
 	protected void onMachineAssembled() {
-		updateInfo();
+		updateInfo("machineAssembled");
 	}
 
-	public void updateInfo() {
+	public void updateInfo(String reason) {
 		speed = 0;
 		pages = 0;
 		invs.clear();
@@ -73,7 +73,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	            */
 				//				tile.page = Optional.of(pages);
 				//				invs.put(pages, tile.inv);
-				tile.getNode().rebuildPatterns();
+				tile.getNode().rebuildPatterns(reason);
 				if (tile.page.isPresent()) {
 					collector.put(tile.page.get(), tile);
 				} else {
@@ -114,7 +114,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 	protected void onMachineDisassembled() {
 		for (IMultiblockPart part : connectedParts) {
 			TileMultiCrafter tile = (TileMultiCrafter) part;
-			tile.getNode().rebuildPatterns();
+			tile.getNode().rebuildPatterns("machine disassembled");
 		}
 	}
 

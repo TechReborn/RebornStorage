@@ -69,12 +69,12 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
 	@Override
 	public void onMachineActivated() {
-		getNode().rebuildPatterns();
+		getNode().rebuildPatterns("machine activated");
 	}
 
 	@Override
 	public void onMachineDeactivated() {
-		getNode().rebuildPatterns();
+		getNode().rebuildPatterns("machine deactivated");
 	}
 
 	public String getVarient() {
