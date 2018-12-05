@@ -27,7 +27,6 @@ public class RebornStorageEventHandler {
 		if(event.phase == TickEvent.Phase.END && event.world.provider.getDimension() == 0){
 			ICraftingManager manager = rebuildQueue.poll();
 			if(manager != null){
-				System.out.println("Rebuilding");
 				manager.rebuild();
 			}
 		}

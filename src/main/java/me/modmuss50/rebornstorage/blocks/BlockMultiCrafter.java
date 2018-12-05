@@ -151,7 +151,7 @@ public class BlockMultiCrafter extends BlockMultiblockBase {
 		INetworkNode node = manager.getNode(pos);
 		manager.removeNode(pos);
 		manager.markForSaving();
-		if (node.getNetwork() != null) {
+		if (node != null && node.getNetwork() != null) {
 			node.getNetwork().getNodeGraph().rebuild();
 		}
 
