@@ -112,6 +112,7 @@ public class ModRecipes {
 			'R', Items.REDSTONE,
 			'I', new ItemStack(RSItems.QUARTZ_ENRICHED_IRON, 1),
 			'C', in);
+		RebornCraftingHelper.addShapelessRecipe(out, new ItemStack(RSItems.STORAGE_HOUSING, 1), in);
 	}
 
 	static void registerMultiblockRecipes() {
