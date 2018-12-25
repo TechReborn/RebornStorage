@@ -1,0 +1,32 @@
+itemGroup.rebornstorage=Reborn Storage
+
+#Items Disks
+item.rebornstorage.storagecell.256k.name=256k Speicherzelle
+item.rebornstorage.storagecell.1024k.name=1024k Speicherzelle
+item.rebornstorage.storagecell.4096k.name=4096k Speicherzelle
+item.rebornstorage.storagecell.16384k.name=16384k Speicherzelle
+
+#Fluid Disks
+item.rebornstorage.storagecellfluid.16384k.name=16384k Flüssigspeicherzelle
+item.rebornstorage.storagecellfluid.32768k.name=32768k Flüssigspeicherzelle
+item.rebornstorage.storagecellfluid.131m.name=131m Flüssigspeicherzelle
+item.rebornstorage.storagecellfluid.524m.name=524m Flüssigspeicherzelle
+
+#Storage Parts
+item.rebornstorage.storagepart.256k.name=256k Speicherkern
+item.rebornstorage.storagepart.1024k.name=1024k Speicherkern
+item.rebornstorage.storagepart.4096k.name=4096k Speicherkern
+item.rebornstorage.storagepart.16384k.name=16384k Speicherkern
+
+#Fluid Storage Parts
+item.rebornstorage.storagepart.16384k_fluid.name=16384k Flüssigspeicherkern
+item.rebornstorage.storagepart.32768k_fluid.name=32768k Flüssigspeicherkern
+item.rebornstorage.storagepart.131m_fluid.name=131m Flüssigspeicherkern
+item.rebornstorage.storagepart.524m_fluid.name=524m Flüssigspeicherkern
+
+#Blocks
+tile.rebornstorage.multicrafter.heat.name=Wärmeableiter
+tile.rebornstorage.multicrafter.frame.name=Handwerk-Gerüst
+tile.rebornstorage.multicrafter.cpu.name=Handwerk-Hauptprozessor
+tile.rebornstorage.multicrafter.storage.name=Handwerk-Speicher
+tile.rebornstorage.multicrafter.io.name=Eingabe-/Ausgabe Schnittstelle
