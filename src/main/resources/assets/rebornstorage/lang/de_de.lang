@@ -26,7 +26,7 @@ item.rebornstorage.storagepart.524m_fluid.name=524m Flüssigspeicherkern
 
 #Blocks
 tile.rebornstorage.multicrafter.heat.name=Wärmeableiter
-tile.rebornstorage.multicrafter.frame.name=Handwerk-Gerüst
+tile.rebornstorage.multicrafter.frame.name=Handwerk-Gehäuse
 tile.rebornstorage.multicrafter.cpu.name=Handwerk-Hauptprozessor
 tile.rebornstorage.multicrafter.storage.name=Handwerk-Speicher
 tile.rebornstorage.multicrafter.io.name=Eingabe-/Ausgabe Schnittstelle
