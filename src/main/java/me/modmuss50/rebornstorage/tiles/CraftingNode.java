@@ -46,13 +46,18 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	int ticks = 0;
 	private UUID uuid;
 	private boolean needsRebuild = false;
-
+	private boolean isValid;
+	private int speed = -1;
 	@ConfigRegistry(comment = "This is the crafting speed of the cpus, the higher the number the more crafting cpus will be needed to achieve greater speeds")
 	public static int craftingSpeed = 15;
 
 
 	@ConfigRegistry(comment = "The number of seconds between a pattern rebuild when inserting items, a higher number will reduce the load on the server, but patterns may take longer to show")
 	public static int invUpdateTime = 5;
+
+	public void invalidate() {
+		isValid = false;
+	}
 
 
 	// An item handler that caches the first available and last used slots.
@@ -188,6 +193,9 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	}
 
 	public boolean isValidMultiBlock() {
+		if(isValid){
+			return true;
+		}
 		TileMultiCrafter tileMultiCrafter = getTile();
 		if (tileMultiCrafter == null) {
 			return false;
@@ -196,7 +204,10 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		if (multiBlockCrafter == null) {
 			return false;
 		}
-		return multiBlockCrafter.isAssembled();
+		isValid = multiBlockCrafter.isAssembled();
+
+		return isValid;
+
 	}
 
 	@Override
@@ -293,12 +304,15 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 	}
 
 	public int getCraftingCpus() {
+		if (isValid && speed != -1) {
+			return speed;
+		}
 		if (!isValidMultiBlock()) {
 			return 0;
 		}
-		return getTile().getMultiBlock().speed;
+		speed = getTile().getMultiBlock().speed;
+		return speed;
 	}
-
 	@Override
 	public IItemHandler getConnectedInventory() {
 		return null;

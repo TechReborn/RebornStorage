@@ -115,6 +115,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 		for (IMultiblockPart part : connectedParts) {
 			TileMultiCrafter tile = (TileMultiCrafter) part;
 			tile.getNode().rebuildPatterns("machine disassembled");
+			tile.getNode().invalidate();
 		}
 	}
 
