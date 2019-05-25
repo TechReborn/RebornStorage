@@ -143,7 +143,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	public void rebuildPatterns(String reason) {
 		this.actualPatterns.clear();
-		if (!world.isRemote && isValidMultiBlock()) {
+		if (!world.isRemote && isValidMultiBlock(true)) {
 			if(!patterns.isEmpty()){
 				for (int i = 0; i < patterns.getSlots(); i++) {
 					ItemStack stack = patterns.getStackInSlot(i);
@@ -192,8 +192,9 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		return null;
 	}
 
-	public boolean isValidMultiBlock() {
-		if(isValid){
+	public boolean isValidMultiBlock(boolean check) {
+
+		if(!check && isValid){
 			return true;
 		}
 		TileMultiCrafter tileMultiCrafter = getTile();
@@ -307,7 +308,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 		if (isValid && speed != -1) {
 			return speed;
 		}
-		if (!isValidMultiBlock()) {
+		if (!isValidMultiBlock(false)) {
 			return 0;
 		}
 		speed = getTile().getMultiBlock().speed;
@@ -346,7 +347,7 @@ public class CraftingNode implements INetworkNode, ICraftingPatternContainer {
 
 	@Override
 	public IItemHandlerModifiable getPatternInventory() {
-	    if(isValidMultiBlock() && getTile().getVarient() != null && getTile().getVarient().equals("storage")) {
+	    if(isValidMultiBlock(true) && getTile().getVarient() != null && getTile().getVarient().equals("storage")) {
             return patterns;
         }
         return null;
