@@ -62,8 +62,8 @@ repositories {
         url = "https://maven.theillusivec4.top/"
     }
     maven {
-        name "JEI"
-        url "https://dvs1.progwml6.com/files/maven"
+        name 'JEI'
+        url 'https://dvs1.progwml6.com/files/maven'
     }
     maven {
         url = uri("https://maven.pkg.github.com/refinedmods/refinedstorage")
@@ -80,8 +80,7 @@ dependencies {
     runtimeOnly fg.deobf("com.refinedmods:refinedstorage:1.10.2") {
         transitive false
     }
-//    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.4.171:api")
-//    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.4.171")
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
 }
 
 tasks.withType(JavaCompile) {
