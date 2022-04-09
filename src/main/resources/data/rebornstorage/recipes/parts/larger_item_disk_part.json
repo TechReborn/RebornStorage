@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DID",
+    "GRG",
+    "DGD"  ],
+  "key": {
+    "G": [
+      {
+        "item": "rebornstorage:large_item_disk_part"
+      }
+    ],
+    "D": [
+      {
+        "item": "refinedstorage:advanced_processor"
+      }
+    ],
+    "I": [
+      {
+        "item": "refinedstorage:quartz_enriched_iron"
+      }
+    ],
+    "R": [
+      {
+        "item": "minecraft:redstone"
+      }
+    ]
+  },
+  "result": {
+    "item": "rebornstorage:larger_item_disk_part"
+  }
+}

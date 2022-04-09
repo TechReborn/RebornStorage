@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GRG",
+    "RPR",
+    "III"  ],
+  "key": {
+    "G": [
+      {
+        "tag": "forge:glass"
+      }
+    ],
+    "R": [
+      {
+        "item": "minecraft:redstone"
+      }
+    ],
+    "I": [
+      {
+        "item": "refinedstorage:quartz_enriched_iron"
+      }
+    ],
+    "P": [
+      {
+        "item": "rebornstorage:small_item_disk_part"
+      }
+    ]
+  },
+  "result": {
+    "item": "rebornstorage:small_item_disk"
+  }
+}
