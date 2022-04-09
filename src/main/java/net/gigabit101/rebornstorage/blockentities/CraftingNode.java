@@ -25,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -205,14 +206,25 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
     }
 
     @Override
-    public int getEnergyUsage() {
-        return 1;
+    public int getEnergyUsage()
+    {
+        if(getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get()) return 0;
+        if(getBlock() == ModBlocks.BLOCK_MULTI_HEAT.get()) return 0;
+        if(getBlock() == ModBlocks.BLOCK_MULTI_CPU.get()) return (5 * getCraftingCpus());
+        if(getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get()) return (10 * getStorage());
+
+        return 0;
+    }
+
+    public Block getBlock()
+    {
+        return getTile().getBlockState().getBlock();
     }
 
     @Nonnull
     @Override
     public ItemStack getItemStack() {
-        return new ItemStack(ModItems.BLOCK_MULTI_FRAME_ITEM.get(), 1);
+        return new ItemStack(getBlock());
     }
 
     @Override
@@ -334,6 +346,14 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
         }
         speed = getTile().getMultiBlock().speed;
         return speed;
+    }
+
+    public int getStorage()
+    {
+        if(!isValidMultiBlock(false)) {
+            return 0;
+        }
+        return getTile().getMultiBlock().pages;
     }
 
     @Override
