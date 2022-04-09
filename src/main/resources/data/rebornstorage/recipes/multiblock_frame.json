@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MBM",
+    "BSB",
+    "MBM"  ],
+  "key": {
+    "M": [
+      {
+        "item": "refinedstorage:machine_casing"
+      }
+    ],
+    "S": [
+      {
+        "item": "refinedstorage:silicon"
+      }
+    ],
+    "B": [
+      {
+        "item": "refinedstorage:improved_processor"
+      }
+    ]
+  },
+  "result": {
+    "item": "rebornstorage:multiblock_frame",
+    "count": 6
+  }
+}

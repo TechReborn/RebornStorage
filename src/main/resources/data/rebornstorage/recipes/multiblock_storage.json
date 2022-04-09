@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FCF",
+    "SAS",
+    "FSF"  ],
+  "key": {
+    "F": [
+      {
+        "item": "rebornstorage:multiblock_frame"
+      }
+    ],
+    "C": [
+      {
+        "item": "minecraft:chest"
+      }
+    ],
+    "S": [
+      {
+        "item": "refinedstorage:1k_storage_part"
+      }
+    ],
+    "A": [
+      {
+        "item": "refinedstorage:advanced_processor"
+      }
+    ]
+  },
+  "result": {
+    "item": "rebornstorage:multiblock_storage"
+  }
+}

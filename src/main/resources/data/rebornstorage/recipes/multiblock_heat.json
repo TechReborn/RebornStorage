@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FIF",
+    "ISI",
+    "FIF"  ],
+  "key": {
+    "F": [
+      {
+        "item": "rebornstorage:multiblock_frame"
+      }
+    ],
+    "I": [
+      {
+        "item": "refinedstorage:quartz_enriched_iron"
+      }
+    ],
+    "S": [
+      {
+        "item": "refinedstorage:silicon"
+      }
+    ]
+  },
+  "result": {
+    "item": "rebornstorage:multiblock_heat"
+  }
+}

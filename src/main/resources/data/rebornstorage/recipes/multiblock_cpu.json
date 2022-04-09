@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FAF",
+    "SCS",
+    "FAF"  ],
+  "key": {
+    "F": [
+      {
+        "item": "rebornstorage:multiblock_frame"
+      }
+    ],
+    "A": [
+      {
+        "item": "refinedstorage:advanced_processor"
+      }
+    ],
+    "C": [
+      {
+        "item": "minecraft:crafting_table"
+      }
+    ],
+    "S": [
+      {
+        "item": "refinedstorage:crafting_upgrade"
+      }
+    ]
+  },
+  "result": {
+    "item": "rebornstorage:multiblock_cpu"
+  }
+}
