@@ -50,7 +50,7 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
     private boolean isValid;
     private int speed = -1;
 
-    public static int craftingSpeed = 15;
+    public static int craftingSpeed = 5;
     public static int invUpdateTime = 5;
 
     public CraftingNode(Level level, BlockPos pos) {
@@ -330,10 +330,6 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
 
     @Override
     public int getMaximumSuccessfulCraftingUpdates() {
-        //Dont do anything if we have less cpus than the craftings speed
-        if (getCraftingCpus() < craftingSpeed) {
-            return 1;
-        }
         return Math.max(getCraftingCpus() / Math.max(craftingSpeed, 1), 1);
     }
 
