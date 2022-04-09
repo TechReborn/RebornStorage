@@ -1,11 +1,14 @@
 package net.gigabit101.rebornstorage;
 
 import com.refinedmods.refinedstorage.api.autocrafting.ICraftingManager;
+import com.refinedmods.refinedstorage.apiimpl.API;
+import com.refinedmods.refinedstorage.util.StackUtils;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockRegistry;
 import net.gigabit101.rebornstorage.blockentities.CraftingNode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.lang3.tuple.Pair;
@@ -30,6 +33,16 @@ public class RebornStorageEventHandler {
             }
         }
 		rebuildQueue.add(Pair.of(craftingManager, new RebuildReason(node.getPos(), node.getLevel().dimension().getRegistryName(), reason)));
+    }
+
+    @SubscribeEvent
+    public static void worldLoad(WorldEvent.Load event)
+    {
+        API.instance().getNetworkNodeRegistry().add(Constants.MULTI_BLOCK_ID, (tag, world, pos) -> {
+            CraftingNode node = new CraftingNode(world, pos);
+            StackUtils.readItems(node.patterns, 0, tag);
+            return node;
+        });
     }
 
 	@SubscribeEvent

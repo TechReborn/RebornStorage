@@ -103,6 +103,7 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
                 lastUsed = i - 1;
             }
             craftingPatternMap.remove(slot); //When the slot changes un cache it
+
         }
 
         public int getFirstAvailable() {
@@ -123,10 +124,13 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
     }
 
     public CachingItemHandler patterns = new CachingItemHandler(6 * 13) {
+
         @Override
         protected void onContentsChanged(int slot) {
             super.onContentsChanged(slot);
-            markDirty();
+            if(network != null) {
+                markDirty();
+            }
             needsRebuild = true;
         }
 
@@ -253,6 +257,12 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
     public CompoundTag write(CompoundTag nbtTagCompound) {
         StackUtils.writeItems(patterns, 0, nbtTagCompound);
         return nbtTagCompound;
+    }
+
+    @Override
+    public void read(CompoundTag tag) {
+        StackUtils.readItems(patterns, 0, tag);
+        super.read(tag);
     }
 
     @Override

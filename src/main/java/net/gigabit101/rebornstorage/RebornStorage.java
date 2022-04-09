@@ -1,8 +1,5 @@
 package net.gigabit101.rebornstorage;
 
-import com.refinedmods.refinedstorage.apiimpl.API;
-import com.refinedmods.refinedstorage.util.StackUtils;
-import net.gigabit101.rebornstorage.blockentities.CraftingNode;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockClientTickHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockEventHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockServerTickHandler;
@@ -50,11 +47,6 @@ public class RebornStorage {
     @SubscribeEvent
     public void preInit(FMLCommonSetupEvent event) {
         PacketHandler.register();
-        API.instance().getNetworkNodeRegistry().add(Constants.MULTI_BLOCK_ID, (tag, world, pos) -> {
-            CraftingNode node = new CraftingNode(world, pos);
-            StackUtils.readItems(node.patterns, 0, tag);
-            return node;
-        });
     }
 
     @SubscribeEvent
