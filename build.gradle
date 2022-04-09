@@ -1,134 +1,105 @@
-
-// For those who want the bleeding edge
 buildscript {
     repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1+', changing: true
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+
+apply plugin: 'net.minecraftforge.gradle'
+//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+
+version = "${project.mc_version}-${project.mod_version}"
+group = "${project.maven_group}"
+archivesBaseName = "${project.mod_id}"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+
+minecraft {
+    mappings channel: 'official', version: '1.18.1'
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                rebornstorage {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                rebornstorage {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
 
 repositories {
     maven {
-        name = "Modmuss50"
-        url = "http://maven.modmuss50.me/"
+        url = "https://dvs1.progwml6.com/files/maven/"
     }
-    maven { // The repo from which to get waila
-        name "Mobius Repo"
-        url "http://mobiusstrip.eu/maven"
-    }
-	maven {
-		name "Raoulvdberge"
-		url  "https://repo.raoulvdberge.com/"
-	}
-	maven {
-		name = "Amadornes"
-		url "http://maven.amadornes.com/"
-	}
     maven {
-        name "progwml"
-        url "http://dvs1.progwml6.com/files/maven"
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
     }
-}
-
-// define the properties file
-ext.configFile = file "project.properties"
-
-configFile.withReader {
-    // read config.  it shall from now on be referenced as simply config or as project.config
-    def prop = new Properties()
-    prop.load(it)
-    project.ext.config = new ConfigSlurper().parse prop
-}
-
-version = "${config.mod_version}"
-def ENV = System.getenv()
-if (ENV.BUILD_NUMBER) {
-	version = version + "." + "${System.getenv().BUILD_NUMBER}"
-}
-
-group = "${config.group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "${config.mod_name}-${config.minecraft_version}"
-
-minecraft {
-    version = "${config.forge_version}"
-    runDir = "run"
-    mappings = "stable_39"
-    replace '@VERSION@', project.version
+    maven {
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven {
+        name "JEI"
+        url "https://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        url = uri("https://maven.pkg.github.com/refinedmods/refinedstorage")
+        credentials {
+            username = "anything"
+            password = "\u0067hp_oGjcDFCn8jeTzIj4Ke9pLoEVtpnZMP4VQgaX"
+        }
+    }
 }
 
 dependencies {
-    deobfCompile ('RebornCore:RebornCore-1.12.2:+:universal'){
-		transitive = false
-	}
-    deobfCompile ('refinedstorage:refinedstorage:1.6.12-+'){
-		transitive = false
-	}
+    minecraft "net.minecraftforge:forge:${project.mc_version}-${project.forge_version}"
+    compileOnly "com.refinedmods:refinedstorage:1.10.2"
+    runtimeOnly fg.deobf("com.refinedmods:refinedstorage:1.10.2") {
+        transitive false
+    }
+//    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.4.171:api")
+//    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.4.171")
 }
 
-processResources
-        {
-            // this will ensure that this task is redone when the versions change.
-            inputs.property "version", project.version
-            inputs.property "mcversion", project.minecraft.version
-
-            // replace stuff in mcmod.info, nothing else
-            from(sourceSets.main.resources.srcDirs) {
-                include 'mcmod.info'
-
-                // replace version and mcversion
-                expand 'version':project.version, 'mcversion':project.minecraft.version
-            }
-
-            // copy everything else, thats not the mcmod.info
-            from(sourceSets.main.resources.srcDirs) {
-                exclude 'mcmod.info'
-            }
-        }
-
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'dev'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs = [
+            '-Xlint:deprecation', // deprecation, rawtypes, cast, unchecked, all
+            '-Xlint:unchecked',
+    ]
 }
 
-build.dependsOn deobfJar
-
-
-import groovy.util.XmlSlurper
-import org.apache.commons.io.FileUtils
-
-task curseTools {
-	doLast {
-		def cacheFiles = new File(".gradle/curseTools")
-		if (!cacheFiles.exists()) {
-			cacheFiles.mkdirs()
-		}
-
-		def mavenMetadata = new File(cacheFiles, "maven-metadata.xml")
-
-		logger.lifecycle(":downloading curseTools metadata")
-		FileUtils.copyURLToFile(new URL("http://maven.modmuss50.me/CurseTools/CurseTools/maven-metadata.xml"), mavenMetadata)
-
-		def metadata = new XmlSlurper().parseText(FileUtils.readFileToString(mavenMetadata))
-		def curseToolsVersion = metadata.versioning.release
-
-		def curseTools = new File(cacheFiles, "${curseToolsVersion}.jar")
-
-		logger.lifecycle(":downloading CurseTools")
-		FileUtils.copyURLToFile(new URL("http://maven.modmuss50.me/CurseTools/CurseTools/${curseToolsVersion}/CurseTools-${curseToolsVersion}.jar"), curseTools)
-
-		logger.lifecycle(":launching CurseTools")
-		ant.java(jar: curseTools.getAbsolutePath(), fork: true, spawn: false) {
-			arg(value: jar.archivePath.getAbsolutePath())
-			arg(value: deobfJar.archivePath.getAbsolutePath())
-		}
-	}
+jar {
+    manifest {
+        attributes(["Specification-Title": archivesBaseName,
+                    "Specification-Vendor": "gigabit101",
+                    "Specification-Version": "${project.mod_version}",
+                    "Implementation-Title": archivesBaseName,
+                    "Implementation-Version": "${project.mod_version}",
+                    "Implementation-Vendor" :"gigabit101",
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
+    }
 }

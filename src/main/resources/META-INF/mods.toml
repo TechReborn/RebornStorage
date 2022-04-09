@@ -1,0 +1,25 @@
+modLoader="javafml" #mandatory
+loaderVersion="[40,]" #mandatory
+license="GNU General Public License v3.0"
+credits="" #optional
+authors="gigabit101" #optional
+[[mods]] #mandatory
+    modId="rebornstorage" #mandatory
+    version="${file.jarVersion}" #mandatory
+    displayName="RebornStorage" #mandatory
+    description='''
+'''
+
+[[dependencies.rebornstorage]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18.2]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.rebornstorage]]
+    modId="refinedstorage"
+    mandatory=true
+    versionRange="[1.10.2,)"
+    ordering="AFTER"
+    side="BOTH"

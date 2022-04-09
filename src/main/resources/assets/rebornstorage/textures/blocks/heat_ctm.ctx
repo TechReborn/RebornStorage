@@ -1,7 +1,0 @@
-{
-	"type":"CTM",
-	"textures":[
-        "./heat",
-        "./heat_ctm"
-    ]
-}

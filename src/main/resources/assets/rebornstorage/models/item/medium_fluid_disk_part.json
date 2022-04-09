@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "rebornstorage:items/parts/medium_fluid_disk_part"
+  }
+}
