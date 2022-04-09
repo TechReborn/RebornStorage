@@ -16,8 +16,8 @@ import net.minecraftforge.items.IItemHandler;
 
 import java.util.Objects;
 
-public class ContainerMultiCrafter extends AbstractContainerMenu {
-    MultiBlockCrafter crafter;
+public class ContainerMultiCrafter extends ContainerBase {
+    public MultiBlockCrafter crafter;
     public BlockPos blockPos;
 
     public ContainerMultiCrafter(int id, Inventory playerInv, FriendlyByteBuf extraData) {
@@ -44,22 +44,6 @@ public class ContainerMultiCrafter extends AbstractContainerMenu {
                 this.addSlot(new SlotFiltered(handler, i, 9 + j1 * 18, 21 + l * 18));
                 i++;
             }
-        }
-    }
-
-    public void drawPlayersInv(Inventory player, int x, int y) {
-        int i;
-        for (i = 0; i < 3; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(player, j + i * 9 + 9, x + j * 18, y + i * 18));
-            }
-        }
-    }
-
-    public void drawPlayersHotBar(Inventory player, int x, int y) {
-        int i;
-        for (i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(player, i, x + i * 18, y));
         }
     }
 
