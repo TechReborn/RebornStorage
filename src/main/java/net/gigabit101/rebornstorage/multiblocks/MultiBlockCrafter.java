@@ -1,10 +1,10 @@
 package net.gigabit101.rebornstorage.multiblocks;
 
+import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.gigabit101.rebornstorage.core.multiblock.IMultiblockPart;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockControllerBase;
 import net.gigabit101.rebornstorage.core.multiblock.rectangular.RectangularMultiblockControllerBase;
 import net.gigabit101.rebornstorage.init.ModBlocks;
-import net.gigabit101.rebornstorage.tiles.TileMultiCrafter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.ItemStackHandler;
@@ -45,7 +45,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
     public void updateInfo(String reason) {
         speed = 0;
         pages = 0;
-        TreeMap<Integer, TileMultiCrafter> collector = new TreeMap<>();
+        TreeMap<Integer, BlockEntityMultiCrafter> collector = new TreeMap<>();
         int append = 2745;
         /*	we ned to collect all storages first and assign ids after every storage is known
          *	also we need them to be sorted ... so a treemap. 'append' is explained later
@@ -53,7 +53,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
         for (IMultiblockPart part : connectedParts) {
             if (part.getBlockState().getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get()) {
                 pages++;
-                TileMultiCrafter tile = (TileMultiCrafter) part;
+                BlockEntityMultiCrafter tile = (BlockEntityMultiCrafter) part;
 				tile.getNode().rebuildPatterns(reason);
                 if (tile.page.isPresent()) {
                     collector.put(tile.page.get(), tile);
@@ -67,7 +67,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
         }
 
         int newid = 0;
-        for (TileMultiCrafter tile : collector.values()) {
+        for (BlockEntityMultiCrafter tile : collector.values()) {
             newid++;
             tile.page = Optional.of(newid);
             invs.put(newid, tile.getNode().patterns);
@@ -87,7 +87,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
     @Override
     protected void onMachineDisassembled() {
 		for (IMultiblockPart part : connectedParts) {
-			TileMultiCrafter tile = (TileMultiCrafter) part;
+			BlockEntityMultiCrafter tile = (BlockEntityMultiCrafter) part;
 			tile.getNode().rebuildPatterns("machine disassembled");
 			tile.getNode().invalidate();
 		}

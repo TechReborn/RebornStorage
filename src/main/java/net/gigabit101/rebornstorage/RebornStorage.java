@@ -1,9 +1,8 @@
 package net.gigabit101.rebornstorage;
 
-import com.refinedmods.refinedstorage.api.IRSAPI;
-import com.refinedmods.refinedstorage.api.RSAPIInject;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.util.StackUtils;
+import net.gigabit101.rebornstorage.blockentities.CraftingNode;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockClientTickHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockEventHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockServerTickHandler;
@@ -13,8 +12,7 @@ import net.gigabit101.rebornstorage.init.ModItems;
 import net.gigabit101.rebornstorage.init.ModScreens;
 import net.gigabit101.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.gigabit101.rebornstorage.packet.PacketHandler;
-import net.gigabit101.rebornstorage.tiles.CraftingNode;
-import net.gigabit101.rebornstorage.tiles.TileMultiCrafter;
+import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -52,11 +50,11 @@ public class RebornStorage {
     @SubscribeEvent
     public void preInit(FMLCommonSetupEvent event) {
         PacketHandler.register();
-//        API.instance().getNetworkNodeRegistry().add(Constants.MULTI_BLOCK_ID, (tag, world, pos) -> {
-//            CraftingNode node = new CraftingNode(world, pos);
-//            StackUtils.readItems(node.patterns, 0, tag);
-//            return node;
-//        });
+        API.instance().getNetworkNodeRegistry().add(Constants.MULTI_BLOCK_ID, (tag, world, pos) -> {
+            CraftingNode node = new CraftingNode(world, pos);
+            StackUtils.readItems(node.patterns, 0, tag);
+            return node;
+        });
     }
 
     @SubscribeEvent
@@ -67,8 +65,8 @@ public class RebornStorage {
 
     public static MultiBlockCrafter getMultiBlock(Level world, BlockPos pos) {
         BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof TileMultiCrafter) {
-            return (MultiBlockCrafter) ((TileMultiCrafter) tileEntity).getMultiblockController();
+        if (tileEntity instanceof BlockEntityMultiCrafter) {
+            return (MultiBlockCrafter) ((BlockEntityMultiCrafter) tileEntity).getMultiblockController();
         }
         return null;
     }

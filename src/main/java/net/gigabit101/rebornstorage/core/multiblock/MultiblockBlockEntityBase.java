@@ -15,14 +15,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class MultiblockTileEntityBase extends IMultiblockPart {
+public abstract class MultiblockBlockEntityBase extends IMultiblockPart {
     private MultiblockControllerBase controller;
     private boolean visited;
 
     private boolean saveMultiblockData;
     private CompoundTag cachedMultiblockData;
 
-    public MultiblockTileEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState) {
+    public MultiblockBlockEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState) {
         super(tileEntityTypeIn, blockPos, blockState);
         controller = null;
         visited = false;

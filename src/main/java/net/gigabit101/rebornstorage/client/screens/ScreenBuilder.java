@@ -1,4 +1,4 @@
-package net.gigabit101.rebornstorage.client.gui;
+package net.gigabit101.rebornstorage.client.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -6,7 +6,7 @@ import net.gigabit101.rebornstorage.Constants;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
 
-public class GuiBuilder {
+public class ScreenBuilder {
     public static final ResourceLocation GUI_SHEET = new ResourceLocation(Constants.MOD_ID.toLowerCase() + ":" + "textures/gui/gui_sheet.png");
 
     public void drawDefaultBackground(Screen gui, PoseStack matrixStack, int x, int y, int width, int height, int textureXSize, int textureYSize) {

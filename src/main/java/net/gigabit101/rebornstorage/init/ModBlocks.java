@@ -2,7 +2,7 @@ package net.gigabit101.rebornstorage.init;
 
 import net.gigabit101.rebornstorage.blocks.BlockMultiCrafter;
 import net.gigabit101.rebornstorage.Constants;
-import net.gigabit101.rebornstorage.tiles.TileMultiCrafter;
+import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -18,6 +18,6 @@ public class ModBlocks {
     public static final RegistryObject<Block> BLOCK_MULTI_CPU = BLOCKS.register("multiblock_cpu", BlockMultiCrafter::new);
     public static final RegistryObject<Block> BLOCK_MULTI_STORAGE = BLOCKS.register("multiblock_storage", BlockMultiCrafter::new);
 
-    public static final RegistryObject<BlockEntityType<TileMultiCrafter>> CRAFTER_TILE =
-            TILES_ENTITIES.register("multiblock_frame", () -> BlockEntityType.Builder.of(TileMultiCrafter::new, ModBlocks.BLOCK_MULTI_FRAME.get(), ModBlocks.BLOCK_MULTI_STORAGE.get(), ModBlocks.BLOCK_MULTI_CPU.get(), ModBlocks.BLOCK_MULTI_HEAT.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BlockEntityMultiCrafter>> CRAFTER_TILE =
+            TILES_ENTITIES.register("multiblock_frame", () -> BlockEntityType.Builder.of(BlockEntityMultiCrafter::new, ModBlocks.BLOCK_MULTI_FRAME.get(), ModBlocks.BLOCK_MULTI_STORAGE.get(), ModBlocks.BLOCK_MULTI_CPU.get(), ModBlocks.BLOCK_MULTI_HEAT.get()).build(null));
 }

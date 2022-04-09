@@ -1,4 +1,4 @@
-package net.gigabit101.rebornstorage.tiles;
+package net.gigabit101.rebornstorage.blockentities;
 
 import com.refinedmods.refinedstorage.api.autocrafting.ICraftingPattern;
 import com.refinedmods.refinedstorage.api.autocrafting.ICraftingPatternContainer;
@@ -174,10 +174,10 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
     }
 
     @Nullable
-    public TileMultiCrafter getTile() {
+    public BlockEntityMultiCrafter getTile() {
         BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof TileMultiCrafter) {
-            return (TileMultiCrafter) tileEntity;
+        if (tileEntity instanceof BlockEntityMultiCrafter) {
+            return (BlockEntityMultiCrafter) tileEntity;
         }
         RebornStorage.logger.warning(tileEntity + " is not an instance of TileMultiCrafter, this is an error and your RebornStorage multiblock may not work. Please report to the mod author");
         return null;
@@ -187,8 +187,8 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
         if (!check && isValid) {
             return true;
         }
-        TileMultiCrafter tileMultiCrafter = getTile();
-        if (tileMultiCrafter == null) {
+        BlockEntityMultiCrafter blockEntityMultiCrafter = getTile();
+        if (blockEntityMultiCrafter == null) {
             return false;
         }
         MultiBlockCrafter multiBlockCrafter = getTile().getMultiBlock();

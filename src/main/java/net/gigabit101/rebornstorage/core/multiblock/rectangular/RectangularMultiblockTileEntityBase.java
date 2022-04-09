@@ -1,14 +1,14 @@
 package net.gigabit101.rebornstorage.core.multiblock.rectangular;
 
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockControllerBase;
-import net.gigabit101.rebornstorage.core.multiblock.MultiblockTileEntityBase;
+import net.gigabit101.rebornstorage.core.multiblock.MultiblockBlockEntityBase;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockValidationException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class RectangularMultiblockTileEntityBase extends MultiblockTileEntityBase {
+public abstract class RectangularMultiblockTileEntityBase extends MultiblockBlockEntityBase {
 
     PartPosition position;
     Direction outwards;

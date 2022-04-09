@@ -1,6 +1,6 @@
 package net.gigabit101.rebornstorage.packet;
 
-import net.gigabit101.rebornstorage.tiles.TileMultiCrafter;
+import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,10 +39,10 @@ public class PacketGui {
                 if (player == null) return;
 
                 BlockEntity blockEntity = player.getLevel().getBlockEntity(message.blockPos);
-                if(blockEntity != null && blockEntity instanceof TileMultiCrafter tileMultiCrafter)
+                if(blockEntity != null && blockEntity instanceof BlockEntityMultiCrafter blockEntityMultiCrafter)
                 {
-                    tileMultiCrafter.getMultiBlock().currentPage = message.page;
-                    tileMultiCrafter.setChanged();
+                    blockEntityMultiCrafter.getMultiBlock().currentPage = message.page;
+                    blockEntityMultiCrafter.setChanged();
                 }
                 openGUI(player.getLevel(), player, message.blockPos);
             });

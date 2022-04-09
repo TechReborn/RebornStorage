@@ -1,7 +1,7 @@
 package net.gigabit101.rebornstorage.blocks;
 
 import com.refinedmods.refinedstorage.apiimpl.API;
-import net.gigabit101.rebornstorage.tiles.TileMultiCrafter;
+import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
@@ -35,14 +35,14 @@ public class BlockMultiCrafter extends BaseEntityBlock {
     @org.jetbrains.annotations.Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new TileMultiCrafter(blockPos, blockState);
+        return new BlockEntityMultiCrafter(blockPos, blockState);
     }
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         if (level.getBlockEntity(blockPos) == null) return InteractionResult.FAIL;
 
-        TileMultiCrafter tile = (TileMultiCrafter) level.getBlockEntity(blockPos);
+        BlockEntityMultiCrafter tile = (BlockEntityMultiCrafter) level.getBlockEntity(blockPos);
         if (tile.getMultiblockController() != null) {
             if (!tile.getMultiblockController().isAssembled()) {
                 if (tile.getMultiblockController().getLastValidationException() != null) {

@@ -1,18 +1,16 @@
-package net.gigabit101.rebornstorage.client.gui;
+package net.gigabit101.rebornstorage.containers;
 
 import net.gigabit101.rebornstorage.RebornStorage;
 import net.gigabit101.rebornstorage.client.SlotFiltered;
 import net.gigabit101.rebornstorage.init.ModContainers;
 import net.gigabit101.rebornstorage.multiblocks.MultiBlockCrafter;
-import net.gigabit101.rebornstorage.tiles.TileMultiCrafter;
+import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.items.IItemHandler;
 
@@ -23,10 +21,10 @@ public class ContainerMultiCrafter extends AbstractContainerMenu {
     public BlockPos blockPos;
 
     public ContainerMultiCrafter(int id, Inventory playerInv, FriendlyByteBuf extraData) {
-        this(id, playerInv, (TileMultiCrafter) Objects.requireNonNull(Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos())));
+        this(id, playerInv, (BlockEntityMultiCrafter) Objects.requireNonNull(Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos())));
     }
 
-    public ContainerMultiCrafter(int id, Inventory playerInv, TileMultiCrafter multiBlockCrafter) {
+    public ContainerMultiCrafter(int id, Inventory playerInv, BlockEntityMultiCrafter multiBlockCrafter) {
         super(ModContainers.MULTI_CRAFTER_CONTAINER.get(), id);
         crafter = RebornStorage.getMultiBlock(multiBlockCrafter.getLevel(), multiBlockCrafter.getBlockPos());
         this.blockPos = multiBlockCrafter.getBlockPos();

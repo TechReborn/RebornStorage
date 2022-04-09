@@ -2,7 +2,7 @@ package net.gigabit101.rebornstorage;
 
 import com.refinedmods.refinedstorage.api.autocrafting.ICraftingManager;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockRegistry;
-import net.gigabit101.rebornstorage.tiles.CraftingNode;
+import net.gigabit101.rebornstorage.blockentities.CraftingNode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
@@ -38,7 +38,6 @@ public class RebornStorageEventHandler {
 		if (event.phase == TickEvent.Phase.START) {
 			MultiblockRegistry.tickStart(event.world);
 		}
-		//TODO this might be able to die
 		if(event.phase == TickEvent.Phase.END && !event.world.isClientSide()){
 			Pair<ICraftingManager, RebuildReason> rebuildReasonPair = rebuildQueue.poll();
 			if(rebuildReasonPair != null){

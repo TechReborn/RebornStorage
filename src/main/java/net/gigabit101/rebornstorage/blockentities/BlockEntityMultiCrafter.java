@@ -1,11 +1,11 @@
-package net.gigabit101.rebornstorage.tiles;
+package net.gigabit101.rebornstorage.blockentities;
 
 import com.refinedmods.refinedstorage.api.network.node.INetworkNode;
 import com.refinedmods.refinedstorage.api.network.node.INetworkNodeManager;
 import com.refinedmods.refinedstorage.api.network.node.INetworkNodeProxy;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.capability.NetworkNodeProxyCapability;
-import net.gigabit101.rebornstorage.client.gui.ContainerMultiCrafter;
+import net.gigabit101.rebornstorage.containers.ContainerMultiCrafter;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockControllerBase;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockValidationException;
 import net.gigabit101.rebornstorage.core.multiblock.rectangular.RectangularMultiblockTileEntityBase;
@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implements MenuProvider, INetworkNodeProxy<CraftingNode> {
+public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase implements MenuProvider, INetworkNodeProxy<CraftingNode> {
 
     @Override
     public void isGoodForFrame() throws MultiblockValidationException {
@@ -122,7 +122,7 @@ public class TileMultiCrafter extends RectangularMultiblockTileEntityBase implem
 
     public Optional<Integer> page = Optional.empty();
 
-    public TileMultiCrafter(BlockPos blockPos, BlockState blockstate) {
+    public BlockEntityMultiCrafter(BlockPos blockPos, BlockState blockstate) {
         super(ModBlocks.CRAFTER_TILE.get(), blockPos, blockstate);
     }
 

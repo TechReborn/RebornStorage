@@ -1,6 +1,7 @@
-package net.gigabit101.rebornstorage.client.gui;
+package net.gigabit101.rebornstorage.client.screens;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.gigabit101.rebornstorage.containers.ContainerMultiCrafter;
 import net.gigabit101.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.gigabit101.rebornstorage.packet.PacketGui;
 import net.gigabit101.rebornstorage.packet.PacketHandler;
@@ -10,16 +11,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Inventory;
 
-/**
- * Created by Mark on 03/01/2017.
- */
-public class GuiMultiCrafter extends AbstractContainerScreen<ContainerMultiCrafter> {
-    GuiBuilder builder = new GuiBuilder();
+public class ScreenMultiCrafter extends AbstractContainerScreen<ContainerMultiCrafter> {
+    ScreenBuilder builder = new ScreenBuilder();
     MultiBlockCrafter crafter;
     ContainerMultiCrafter containerMultiCrafter;
     public static int maxSlotsPerPage = 78;
 
-    public GuiMultiCrafter(ContainerMultiCrafter containerMultiCrafter, Inventory playerInventory, Component title) {
+    public ScreenMultiCrafter(ContainerMultiCrafter containerMultiCrafter, Inventory playerInventory, Component title) {
         super(containerMultiCrafter, playerInventory, title);
         this.imageWidth = 250;
         this.imageHeight = 240;
@@ -61,32 +59,6 @@ public class GuiMultiCrafter extends AbstractContainerScreen<ContainerMultiCraft
             }
         }
     }
-
-
-//    @Override
-//    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int x, int y)
-//    {
-//        this.font.func_238422_b_(matrixStack, new StringTextComponent("Multi-Block Crafter").func_241878_f(), 10F, 6.0F, 4210752);
-
-//        if(getContainer().tileMultiCrafter.getMultiblockController() == null)
-//            this.font.func_238422_b_(matrixStack, new StringTextComponent("" + page).func_241878_f(), 40.0F, 6.0F, 4210752);
-
-//        if(crafter.invs.size() == 0){
-//            this.font.func_238422_b_(matrixStack, new StringTextComponent("Multiblock must contain at least 1 storage block" + page).func_241878_f(), xSize / 2, 75, 4210752);
-//		} else {
-//            this.font.func_238422_b_(matrixStack, new StringTextComponent("Page " + page + " of " + crafter.invs.size()).func_241878_f(), 125, 222, 4210752);
-//		}
-
-//		this.drawCenteredString(Minecraft.getMinecraft().fontRenderer, "Inventory", 69, 130, 4210752);
-//		this.drawCenteredString(Minecraft.getMinecraft().fontRenderer, "Multi-Block Crafter", 57, 8, 4210752);
-//        this.font.func_238422_b_(matrixStack, new StringTextComponent(crafter.speed + " CPUs").func_241878_f(), 220, 8, 4210752);
-//	}
-
-//	@Override
-//	protected void actionPerformed(GuiButton button) throws IOException {
-//		super.actionPerformed(button);
-//		NetworkManager.sendToServer(new PacketGui(button.id, pos));
-//	}
 
     @Override
     protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
