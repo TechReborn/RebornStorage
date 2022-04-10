@@ -11,6 +11,7 @@ import com.refinedmods.refinedstorage.apiimpl.network.node.NetworkNode;
 import com.refinedmods.refinedstorage.inventory.item.BaseItemHandler;
 import com.refinedmods.refinedstorage.util.StackUtils;
 import net.gigabit101.rebornstorage.RebornStorage;
+import net.gigabit101.rebornstorage.RebornStorageConfig;
 import net.gigabit101.rebornstorage.RebornStorageEventHandler;
 import net.gigabit101.rebornstorage.init.ModBlocks;
 import net.gigabit101.rebornstorage.init.ModItems;
@@ -208,10 +209,10 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
     @Override
     public int getEnergyUsage()
     {
-        if(getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get()) return 0;
-        if(getBlock() == ModBlocks.BLOCK_MULTI_HEAT.get()) return 0;
-        if(getBlock() == ModBlocks.BLOCK_MULTI_CPU.get()) return (5 * getCraftingCpus());
-        if(getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get()) return (10 * getStorage());
+        if(getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get()) return RebornStorageConfig.STORAGE_COST.get();
+        if(getBlock() == ModBlocks.BLOCK_MULTI_HEAT.get()) return RebornStorageConfig.HEAT_COST.get();
+        if(getBlock() == ModBlocks.BLOCK_MULTI_CPU.get()) return (RebornStorageConfig.CPU_COST.get() * getCraftingCpus());
+        if(getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get()) return (RebornStorageConfig.STORAGE_COST.get() * getStorage());
 
         return 0;
     }

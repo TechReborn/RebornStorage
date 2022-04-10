@@ -1,5 +1,6 @@
 package net.gigabit101.rebornstorage.multiblocks;
 
+import net.gigabit101.rebornstorage.RebornStorageConfig;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.gigabit101.rebornstorage.core.multiblock.IMultiblockPart;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockControllerBase;
@@ -100,32 +101,32 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
 
     @Override
     protected int getMaximumXSize() {
-        return 16;
+        return RebornStorageConfig.MULTIBLOCK_MAX_XSIZE.get();
     }
 
     @Override
     protected int getMaximumZSize() {
-        return 16;
+        return RebornStorageConfig.MULTIBLOCK_MAX_ZSIZE.get();
     }
 
     @Override
     protected int getMaximumYSize() {
-        return 16;
+        return RebornStorageConfig.MULTIBLOCK_MAX_YSIZE.get();
     }
 
     @Override
     protected int getMinimumXSize() {
-        return 3;
+        return RebornStorageConfig.MULTIBLOCK_MIN_XSIZE.get();
     }
 
     @Override
     protected int getMinimumYSize() {
-        return 3;
+        return RebornStorageConfig.MULTIBLOCK_MIN_YSIZE.get();
     }
 
     @Override
     protected int getMinimumZSize() {
-        return 3;
+        return RebornStorageConfig.MULTIBLOCK_MIN_ZSIZE.get();
     }
 
     @Override
