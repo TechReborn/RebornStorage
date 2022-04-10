@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "rebornstorage:multiblock_frame",
+    "rebornstorage:multiblock_heat",
+    "rebornstorage:multiblock_cpu",
+    "rebornstorage:multiblock_storage"
+  ]
+}

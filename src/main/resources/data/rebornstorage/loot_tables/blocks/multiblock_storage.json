@@ -2,7 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "rebornstorage:multiblock_cpu",
+      "name": "rebornstorage:multiblock_storage",
       "rolls": 1,
       "entries": [
         {
@@ -13,7 +13,7 @@
               "source": "block_entity"
             }
           ],
-          "name": "rebornstorage:multiblock_cpu"
+          "name": "rebornstorage:multiblock_storage"
         }
       ],
       "conditions": [
