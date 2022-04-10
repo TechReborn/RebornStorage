@@ -1,6 +1,6 @@
 modLoader="javafml" #mandatory
 loaderVersion="[40,]" #mandatory
-license="GNU General Public License v3.0"
+license="MIT License"
 credits="" #optional
 authors="gigabit101" #optional
 [[mods]] #mandatory
