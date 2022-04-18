@@ -8,12 +8,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class RectangularMultiblockTileEntityBase extends MultiblockBlockEntityBase {
+public abstract class RectangularMultiblockTileEntityBase extends MultiblockBlockEntityBase
+{
 
     PartPosition position;
     Direction outwards;
 
-    public RectangularMultiblockTileEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState) {
+    public RectangularMultiblockTileEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState)
+    {
         super(tileEntityTypeIn, blockPos, blockState);
 
         position = PartPosition.Unknown;
@@ -21,23 +23,27 @@ public abstract class RectangularMultiblockTileEntityBase extends MultiblockBloc
     }
 
     // Positional Data
-    public Direction getOutwardsDir() {
+    public Direction getOutwardsDir()
+    {
         return outwards;
     }
 
-    public PartPosition getPartPosition() {
+    public PartPosition getPartPosition()
+    {
         return position;
     }
 
     // Handlers from MultiblockTileEntityBase
     @Override
-    public void onAttached(MultiblockControllerBase newController) {
+    public void onAttached(MultiblockControllerBase newController)
+    {
         super.onAttached(newController);
         recalculateOutwardsDirection(newController.getMinimumCoord(), newController.getMaximumCoord());
     }
 
     @Override
-    public void onMachineAssembled(MultiblockControllerBase controller) {
+    public void onMachineAssembled(MultiblockControllerBase controller)
+    {
         BlockPos maxCoord = controller.getMaximumCoord();
         BlockPos minCoord = controller.getMinimumCoord();
 
@@ -46,51 +52,66 @@ public abstract class RectangularMultiblockTileEntityBase extends MultiblockBloc
     }
 
     @Override
-    public void onMachineBroken() {
+    public void onMachineBroken()
+    {
         position = PartPosition.Unknown;
         outwards = null;
     }
 
     // Positional helpers
-    public void recalculateOutwardsDirection(BlockPos minCoord, BlockPos maxCoord) {
+    public void recalculateOutwardsDirection(BlockPos minCoord, BlockPos maxCoord)
+    {
         outwards = null;
         position = PartPosition.Unknown;
 
         int facesMatching = 0;
-        if (maxCoord.getX() == this.getBlockPos().getX() || minCoord.getX() == this.getBlockPos().getX()) {
+        if (maxCoord.getX() == this.getBlockPos().getX() || minCoord.getX() == this.getBlockPos().getX())
+        {
             facesMatching++;
         }
-        if (maxCoord.getY() == this.getBlockPos().getY() || minCoord.getY() == this.getBlockPos().getY()) {
+        if (maxCoord.getY() == this.getBlockPos().getY() || minCoord.getY() == this.getBlockPos().getY())
+        {
             facesMatching++;
         }
-        if (maxCoord.getZ() == this.getBlockPos().getZ() || minCoord.getZ() == this.getBlockPos().getZ()) {
+        if (maxCoord.getZ() == this.getBlockPos().getZ() || minCoord.getZ() == this.getBlockPos().getZ())
+        {
             facesMatching++;
         }
 
-        if (facesMatching <= 0) {
+        if (facesMatching <= 0)
+        {
             position = PartPosition.Interior;
-        } else if (facesMatching >= 3) {
+        } else if (facesMatching >= 3)
+        {
             position = PartPosition.FrameCorner;
-        } else if (facesMatching == 2) {
+        } else if (facesMatching == 2)
+        {
             position = PartPosition.Frame;
-        } else {
+        } else
+        {
             // 1 face matches
-            if (maxCoord.getX() == this.getBlockPos().getX()) {
+            if (maxCoord.getX() == this.getBlockPos().getX())
+            {
                 position = PartPosition.EastFace;
                 outwards = Direction.EAST;
-            } else if (minCoord.getX() == this.getBlockPos().getX()) {
+            } else if (minCoord.getX() == this.getBlockPos().getX())
+            {
                 position = PartPosition.WestFace;
                 outwards = Direction.WEST;
-            } else if (maxCoord.getZ() == this.getBlockPos().getZ()) {
+            } else if (maxCoord.getZ() == this.getBlockPos().getZ())
+            {
                 position = PartPosition.SouthFace;
                 outwards = Direction.SOUTH;
-            } else if (minCoord.getZ() == this.getBlockPos().getZ()) {
+            } else if (minCoord.getZ() == this.getBlockPos().getZ())
+            {
                 position = PartPosition.NorthFace;
                 outwards = Direction.NORTH;
-            } else if (maxCoord.getY() == this.getBlockPos().getY()) {
+            } else if (maxCoord.getY() == this.getBlockPos().getY())
+            {
                 position = PartPosition.TopFace;
                 outwards = Direction.UP;
-            } else {
+            } else
+            {
                 position = PartPosition.BottomFace;
                 outwards = Direction.DOWN;
             }

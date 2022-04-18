@@ -8,7 +8,6 @@
   "item.rebornstorage.medium_fluid_disk": "1024K Fluid Storage Disk",
   "item.rebornstorage.large_fluid_disk": "4096K Fluid Storage Disk",
   "item.rebornstorage.larger_fluid_disk": "16384K Fluid Storage Disk",
-
   "item.rebornstorage.small_item_disk_part": "256K Storage Part",
   "item.rebornstorage.medium_item_disk_part": "1024K Storage Part",
   "item.rebornstorage.large_item_disk_part": "4096K Storage Part",
@@ -17,7 +16,6 @@
   "item.rebornstorage.medium_fluid_disk_part": "1024K Fluid Storage Part",
   "item.rebornstorage.large_fluid_disk_part": "4096K Fluid Storage Part",
   "item.rebornstorage.larger_fluid_disk_part": "16384K Fluid Storage Part",
-
   "block.rebornstorage.multiblock_cpu": "Crafting CPU",
   "block.rebornstorage.multiblock_heat": "Heat Conductor",
   "block.rebornstorage.multiblock_frame": "Crafting Frame",

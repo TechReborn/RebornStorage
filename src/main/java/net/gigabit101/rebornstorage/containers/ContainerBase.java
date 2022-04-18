@@ -10,22 +10,28 @@ import org.jetbrains.annotations.Nullable;
 
 public class ContainerBase extends AbstractContainerMenu
 {
-    public ContainerBase(@Nullable MenuType<?> menuType, int id) {
+    public ContainerBase(@Nullable MenuType<?> menuType, int id)
+    {
         super(menuType, id);
     }
 
-    public void drawPlayersInv(Inventory player, int x, int y) {
+    public void drawPlayersInv(Inventory player, int x, int y)
+    {
         int i;
-        for (i = 0; i < 3; ++i) {
-            for (int j = 0; j < 9; ++j) {
+        for (i = 0; i < 3; ++i)
+        {
+            for (int j = 0; j < 9; ++j)
+            {
                 this.addSlot(new Slot(player, j + i * 9 + 9, x + j * 18, y + i * 18));
             }
         }
     }
 
-    public void drawPlayersHotBar(Inventory player, int x, int y) {
+    public void drawPlayersHotBar(Inventory player, int x, int y)
+    {
         int i;
-        for (i = 0; i < 9; ++i) {
+        for (i = 0; i < 9; ++i)
+        {
             this.addSlot(new Slot(player, i, x + i * 18, y));
         }
     }
@@ -50,34 +56,39 @@ public class ContainerBase extends AbstractContainerMenu
         ItemStack originalStack = ItemStack.EMPTY;
         Slot slot = (Slot) slots.get(slotIndex);
         int numSlots = slots.size();
-        if (slot != null && slot.hasItem()) {
+        if (slot != null && slot.hasItem())
+        {
             ItemStack stackInSlot = slot.getItem();
             originalStack = stackInSlot.copy();
-            if (slotIndex >= numSlots - 9 * 4 && tryShiftItem(stackInSlot, numSlots)) {
+            if (slotIndex >= numSlots - 9 * 4 && tryShiftItem(stackInSlot, numSlots))
+            {
                 // NOOP
-            }
-            else if (slotIndex >= numSlots - 9 * 4 && slotIndex < numSlots - 9) {
+            } else if (slotIndex >= numSlots - 9 * 4 && slotIndex < numSlots - 9)
+            {
                 if (!shiftItemStack(stackInSlot, numSlots - 9, numSlots))
                 {
                     return ItemStack.EMPTY;
                 }
-            }
-            else if (slotIndex >= numSlots - 9 && slotIndex < numSlots) {
-                if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots - 9)) {
+            } else if (slotIndex >= numSlots - 9 && slotIndex < numSlots)
+            {
+                if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots - 9))
+                {
                     return ItemStack.EMPTY;
                 }
-            }
-            else if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots)) {
+            } else if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots))
+            {
                 return ItemStack.EMPTY;
             }
             slot.onQuickCraft(stackInSlot, originalStack);
-            if (stackInSlot.getCount() <= 0) {
+            if (stackInSlot.getCount() <= 0)
+            {
                 slot.set(ItemStack.EMPTY);
-            }
-            else {
+            } else
+            {
                 slot.setChanged();
             }
-            if (stackInSlot.getCount() == originalStack.getCount()) {
+            if (stackInSlot.getCount() == originalStack.getCount())
+            {
                 return ItemStack.EMPTY;
             }
             slot.onTake(player, stackInSlot);
@@ -85,22 +96,28 @@ public class ContainerBase extends AbstractContainerMenu
         return originalStack;
     }
 
-    protected boolean shiftItemStack(ItemStack stackToShift, int start, int end) {
+    protected boolean shiftItemStack(ItemStack stackToShift, int start, int end)
+    {
         boolean changed = false;
-        if (stackToShift.isStackable()) {
-            for (int slotIndex = start; stackToShift.getCount() > 0 && slotIndex < end; slotIndex++) {
+        if (stackToShift.isStackable())
+        {
+            for (int slotIndex = start; stackToShift.getCount() > 0 && slotIndex < end; slotIndex++)
+            {
                 Slot slot = (Slot) slots.get(slotIndex);
                 ItemStack stackInSlot = slot.getItem();
-                if (!stackInSlot.isEmpty() && canStacksMerge(stackInSlot, stackToShift)) {
+                if (!stackInSlot.isEmpty() && canStacksMerge(stackInSlot, stackToShift))
+                {
                     int resultingStackSize = stackInSlot.getCount() + stackToShift.getCount();
                     int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
-                    if (resultingStackSize <= max) {
+                    if (resultingStackSize <= max)
+                    {
                         stackToShift.setCount(0);
                         stackInSlot.setCount(resultingStackSize);
                         slot.setChanged();
                         changed = true;
-                    } else if (stackInSlot.getCount() < max) {
-                        stackToShift.setCount(stackToShift.getCount()-(max-stackInSlot.getCount()));
+                    } else if (stackInSlot.getCount() < max)
+                    {
+                        stackToShift.setCount(stackToShift.getCount() - (max - stackInSlot.getCount()));
                         stackInSlot.setCount(max);
                         slot.setChanged();
                         changed = true;
@@ -108,15 +125,18 @@ public class ContainerBase extends AbstractContainerMenu
                 }
             }
         }
-        if (stackToShift.getCount() > 0) {
-            for (int slotIndex = start; stackToShift.getCount() > 0 && slotIndex < end; slotIndex++) {
+        if (stackToShift.getCount() > 0)
+        {
+            for (int slotIndex = start; stackToShift.getCount() > 0 && slotIndex < end; slotIndex++)
+            {
                 Slot slot = (Slot) slots.get(slotIndex);
                 ItemStack stackInSlot = slot.getItem();
-                if (stackInSlot.isEmpty()) {
+                if (stackInSlot.isEmpty())
+                {
                     int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
                     stackInSlot = stackToShift.copy();
                     stackInSlot.setCount(Math.min(stackToShift.getCount(), max));
-                    stackToShift.setCount(stackToShift.getCount()-stackInSlot.getCount());
+                    stackToShift.setCount(stackToShift.getCount() - stackInSlot.getCount());
                     slot.set(stackInSlot);
                     slot.setChanged();
                     changed = true;
@@ -126,13 +146,13 @@ public class ContainerBase extends AbstractContainerMenu
         return changed;
     }
 
-    private boolean tryShiftItem(ItemStack stackToShift, int numSlots) {
-        for (int machineIndex = 0; machineIndex < numSlots - 9 * 4; machineIndex++) {
+    private boolean tryShiftItem(ItemStack stackToShift, int numSlots)
+    {
+        for (int machineIndex = 0; machineIndex < numSlots - 9 * 4; machineIndex++)
+        {
             Slot slot = (Slot) slots.get(machineIndex);
-            if (!slot.mayPlace(stackToShift))
-                continue;
-            if (shiftItemStack(stackToShift, machineIndex, machineIndex + 1))
-                return true;
+            if (!slot.mayPlace(stackToShift)) continue;
+            if (shiftItemStack(stackToShift, machineIndex, machineIndex + 1)) return true;
         }
         return false;
     }

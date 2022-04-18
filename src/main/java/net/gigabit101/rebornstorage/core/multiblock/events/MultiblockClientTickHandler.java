@@ -5,9 +5,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-public class MultiblockClientTickHandler {
+public class MultiblockClientTickHandler
+{
     @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
+    public void onClientTick(TickEvent.ClientTickEvent event)
+    {
         if (event.phase == TickEvent.Phase.START) MultiblockRegistry.tickStart(Minecraft.getInstance().level);
     }
 }

@@ -4,6 +4,7 @@ import com.refinedmods.refinedstorage.api.autocrafting.ICraftingPattern;
 import com.refinedmods.refinedstorage.api.autocrafting.ICraftingPatternContainer;
 import com.refinedmods.refinedstorage.api.autocrafting.ICraftingPatternProvider;
 import com.refinedmods.refinedstorage.api.network.INetwork;
+import com.refinedmods.refinedstorage.api.network.node.INetworkNode;
 import com.refinedmods.refinedstorage.api.network.node.INetworkNodeManager;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.apiimpl.network.node.ConnectivityStateChangeCause;
@@ -14,7 +15,6 @@ import net.gigabit101.rebornstorage.RebornStorage;
 import net.gigabit101.rebornstorage.RebornStorageConfig;
 import net.gigabit101.rebornstorage.RebornStorageEventHandler;
 import net.gigabit101.rebornstorage.init.ModBlocks;
-import net.gigabit101.rebornstorage.init.ModItems;
 import net.gigabit101.rebornstorage.Constants;
 import net.gigabit101.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.minecraft.core.BlockPos;
@@ -39,7 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class CraftingNode extends NetworkNode implements ICraftingPatternContainer {
+public class CraftingNode extends NetworkNode implements ICraftingPatternContainer
+{
     Level world;
     BlockPos pos;
     List<ICraftingPattern> actualPatterns = new ArrayList<>();
@@ -54,125 +55,159 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
     public static int craftingSpeed = 5;
     public static int invUpdateTime = 5;
 
-    public CraftingNode(Level level, BlockPos pos) {
+    public CraftingNode(Level level, BlockPos pos)
+    {
         super(level, pos);
         this.world = level;
         this.pos = pos;
     }
 
-    public void invalidate() {
+    public void invalidate()
+    {
         isValid = false;
     }
 
     // An item handler that caches the first available and last used slots.
-    public abstract class CachingItemHandler extends BaseItemHandler {
+    public abstract class CachingItemHandler extends BaseItemHandler
+    {
         private int firstAvailable = 0;
         private int lastUsed = -1;
 
         protected HashMap<Integer, ICraftingPattern> craftingPatternMap = new HashMap<>();
 
-        public CachingItemHandler(int size) {
+        public CachingItemHandler(int size)
+        {
             super(size);
         }
 
         @Override
-        protected void onLoad() {
+        protected void onLoad()
+        {
             super.onLoad();
             firstAvailable = getSlots();
             lastUsed = -1;
-            for (int i = 0; i < getSlots(); i++) {
-                if (getStackInSlot(i).isEmpty()) {
+            for (int i = 0; i < getSlots(); i++)
+            {
+                if (getStackInSlot(i).isEmpty())
+                {
                     firstAvailable = Integer.min(firstAvailable, i);
-                } else {
+                } else
+                {
                     lastUsed = Integer.max(lastUsed, i);
                 }
             }
         }
 
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int slot)
+        {
             super.onContentsChanged(slot);
-            for (int i = slot; i < firstAvailable && i >= 0 && getStackInSlot(i).isEmpty(); i--) {
+            for (int i = slot; i < firstAvailable && i >= 0 && getStackInSlot(i).isEmpty(); i--)
+            {
                 firstAvailable = i;
             }
-            for (int i = slot; i == firstAvailable && i < getSlots() && !getStackInSlot(i).isEmpty(); i++) {
+            for (int i = slot; i == firstAvailable && i < getSlots() && !getStackInSlot(i).isEmpty(); i++)
+            {
                 firstAvailable = i + 1;
             }
-            for (int i = slot; i > lastUsed && i < getSlots() && !getStackInSlot(i).isEmpty(); i++) {
+            for (int i = slot; i > lastUsed && i < getSlots() && !getStackInSlot(i).isEmpty(); i++)
+            {
                 lastUsed = i;
             }
-            for (int i = slot; i == lastUsed && i >= 0 && getStackInSlot(i).isEmpty(); i--) {
+            for (int i = slot; i == lastUsed && i >= 0 && getStackInSlot(i).isEmpty(); i--)
+            {
                 lastUsed = i - 1;
             }
             craftingPatternMap.remove(slot); //When the slot changes un cache it
 
         }
 
-        public int getFirstAvailable() {
+        public int getFirstAvailable()
+        {
             return firstAvailable;
         }
 
-        public int getLastUsed() {
+        public int getLastUsed()
+        {
             return lastUsed;
         }
 
-        public boolean isEmpty() {
+        public boolean isEmpty()
+        {
             return lastUsed == -1;
         }
 
-        public boolean isFull() {
+        public boolean isFull()
+        {
             return firstAvailable == getSlots();
         }
     }
 
-    public CachingItemHandler patterns = new CachingItemHandler(6 * 13) {
+    public CachingItemHandler patterns = new CachingItemHandler(6 * 13)
+    {
 
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int slot)
+        {
             super.onContentsChanged(slot);
-            if(network != null) {
+            if (network != null)
+            {
                 markDirty();
             }
             needsRebuild = true;
         }
 
         @Override
-        public int getSlotLimit(int slot) {
+        public int getSlotLimit(int slot)
+        {
             return 1;
         }
     };
 
-    public void rebuildPatterns(String reason) {
+    public void rebuildPatterns(String reason)
+    {
         this.actualPatterns.clear();
-        if (!world.isClientSide && isValidMultiBlock(true)) {
-            if (!patterns.isEmpty()) {
-                for (int i = 0; i < patterns.getSlots(); i++) {
+        if (!world.isClientSide && isValidMultiBlock(true))
+        {
+            if (!patterns.isEmpty())
+            {
+                for (int i = 0; i < patterns.getSlots(); i++)
+                {
                     ItemStack stack = patterns.getStackInSlot(i);
-                    if (!stack.isEmpty() && stack.getItem() instanceof ICraftingPatternProvider) {
-                        if (patterns.craftingPatternMap.containsKey(i)) {
+                    if (!stack.isEmpty() && stack.getItem() instanceof ICraftingPatternProvider)
+                    {
+                        if (patterns.craftingPatternMap.containsKey(i))
+                        {
                             actualPatterns.add(patterns.craftingPatternMap.get(i));
-                        } else {
+                        } else
+                        {
                             ICraftingPattern pattern = ((ICraftingPatternProvider) stack.getItem()).create(world, stack, this);
-                            if (pattern.isValid()) {
+                            if (pattern.isValid())
+                            {
                                 actualPatterns.add(pattern);
                                 patterns.craftingPatternMap.put(i, pattern);
                             }
                         }
-                    } else {
+                    } else
+                    {
                         patterns.craftingPatternMap.remove(i);
                     }
                 }
-            } else {
+            } else
+            {
                 patterns.craftingPatternMap.clear();
             }
         }
-        if (getNetwork() != null) {
+        if (getNetwork() != null)
+        {
             RebornStorageEventHandler.queue(network.getCraftingManager(), this, reason);
         }
     }
 
-    protected void stateChange(INetwork network, boolean state, String reason) {
-        if (!state) {
+    public void stateChange(INetwork network, boolean state, String reason)
+    {
+        if (!state)
+        {
             network.getCraftingManager().getTasks().forEach((task) -> network.getCraftingManager().cancel(task.getId()));
             actualPatterns.clear();
         }
@@ -180,25 +215,34 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
     }
 
     @Nullable
-    public BlockEntityMultiCrafter getTile() {
+    public BlockEntityMultiCrafter getTile()
+    {
         BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof BlockEntityMultiCrafter) {
+        if (tileEntity instanceof BlockEntityMultiCrafter)
+        {
             return (BlockEntityMultiCrafter) tileEntity;
         }
-        RebornStorage.logger.warning(tileEntity + " is not an instance of TileMultiCrafter, this is an error and your RebornStorage multiblock may not work. Please report to the mod author");
+        INetworkNodeManager manager = API.instance().getNetworkNodeManager((ServerLevel) level);
+        manager.removeNode(getPos());
+
+//        RebornStorage.logger.warning(tileEntity + " is not an instance of TileMultiCrafter, this is an error and your RebornStorage multiblock may not work. Please report to the mod author");
         return null;
     }
 
-    public boolean isValidMultiBlock(boolean check) {
-        if (!check && isValid) {
+    public boolean isValidMultiBlock(boolean check)
+    {
+        if (!check && isValid)
+        {
             return true;
         }
         BlockEntityMultiCrafter blockEntityMultiCrafter = getTile();
-        if (blockEntityMultiCrafter == null) {
+        if (blockEntityMultiCrafter == null)
+        {
             return false;
         }
         MultiBlockCrafter multiBlockCrafter = getTile().getMultiBlock();
-        if (multiBlockCrafter == null) {
+        if (multiBlockCrafter == null)
+        {
             return false;
         }
         isValid = multiBlockCrafter.isAssembled();
@@ -209,136 +253,166 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
     @Override
     public int getEnergyUsage()
     {
-        if(getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get()) return RebornStorageConfig.STORAGE_COST.get();
-        if(getBlock() == ModBlocks.BLOCK_MULTI_HEAT.get()) return RebornStorageConfig.HEAT_COST.get();
-        if(getBlock() == ModBlocks.BLOCK_MULTI_CPU.get()) return (RebornStorageConfig.CPU_COST.get() * getCraftingCpus());
-        if(getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get()) return (RebornStorageConfig.STORAGE_COST.get() * getStorage());
+        if (getBlock() == null) return 0;
+        if (getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get()) return RebornStorageConfig.STORAGE_COST.get();
+        if (getBlock() == ModBlocks.BLOCK_MULTI_HEAT.get()) return RebornStorageConfig.HEAT_COST.get();
+        if (getBlock() == ModBlocks.BLOCK_MULTI_CPU.get())
+            return (RebornStorageConfig.CPU_COST.get() * getCraftingCpus());
+        if (getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get())
+            return (RebornStorageConfig.FRAME_COST.get() * getStorage());
 
         return 0;
     }
 
     public Block getBlock()
     {
+        if (getTile() == null) return null;
+
         return getTile().getBlockState().getBlock();
     }
 
     @Nonnull
     @Override
-    public ItemStack getItemStack() {
+    public ItemStack getItemStack()
+    {
         return new ItemStack(getBlock());
     }
 
     @Override
-    public void onConnected(INetwork iNetwork) {
+    public void onConnected(INetwork iNetwork)
+    {
         this.network = iNetwork;
         stateChange(network, true, "connected to network");
         rebuildPatterns("connected to network");
     }
 
     @Override
-    public void onDisconnected(INetwork iNetwork) {
+    public void onDisconnected(INetwork iNetwork)
+    {
         this.network = null;
         actualPatterns.clear();
         stateChange(iNetwork, true, "disconnected from network");
     }
 
     @Override
-    public boolean isActive() {
-        return true;
+    public boolean isActive()
+    {
+        return isValid;
     }
 
     @Nullable
     @Override
-    public INetwork getNetwork() {
+    public INetwork getNetwork()
+    {
         return network;
     }
 
     @Override
-    public void update() {
+    public void update()
+    {
         super.update();
         ticks++;
-        if (ticks == 1) {
+        if (ticks == 1)
+        {
             rebuildPatterns("first tick rebuild");
         }
-        if (needsRebuild && world.getLevelData().getGameTime() % (invUpdateTime * 20) == 0) {
+        if (needsRebuild && world.getLevelData().getGameTime() % (invUpdateTime * 20) == 0)
+        {
             rebuildPatterns("inv slot change");
             needsRebuild = false;
         }
     }
 
     @Override
-    public CompoundTag write(CompoundTag nbtTagCompound) {
+    public CompoundTag write(CompoundTag nbtTagCompound)
+    {
         StackUtils.writeItems(patterns, 0, nbtTagCompound);
         return nbtTagCompound;
     }
 
     @Override
-    public void read(CompoundTag tag) {
+    public void read(CompoundTag tag)
+    {
         StackUtils.readItems(patterns, 0, tag);
         super.read(tag);
     }
 
     @Override
-    public BlockPos getPos() {
+    public BlockPos getPos()
+    {
         return pos;
     }
 
     @Override
-    public Level getLevel() {
+    public Level getLevel()
+    {
         return world;
     }
 
     @Override
-    public void markDirty() {
+    public void markDirty()
+    {
         if (world != null && !world.isClientSide)
         {
             try
             {
                 INetworkNodeManager networkNodeManager = API.instance().getNetworkNodeManager((ServerLevel) world);
-                if(networkNodeManager != null)
+                if (networkNodeManager != null)
                 {
                     networkNodeManager.markForSaving();
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception ignored)
+            {
+            }
         }
     }
 
     @Override
-    protected void onConnectedStateChange(INetwork network, boolean state, ConnectivityStateChangeCause cause) {
+    protected void onConnectedStateChange(INetwork network, boolean state, ConnectivityStateChangeCause cause)
+    {
         super.onConnectedStateChange(network, state, cause);
         network.getCraftingManager().invalidate();
     }
 
 
     @Override
-    public ResourceLocation getId() {
+    public ResourceLocation getId()
+    {
         return Constants.MULTI_BLOCK_ID;
     }
 
     @Override
-    public void setOwner(@Nullable UUID uuid) {}
+    public void setOwner(@Nullable UUID uuid)
+    {
+    }
 
     @Nullable
     @Override
-    public UUID getOwner() {
+    public UUID getOwner()
+    {
         return null;
     }
 
     @Override
-    public int getUpdateInterval() {
+    public int getUpdateInterval()
+    {
         return Math.max(craftingSpeed - getCraftingCpus(), 1);
     }
 
     @Override
-    public int getMaximumSuccessfulCraftingUpdates() {
+    public int getMaximumSuccessfulCraftingUpdates()
+    {
         return Math.max(getCraftingCpus() / Math.max(craftingSpeed, 1), 1);
     }
 
-    public int getCraftingCpus() {
-        if (isValid && speed != -1) {
+    public int getCraftingCpus()
+    {
+        if (isValid && speed != -1)
+        {
             return speed;
         }
-        if (!isValidMultiBlock(false)) {
+        if (!isValidMultiBlock(false))
+        {
             return 0;
         }
         speed = getTile().getMultiBlock().speed;
@@ -347,76 +421,91 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
 
     public int getStorage()
     {
-        if(!isValidMultiBlock(false)) {
+        if (!isValidMultiBlock(false))
+        {
             return 0;
         }
         return getTile().getMultiBlock().pages;
     }
 
     @Override
-    public IItemHandler getConnectedInventory() {
+    public IItemHandler getConnectedInventory()
+    {
         return null;
     }
 
     @Nullable
     @Override
-    public IFluidHandler getConnectedFluidInventory() {
+    public IFluidHandler getConnectedFluidInventory()
+    {
         return null;
     }
 
     @Override
-    public BlockEntity getConnectedBlockEntity() {
+    public BlockEntity getConnectedBlockEntity()
+    {
         return null;
     }
 
     @Override
-    public BlockEntity getFacingBlockEntity() {
+    public BlockEntity getFacingBlockEntity()
+    {
         return null;
     }
 
     @Override
-    public Direction getDirection() {
+    public Direction getDirection()
+    {
         return null;
     }
 
     @Override
-    public List<ICraftingPattern> getPatterns() {
+    public List<ICraftingPattern> getPatterns()
+    {
         return actualPatterns;
     }
 
     @Override
-    public IItemHandlerModifiable getPatternInventory() {
-        if (isValidMultiBlock(true) && getTile() != null && getTile().getBlockState().getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get()) {
+    public IItemHandlerModifiable getPatternInventory()
+    {
+        if (isValidMultiBlock(true) && getTile() != null && getTile().getBlockState().getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get())
+        {
             return patterns;
         }
         return null;
     }
 
     @Override
-    public Component getName() {
+    public Component getName()
+    {
         return new TextComponent("MultiBlock Crafter");
     }
 
     @Override
-    public BlockPos getPosition() {
+    public BlockPos getPosition()
+    {
         return pos;
     }
 
     @Nullable
     @Override
-    public ICraftingPatternContainer getRootContainer() {
+    public ICraftingPatternContainer getRootContainer()
+    {
         return null;
     }
 
     @Override
-    public UUID getUuid() {
-        if (uuid == null) {
+    public UUID getUuid()
+    {
+        if (uuid == null)
+        {
             uuid = UUID.randomUUID();
         }
         return uuid;
     }
 
     @Override
-    public void unlock() {
+    public void unlock()
+    {
     }
 }

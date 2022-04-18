@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "rebornstorage:block/multiblock_storage" }
+    "": {
+      "model": "rebornstorage:block/multiblock_storage"
+    }
   }
 }

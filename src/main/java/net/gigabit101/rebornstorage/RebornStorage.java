@@ -25,12 +25,14 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import java.util.logging.Logger;
 
 @Mod(Constants.MOD_ID)
-public class RebornStorage {
+public class RebornStorage
+{
     public static Logger logger = Logger.getLogger(Constants.MOD_ID);
 
     public static RebornStorage INSTANCE;
 
-    public RebornStorage() {
+    public RebornStorage()
+    {
         INSTANCE = this;
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         RebornStorageConfig.loadConfig(RebornStorageConfig.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(Constants.MOD_ID + "-common.toml"));
@@ -47,19 +49,23 @@ public class RebornStorage {
     }
 
     @SubscribeEvent
-    public void preInit(FMLCommonSetupEvent event) {
+    public void preInit(FMLCommonSetupEvent event)
+    {
         PacketHandler.register();
     }
 
     @SubscribeEvent
-    public void clientInit(FMLClientSetupEvent event) {
+    public void clientInit(FMLClientSetupEvent event)
+    {
         ModScreens.init();
         MinecraftForge.EVENT_BUS.register(new MultiblockClientTickHandler());
     }
 
-    public static MultiBlockCrafter getMultiBlock(Level world, BlockPos pos) {
+    public static MultiBlockCrafter getMultiBlock(Level world, BlockPos pos)
+    {
         BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof BlockEntityMultiCrafter) {
+        if (tileEntity instanceof BlockEntityMultiCrafter)
+        {
             return (MultiBlockCrafter) ((BlockEntityMultiCrafter) tileEntity).getMultiblockController();
         }
         return null;

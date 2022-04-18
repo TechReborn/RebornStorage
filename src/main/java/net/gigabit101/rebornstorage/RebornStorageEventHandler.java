@@ -18,68 +18,77 @@ import java.util.Queue;
 import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID)
-public class RebornStorageEventHandler {
+public class RebornStorageEventHandler
+{
     public static boolean debugLogging = false;
 
     private static Queue<Pair<ICraftingManager, RebuildReason>> rebuildQueue = new LinkedList<>();
 
-    public static void queue(ICraftingManager craftingManager, CraftingNode node, String reason) {
-        if (node.getLevel().isClientSide) {
+    public static void queue(ICraftingManager craftingManager, CraftingNode node, String reason)
+    {
+        if (node.getLevel().isClientSide)
+        {
             return;
         }
-        for (ICraftingManager queued : rebuildQueue.stream().map(Pair::getLeft).collect(Collectors.toList())) {
-            if (queued.equals(craftingManager)) {
+        for (ICraftingManager queued : rebuildQueue.stream().map(Pair::getLeft).collect(Collectors.toList()))
+        {
+            if (queued.equals(craftingManager))
+            {
                 return;
             }
         }
-		rebuildQueue.add(Pair.of(craftingManager, new RebuildReason(node.getPos(), node.getLevel().dimension().getRegistryName(), reason)));
+        rebuildQueue.add(Pair.of(craftingManager, new RebuildReason(node.getPos(), node.getLevel().dimension().getRegistryName(), reason)));
     }
 
     @SubscribeEvent
     public static void worldLoad(WorldEvent.Load event)
     {
-        API.instance().getNetworkNodeRegistry().add(Constants.MULTI_BLOCK_ID, (tag, world, pos) -> {
+        API.instance().getNetworkNodeRegistry().add(Constants.MULTI_BLOCK_ID, (tag, world, pos) ->
+        {
             CraftingNode node = new CraftingNode(world, pos);
             StackUtils.readItems(node.patterns, 0, tag);
             return node;
         });
     }
 
-	@SubscribeEvent
-	public static void tick(TickEvent.WorldTickEvent event)
-	{
-		if (event.phase == TickEvent.Phase.START) {
-			MultiblockRegistry.tickStart(event.world);
-		}
-		if(event.phase == TickEvent.Phase.END && !event.world.isClientSide()){
-			Pair<ICraftingManager, RebuildReason> rebuildReasonPair = rebuildQueue.poll();
-			if(rebuildReasonPair != null){
-				if(debugLogging){
-					RebornStorage.logger.warning("Triggering cached crafting manager rebuild pos:" + rebuildReasonPair.getRight().toString());
-				}
-				rebuildReasonPair.getLeft().invalidate();
-			}
-		}
-	}
+    @SubscribeEvent
+    public static void tick(TickEvent.WorldTickEvent event)
+    {
+        if (event.phase == TickEvent.Phase.START)
+        {
+            MultiblockRegistry.tickStart(event.world);
+        }
+        if (event.phase == TickEvent.Phase.END && !event.world.isClientSide())
+        {
+            Pair<ICraftingManager, RebuildReason> rebuildReasonPair = rebuildQueue.poll();
+            if (rebuildReasonPair != null)
+            {
+                if (debugLogging)
+                {
+                    RebornStorage.logger.warning("Triggering cached crafting manager rebuild pos:" + rebuildReasonPair.getRight().toString());
+                }
+                rebuildReasonPair.getLeft().invalidate();
+            }
+        }
+    }
 
-    private static class RebuildReason {
+    private static class RebuildReason
+    {
         BlockPos pos;
         ResourceLocation worldId;
         String reason;
 
-        public RebuildReason(BlockPos pos, ResourceLocation worldId, String reason) {
+        public RebuildReason(BlockPos pos, ResourceLocation worldId, String reason)
+        {
             this.pos = pos;
             this.worldId = worldId;
             this.reason = reason;
         }
 
         @Override
-        public String toString() {
-            return "RebuildReason{" +
-                    "pos=" + pos +
-                    ", worldId=" + worldId +
-                    ", reason='" + reason + '\'' +
-                    '}';
+        public String toString()
+        {
+            return "RebuildReason{" + "pos=" + pos + ", worldId=" + worldId + ", reason='" + reason + '\'' + '}';
         }
     }
 }

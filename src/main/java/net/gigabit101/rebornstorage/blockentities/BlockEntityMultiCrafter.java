@@ -32,125 +32,148 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase implements MenuProvider, INetworkNodeProxy<CraftingNode> {
+public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase implements MenuProvider, INetworkNodeProxy<CraftingNode>
+{
 
     @Override
-    public void isGoodForFrame() throws MultiblockValidationException {
+    public void isGoodForFrame() throws MultiblockValidationException
+    {
         if (level == null) return;
         if (getBlockPos() == null) return;
         if (level.getBlockState(getBlockPos()) == null) return;
 
         Block block = level.getBlockState(getBlockPos()).getBlock();
-        if (block != ModBlocks.BLOCK_MULTI_FRAME.get()) {
+        if (block != ModBlocks.BLOCK_MULTI_FRAME.get())
+        {
             throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the frame of the block");
         }
     }
 
     @Override
-    public void isGoodForSides() throws MultiblockValidationException {
+    public void isGoodForSides() throws MultiblockValidationException
+    {
         if (level == null) return;
         if (getBlockPos() == null) return;
         if (level.getBlockState(getBlockPos()) == null) return;
 
         Block block = level.getBlockState(getBlockPos()).getBlock();
-        if (block != ModBlocks.BLOCK_MULTI_HEAT.get()) {
+        if (block != ModBlocks.BLOCK_MULTI_HEAT.get())
+        {
             throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the sides of the block");
         }
     }
 
     @Override
-    public void isGoodForTop() throws MultiblockValidationException {
+    public void isGoodForTop() throws MultiblockValidationException
+    {
         if (level == null) return;
         if (getBlockPos() == null) return;
         if (level.getBlockState(getBlockPos()) == null) return;
 
         Block block = level.getBlockState(getBlockPos()).getBlock();
-        if (block != ModBlocks.BLOCK_MULTI_HEAT.get()) {
+        if (block != ModBlocks.BLOCK_MULTI_HEAT.get())
+        {
             throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the sides of the block");
         }
     }
 
     @Override
-    public void isGoodForBottom() throws MultiblockValidationException {
+    public void isGoodForBottom() throws MultiblockValidationException
+    {
         if (level == null) return;
         if (getBlockPos() == null) return;
         if (level.getBlockState(getBlockPos()) == null) return;
 
         Block block = level.getBlockState(getBlockPos()).getBlock();
 
-        if (block != ModBlocks.BLOCK_MULTI_HEAT.get()) {
+        if (block != ModBlocks.BLOCK_MULTI_HEAT.get())
+        {
             throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the sides of the block");
         }
     }
 
     @Override
-    public void isGoodForInterior() throws MultiblockValidationException {
+    public void isGoodForInterior() throws MultiblockValidationException
+    {
         if (level == null) return;
         if (getBlockPos() == null) return;
         if (level.getBlockState(getBlockPos()) == null) return;
 
         Block block = level.getBlockState(getBlockPos()).getBlock();
 
-        if (block != ModBlocks.BLOCK_MULTI_CPU.get() && block != ModBlocks.BLOCK_MULTI_STORAGE.get()) {
+        if (block != ModBlocks.BLOCK_MULTI_CPU.get() && block != ModBlocks.BLOCK_MULTI_STORAGE.get())
+        {
             throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the inside of the block");
         }
     }
 
     @Override
-    public void onMachineActivated() {
+    public void onMachineActivated()
+    {
         getNode().rebuildPatterns("machine activated");
     }
 
     @Override
-    public void onMachineDeactivated() {
+    public void onMachineDeactivated()
+    {
         getNode().rebuildPatterns("machine deactivated");
     }
 
     @Override
-    public MultiblockControllerBase createNewMultiblock() {
+    public MultiblockControllerBase createNewMultiblock()
+    {
         return new MultiBlockCrafter(getLevel());
     }
 
     @Override
-    public Class<? extends MultiblockControllerBase> getMultiblockControllerType() {
+    public Class<? extends MultiblockControllerBase> getMultiblockControllerType()
+    {
         return MultiBlockCrafter.class;
     }
 
-    public MultiBlockCrafter getMultiBlock() {
+    public MultiBlockCrafter getMultiBlock()
+    {
         return (MultiBlockCrafter) getMultiblockController();
     }
 
     public Optional<Integer> page = Optional.empty();
 
-    public BlockEntityMultiCrafter(BlockPos blockPos, BlockState blockstate) {
+    public BlockEntityMultiCrafter(BlockPos blockPos, BlockState blockstate)
+    {
         super(ModBlocks.CRAFTER_TILE.get(), blockPos, blockstate);
     }
 
     @Override
-    public void onLoad() {
+    public void onLoad()
+    {
         super.onLoad();
         load(getUpdateTag());
     }
 
     @Override
-    public void load(CompoundTag data) {
+    public void load(CompoundTag data)
+    {
         super.load(data);
 
-        if (data.get("page") != null) {
+        if (data.get("page") != null)
+        {
             page = Optional.of(data.getInt("page"));
         }
     }
 
     @Override
-    protected void saveAdditional(CompoundTag data) {
+    protected void saveAdditional(CompoundTag data)
+    {
         super.saveAdditional(data);
-        if (page.isPresent()) {
+        if (page.isPresent())
+        {
             data.putInt("page", page.get());
         }
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public CompoundTag getUpdateTag()
+    {
         CompoundTag tag = new CompoundTag();
         saveAdditional(tag);
         return tag;
@@ -160,21 +183,25 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
     CraftingNode clientNode;
 
     @Override
-    public CraftingNode getNode() {
-        if (level.isClientSide) {
-            if (clientNode == null) {
+    public CraftingNode getNode()
+    {
+        if (level.isClientSide)
+        {
+            if (clientNode == null)
+            {
                 clientNode = new CraftingNode(level, worldPosition);
             }
             return clientNode;
         }
         INetworkNodeManager manager = API.instance().getNetworkNodeManager((ServerLevel) level);
         INetworkNode node = manager.getNode(worldPosition);
-        if (node == null || !node.getId().equals(Constants.MULTI_BLOCK_ID)) {
+        if (node == null || !node.getId().equals(Constants.MULTI_BLOCK_ID))
+        {
             manager.setNode(worldPosition, node = new CraftingNode(level, worldPosition));
             manager.markForSaving();
         }
 
-        if(node == null)
+        if (node == null)
         {
             throw new IllegalStateException("No network node present at " + worldPosition.toString() + ", consider removing the block at this position");
         }
@@ -183,8 +210,10 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
 
     @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability) {
-        if (capability == NetworkNodeProxyCapability.NETWORK_NODE_PROXY_CAPABILITY) {
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability)
+    {
+        if (capability == NetworkNodeProxyCapability.NETWORK_NODE_PROXY_CAPABILITY)
+        {
             return LazyOptional.of(() -> this).cast();
         }
         return super.getCapability(capability);
@@ -192,8 +221,10 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
 
     @NotNull
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side) {
-        if (capability == NetworkNodeProxyCapability.NETWORK_NODE_PROXY_CAPABILITY) {
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side)
+    {
+        if (capability == NetworkNodeProxyCapability.NETWORK_NODE_PROXY_CAPABILITY)
+        {
             return LazyOptional.of(() -> this).cast();
         }
         return super.getCapability(capability, side);
@@ -201,12 +232,14 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
 
     @org.jetbrains.annotations.Nullable
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player) {
+    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player)
+    {
         return new ContainerMultiCrafter(id, playerInventory, this);
     }
 
     @Override
-    public Component getDisplayName() {
+    public Component getDisplayName()
+    {
         return new TextComponent("MultiBlock Crafter");
     }
 }

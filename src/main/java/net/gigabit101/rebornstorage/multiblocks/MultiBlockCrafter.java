@@ -14,7 +14,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
-public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
+public class MultiBlockCrafter extends RectangularMultiblockControllerBase
+{
 
     public Map<Integer, ItemStackHandler> invs = new TreeMap<>();
     public int speed = 0;
@@ -22,126 +23,162 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
     public Level level;
     public int currentPage = 0;
 
-    public MultiBlockCrafter(Level world) {
+    public MultiBlockCrafter(Level world)
+    {
         super(world);
         this.level = world;
     }
 
     @Override
-    public void onAttachedPartWithMultiblockData(IMultiblockPart iMultiblockPart, CompoundTag nbtTagCompound) {
+    public void onAttachedPartWithMultiblockData(IMultiblockPart iMultiblockPart, CompoundTag nbtTagCompound)
+    {
         readFromNBT(nbtTagCompound);
     }
 
     @Override
-    protected void onBlockAdded(IMultiblockPart iMultiblockPart) {}
+    public void onBlockAdded(IMultiblockPart iMultiblockPart)
+    {
+    }
 
     @Override
-    protected void onBlockRemoved(IMultiblockPart iMultiblockPart) {}
+    public void onBlockRemoved(IMultiblockPart iMultiblockPart)
+    {
+    }
 
     @Override
-    protected void onMachineAssembled() {
+    protected void onMachineAssembled()
+    {
         updateInfo("machineAssembled");
     }
 
-    public void updateInfo(String reason) {
+    public void updateInfo(String reason)
+    {
         speed = 0;
         pages = 0;
         TreeMap<Integer, BlockEntityMultiCrafter> collector = new TreeMap<>();
         int append = 2745;
-        /*	we ned to collect all storages first and assign ids after every storage is known
+        /*	we need to collect all storages first and assign ids after every storage is known
          *	also we need them to be sorted ... so a treemap. 'append' is explained later
          */
-        for (IMultiblockPart part : connectedParts) {
-            if (part.getBlockState().getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get()) {
+        for (IMultiblockPart part : connectedParts)
+        {
+            if (part.getBlockState().getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get())
+            {
                 pages++;
                 BlockEntityMultiCrafter tile = (BlockEntityMultiCrafter) part;
-				tile.getNode().rebuildPatterns(reason);
-                if (tile.page.isPresent()) {
+                tile.getNode().rebuildPatterns(reason);
+                if (tile.page.isPresent())
+                {
                     collector.put(tile.page.get(), tile);
-                } else {
+                } else
+                {
                     collector.put(append++, tile);
                 }
             }
-            if (part.getBlockState().getBlock() == ModBlocks.BLOCK_MULTI_CPU.get()) {
+            if (part.getBlockState().getBlock() == ModBlocks.BLOCK_MULTI_CPU.get())
+            {
                 speed++;
             }
         }
 
         int newid = 0;
-        for (BlockEntityMultiCrafter tile : collector.values()) {
+        for (BlockEntityMultiCrafter tile : collector.values())
+        {
             newid++;
             tile.page = Optional.of(newid);
             invs.put(newid, tile.getNode().patterns);
         }
     }
 
-    public ItemStackHandler getInvForPage(int page) {
+    public ItemStackHandler getInvForPage(int page)
+    {
         return invs.get(page);
     }
 
     @Override
-    protected void onMachineRestored() {}
-
-    @Override
-    protected void onMachinePaused() {}
-
-    @Override
-    protected void onMachineDisassembled() {
-		for (IMultiblockPart part : connectedParts) {
-			BlockEntityMultiCrafter tile = (BlockEntityMultiCrafter) part;
-			tile.getNode().rebuildPatterns("machine disassembled");
-			tile.getNode().invalidate();
-		}
+    protected void onMachineRestored()
+    {
+        updateInfo("machine rebuilt");
     }
 
     @Override
-    protected int getMinimumNumberOfBlocksForAssembledMachine() {
+    protected void onMachinePaused()
+    {
+    }
+
+    @Override
+    protected void onMachineDisassembled()
+    {
+        for (IMultiblockPart part : connectedParts)
+        {
+            BlockEntityMultiCrafter tile = (BlockEntityMultiCrafter) part;
+            tile.getNode().rebuildPatterns("machine disassembled");
+            tile.getNode().invalidate();
+        }
+    }
+
+    @Override
+    protected int getMinimumNumberOfBlocksForAssembledMachine()
+    {
         return (9 * 3);
     }
 
     @Override
-    protected int getMaximumXSize() {
+    protected int getMaximumXSize()
+    {
         return RebornStorageConfig.MULTIBLOCK_MAX_XSIZE.get();
     }
 
     @Override
-    protected int getMaximumZSize() {
+    protected int getMaximumZSize()
+    {
         return RebornStorageConfig.MULTIBLOCK_MAX_ZSIZE.get();
     }
 
     @Override
-    protected int getMaximumYSize() {
+    protected int getMaximumYSize()
+    {
         return RebornStorageConfig.MULTIBLOCK_MAX_YSIZE.get();
     }
 
     @Override
-    protected int getMinimumXSize() {
+    protected int getMinimumXSize()
+    {
         return RebornStorageConfig.MULTIBLOCK_MIN_XSIZE.get();
     }
 
     @Override
-    protected int getMinimumYSize() {
+    protected int getMinimumYSize()
+    {
         return RebornStorageConfig.MULTIBLOCK_MIN_YSIZE.get();
     }
 
     @Override
-    protected int getMinimumZSize() {
+    protected int getMinimumZSize()
+    {
         return RebornStorageConfig.MULTIBLOCK_MIN_ZSIZE.get();
     }
 
     @Override
-    protected void onAssimilate(MultiblockControllerBase multiblockControllerBase) {}
+    protected void onAssimilate(MultiblockControllerBase multiblockControllerBase)
+    {
+    }
 
     @Override
-    protected void onAssimilated(MultiblockControllerBase multiblockControllerBase) {}
+    protected void onAssimilated(MultiblockControllerBase multiblockControllerBase)
+    {
+    }
 
     @Override
-    protected boolean updateServer() {
+    protected boolean updateServer()
+    {
         return true;
     }
 
     @Override
-    protected void updateClient() {}
+    protected void updateClient()
+    {
+    }
 
     @Override
     public void writeToNBT(CompoundTag nbtTagCompound)
@@ -156,12 +193,14 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase {
     }
 
     @Override
-    public void formatDescriptionPacket(CompoundTag nbtTagCompound) {
+    public void formatDescriptionPacket(CompoundTag nbtTagCompound)
+    {
         writeToNBT(nbtTagCompound);
     }
 
     @Override
-    public void decodeDescriptionPacket(CompoundTag nbtTagCompound) {
+    public void decodeDescriptionPacket(CompoundTag nbtTagCompound)
+    {
         readFromNBT(nbtTagCompound);
     }
 }

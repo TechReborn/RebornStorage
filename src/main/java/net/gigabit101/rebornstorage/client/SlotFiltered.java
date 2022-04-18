@@ -6,13 +6,16 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class SlotFiltered extends SlotItemHandler {
-    public SlotFiltered(IItemHandler inventoryIn, int index, int xPosition, int yPosition) {
+public class SlotFiltered extends SlotItemHandler
+{
+    public SlotFiltered(IItemHandler inventoryIn, int index, int xPosition, int yPosition)
+    {
         super(inventoryIn, index, xPosition, yPosition);
     }
 
     @Override
-    public boolean mayPlace(@NotNull ItemStack stack) {
+    public boolean mayPlace(@NotNull ItemStack stack)
+    {
         return stack.getItem() instanceof ICraftingPatternProvider;
     }
 }

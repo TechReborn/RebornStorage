@@ -6,11 +6,13 @@ package net.gigabit101.rebornstorage.core.multiblock;
  *
  * @author Erogenous Beef
  */
-public class MultiblockValidationException extends Exception {
+public class MultiblockValidationException extends Exception
+{
 
     private static final long serialVersionUID = -4038176177468678877L;
 
-    public MultiblockValidationException(String reason) {
+    public MultiblockValidationException(String reason)
+    {
         super(reason);
     }
 }

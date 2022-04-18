@@ -1,10 +1,13 @@
 package net.gigabit101.rebornstorage.core.multiblock.rectangular;
 
-public enum PartPosition {
+public enum PartPosition
+{
     Unknown, Interior, FrameCorner, Frame, TopFace, BottomFace, NorthFace, SouthFace, EastFace, WestFace;
 
-    public boolean isFace(PartPosition position) {
-        switch (position) {
+    public boolean isFace(PartPosition position)
+    {
+        switch (position)
+        {
             case TopFace:
             case BottomFace:
             case NorthFace:

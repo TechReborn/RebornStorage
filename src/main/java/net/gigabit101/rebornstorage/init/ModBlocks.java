@@ -9,7 +9,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class ModBlocks {
+public class ModBlocks
+{
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.MOD_ID);
     public static final DeferredRegister<BlockEntityType<?>> TILES_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Constants.MOD_ID);
 
@@ -18,6 +19,5 @@ public class ModBlocks {
     public static final RegistryObject<Block> BLOCK_MULTI_CPU = BLOCKS.register("multiblock_cpu", BlockMultiCrafter::new);
     public static final RegistryObject<Block> BLOCK_MULTI_STORAGE = BLOCKS.register("multiblock_storage", BlockMultiCrafter::new);
 
-    public static final RegistryObject<BlockEntityType<BlockEntityMultiCrafter>> CRAFTER_TILE =
-            TILES_ENTITIES.register("multiblock_frame", () -> BlockEntityType.Builder.of(BlockEntityMultiCrafter::new, ModBlocks.BLOCK_MULTI_FRAME.get(), ModBlocks.BLOCK_MULTI_STORAGE.get(), ModBlocks.BLOCK_MULTI_CPU.get(), ModBlocks.BLOCK_MULTI_HEAT.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BlockEntityMultiCrafter>> CRAFTER_TILE = TILES_ENTITIES.register("multiblock_frame", () -> BlockEntityType.Builder.of(BlockEntityMultiCrafter::new, ModBlocks.BLOCK_MULTI_FRAME.get(), ModBlocks.BLOCK_MULTI_STORAGE.get(), ModBlocks.BLOCK_MULTI_CPU.get(), ModBlocks.BLOCK_MULTI_HEAT.get()).build(null));
 }

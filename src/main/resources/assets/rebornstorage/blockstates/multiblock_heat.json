@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "rebornstorage:block/multiblock_heat" }
+    "": {
+      "model": "rebornstorage:block/multiblock_heat"
+    }
   }
 }

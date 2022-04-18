@@ -13,7 +13,8 @@ import java.util.Set;
  *
  * @author Erogenous Beef
  */
-public class MultiblockRegistry {
+public class MultiblockRegistry
+{
     // World > WorldRegistry map
     private static HashMap<Level, MultiblockWorldRegistry> registries = new HashMap<Level, MultiblockWorldRegistry>();
 
@@ -22,8 +23,10 @@ public class MultiblockRegistry {
      *
      * @param world The world being ticked
      */
-    public static void tickStart(Level world) {
-        if (registries.containsKey(world)) {
+    public static void tickStart(Level world)
+    {
+        if (registries.containsKey(world))
+        {
             MultiblockWorldRegistry registry = registries.get(world);
             registry.processMultiblockChanges();
             registry.tickStart();
@@ -36,8 +39,10 @@ public class MultiblockRegistry {
      * @param world The world which has finished loading a chunk
      * @param chunk Loaded chunk
      */
-    public static void onChunkLoaded(Level world, LevelChunk chunk) {
-        if (registries.containsKey(world)) {
+    public static void onChunkLoaded(Level world, LevelChunk chunk)
+    {
+        if (registries.containsKey(world))
+        {
             registries.get(world).onChunkLoaded(chunk);
         }
     }
@@ -49,7 +54,8 @@ public class MultiblockRegistry {
      * @param world The world into which this part is loading.
      * @param part  The part being loaded.
      */
-    public static void onPartAdded(Level world, IMultiblockPart part) {
+    public static void onPartAdded(Level world, IMultiblockPart part)
+    {
         MultiblockWorldRegistry registry = getOrCreateRegistry(world);
         registry.onPartAdded(part);
     }
@@ -60,11 +66,12 @@ public class MultiblockRegistry {
      * @param world The world from which a multiblock part is being removed.
      * @param part  The part being removed.
      */
-    public static void onPartRemovedFromWorld(Level world, IMultiblockPart part) {
-        if (registries.containsKey(world)) {
+    public static void onPartRemovedFromWorld(Level world, IMultiblockPart part)
+    {
+        if (registries.containsKey(world))
+        {
             registries.get(world).onPartRemovedFromWorld(part);
         }
-
     }
 
     /**
@@ -73,8 +80,10 @@ public class MultiblockRegistry {
      *
      * @param world The world being unloaded.
      */
-    public static void onWorldUnloaded(Level world) {
-        if (registries.containsKey(world)) {
+    public static void onWorldUnloaded(Level world)
+    {
+        if (registries.containsKey(world))
+        {
             registries.get(world).onWorldUnloaded();
             registries.remove(world);
         }
@@ -87,10 +96,13 @@ public class MultiblockRegistry {
      * @param world      The world containing the multiblock
      * @param controller The dirty controller
      */
-    public static void addDirtyController(Level world, MultiblockControllerBase controller) {
-        if (registries.containsKey(world)) {
+    public static void addDirtyController(Level world, MultiblockControllerBase controller)
+    {
+        if (registries.containsKey(world))
+        {
             registries.get(world).addDirtyController(controller);
-        } else {
+        } else
+        {
             RebornStorage.logger.warning("Adding a dirty controller to a world that has no registered controllers! This is most likey not an issue with reborn core, please check the full log file for more infomation!");
         }
     }
@@ -102,13 +114,14 @@ public class MultiblockRegistry {
      * @param world      The world formerly containing the multiblock
      * @param controller The dead controller
      */
-    public static void addDeadController(Level world, MultiblockControllerBase controller) {
-        if (registries.containsKey(world)) {
+    public static void addDeadController(Level world, MultiblockControllerBase controller)
+    {
+        if (registries.containsKey(world))
+        {
             registries.get(world).addDeadController(controller);
-        } else {
-            RebornStorage.logger.warning(String.format(
-                    "Controller %d in world %s marked as dead, but that world is not tracked! Controller is being ignored.",
-                    controller.hashCode(), world));
+        } else
+        {
+            RebornStorage.logger.warning(String.format("Controller %d in world %s marked as dead, but that world is not tracked! Controller is being ignored.", controller.hashCode(), world));
         }
     }
 
@@ -117,8 +130,10 @@ public class MultiblockRegistry {
      * @return An unmodifiable set of controllers active in the given world, or
      * null if there are none.
      */
-    public static Set<MultiblockControllerBase> getControllersFromWorld(Level world) {
-        if (registries.containsKey(world)) {
+    public static Set<MultiblockControllerBase> getControllersFromWorld(Level world)
+    {
+        if (registries.containsKey(world))
+        {
             return registries.get(world).getControllers();
         }
         return null;
@@ -126,10 +141,13 @@ public class MultiblockRegistry {
 
     // / *** PRIVATE HELPERS *** ///
 
-    private static MultiblockWorldRegistry getOrCreateRegistry(Level world) {
-        if (registries.containsKey(world)) {
+    private static MultiblockWorldRegistry getOrCreateRegistry(Level world)
+    {
+        if (registries.containsKey(world))
+        {
             return registries.get(world);
-        } else {
+        } else
+        {
             MultiblockWorldRegistry newRegistry = new MultiblockWorldRegistry(world);
             registries.put(world, newRegistry);
             return newRegistry;

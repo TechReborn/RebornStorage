@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "rebornstorage:block/multiblock_cpu" }
+    "": {
+      "model": "rebornstorage:block/multiblock_cpu"
+    }
   }
 }

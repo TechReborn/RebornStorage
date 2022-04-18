@@ -20,7 +20,8 @@ import java.util.Set;
  * Subordinate TileEntities implement the IMultiblockPart class and, generally,
  * should not have an update() loop.
  */
-public abstract class MultiblockControllerBase {
+public abstract class MultiblockControllerBase
+{
     public static final short DIMENSION_UNBOUNDED = -1;
 
     // Multiblock stuff - do not mess with
@@ -28,7 +29,8 @@ public abstract class MultiblockControllerBase {
 
     // Disassembled -> Assembled; Assembled -> Disassembled OR Paused; Paused ->
     // Assembled
-    protected enum AssemblyState {Disassembled, Assembled, Paused}
+    protected enum AssemblyState
+    {Disassembled, Assembled, Paused}
 
     ;
     protected AssemblyState assemblyState;
@@ -69,7 +71,8 @@ public abstract class MultiblockControllerBase {
 
     protected boolean debugMode;
 
-    protected MultiblockControllerBase(Level world) {
+    protected MultiblockControllerBase(Level world)
+    {
         // Multiblock stuff
         worldObj = world;
         connectedParts = new HashSet<IMultiblockPart>();
@@ -86,11 +89,13 @@ public abstract class MultiblockControllerBase {
         debugMode = false;
     }
 
-    public void setDebugMode(boolean active) {
+    public void setDebugMode(boolean active)
+    {
         debugMode = active;
     }
 
-    public boolean isDebugMode() {
+    public boolean isDebugMode()
+    {
         return debugMode;
     }
 
@@ -111,7 +116,8 @@ public abstract class MultiblockControllerBase {
      * @return True if the tile entity at blockCoord is being tracked by this
      * machine, false otherwise.
      */
-    public boolean hasBlock(BlockPos blockCoord) {
+    public boolean hasBlock(BlockPos blockCoord)
+    {
         return connectedParts.contains(blockCoord);
     }
 
@@ -120,68 +126,82 @@ public abstract class MultiblockControllerBase {
      *
      * @param part The part to add.
      */
-    public void attachBlock(IMultiblockPart part) {
+    public void attachBlock(IMultiblockPart part)
+    {
         //IMultiblockPart candidate;
         BlockPos coord = part.getWorldLocation();
 
-        if (!connectedParts.add(part)) {
-            RebornStorage.logger.warning(
-                    String.format("[%s] Controller %s is double-adding part %d @ %s. This is unusual. If you encounter odd behavior, please tear down the machine and rebuild it.",
-                            (worldObj.isClientSide ? "CLIENT" : "SERVER"), hashCode(), part.hashCode(), coord));
+        if (!connectedParts.add(part))
+        {
+            RebornStorage.logger.warning(String.format("[%s] Controller %s is double-adding part %d @ %s. This is unusual. If you encounter odd behavior, please tear down the machine and rebuild it.", (worldObj.isClientSide ? "CLIENT" : "SERVER"), hashCode(), part.hashCode(), coord));
         }
 
         part.onAttached(this);
         this.onBlockAdded(part);
 
-        if (part.hasMultiblockSaveData()) {
+        if (part.hasMultiblockSaveData())
+        {
             CompoundTag savedData = part.getMultiblockSaveData();
             onAttachedPartWithMultiblockData(part, savedData);
             part.onMultiblockDataAssimilated();
         }
 
-        if (this.referenceCoord == null) {
+        if (this.referenceCoord == null)
+        {
             referenceCoord = coord;
             part.becomeMultiblockSaveDelegate();
-        } else if (coord.compareTo(referenceCoord) < 0) {
+        } else if (coord.compareTo(referenceCoord) < 0)
+        {
             BlockEntity te = this.worldObj.getBlockEntity(referenceCoord);
             ((IMultiblockPart) te).forfeitMultiblockSaveDelegate();
 
             referenceCoord = coord;
             part.becomeMultiblockSaveDelegate();
-        } else {
+        } else
+        {
             part.forfeitMultiblockSaveDelegate();
         }
 
         Boolean updateRequired = false;
         BlockPos partPos = part.getBlockPos();
 
-        if (minimumCoord != null) {
+        if (minimumCoord != null)
+        {
 
-            if (partPos.getX() < minimumCoord.getX()) {
+            if (partPos.getX() < minimumCoord.getX())
+            {
                 updateRequired = true;
             }
-            if (partPos.getY() < minimumCoord.getY()) {
+            if (partPos.getY() < minimumCoord.getY())
+            {
                 updateRequired = true;
             }
-            if (partPos.getZ() < minimumCoord.getZ()) {
+            if (partPos.getZ() < minimumCoord.getZ())
+            {
                 updateRequired = true;
             }
-            if (updateRequired) {
+            if (updateRequired)
+            {
                 this.minimumCoord = new BlockPos(partPos.getX(), partPos.getY(), partPos.getZ());
             }
         }
 
-        if (maximumCoord != null) {
-            if (partPos.getX() > maximumCoord.getX()) {
+        if (maximumCoord != null)
+        {
+            if (partPos.getX() > maximumCoord.getX())
+            {
                 updateRequired = true;
             }
-            if (partPos.getY() > maximumCoord.getY()) {
+            if (partPos.getY() > maximumCoord.getY())
+            {
                 updateRequired = true;
             }
-            if (partPos.getZ() > maximumCoord.getZ()) {
+            if (partPos.getZ() > maximumCoord.getZ())
+            {
                 updateRequired = true;
             }
-            if (updateRequired) {
+            if (updateRequired)
+            {
                 this.maximumCoord = new BlockPos(partPos.getX(), partPos.getY(), partPos.getZ());
             }
         }
@@ -234,7 +254,8 @@ public abstract class MultiblockControllerBase {
      *
      * @param part The part being removed.
      */
-    private void onDetachBlock(IMultiblockPart part) {
+    private void onDetachBlock(IMultiblockPart part)
+    {
         // Strip out this part
         part.onDetached(this);
         this.onBlockRemoved(part);
@@ -242,7 +263,8 @@ public abstract class MultiblockControllerBase {
 
         minimumCoord = maximumCoord = null;
 
-        if (referenceCoord != null && referenceCoord.equals(part.getBlockPos())) {
+        if (referenceCoord != null && referenceCoord.equals(part.getBlockPos()))
+        {
             referenceCoord = null;
         }
 
@@ -257,22 +279,23 @@ public abstract class MultiblockControllerBase {
      * @param chunkUnloading Is this entity detaching due to the chunk unloading? If true,
      *                       the multiblock will be paused instead of broken.
      */
-    public void detachBlock(IMultiblockPart part, boolean chunkUnloading) {
-        if (chunkUnloading && this.assemblyState == AssemblyState.Assembled) {
+    public void detachBlock(IMultiblockPart part, boolean chunkUnloading)
+    {
+        if (chunkUnloading && this.assemblyState == AssemblyState.Assembled)
+        {
             this.assemblyState = AssemblyState.Paused;
             this.onMachinePaused();
         }
 
         // Strip out this part
         onDetachBlock(part);
-        if (!connectedParts.remove(part)) {
-            RebornStorage.logger.warning(
-                    String.format("[%s] Double-removing part (%d) @ %d, %d, %d, this is unexpected and may cause problems. If you encounter anomalies, please tear down the reactor and rebuild it.",
-                            worldObj.isClientSide ? "CLIENT" : "SERVER", part.hashCode(), part.getBlockPos().getX(),
-                            part.getBlockPos().getY(), part.getBlockPos().getZ()));
+        if (!connectedParts.remove(part))
+        {
+            RebornStorage.logger.warning(String.format("[%s] Double-removing part (%d) @ %d, %d, %d, this is unexpected and may cause problems. If you encounter anomalies, please tear down the reactor and rebuild it.", worldObj.isClientSide ? "CLIENT" : "SERVER", part.hashCode(), part.getBlockPos().getX(), part.getBlockPos().getY(), part.getBlockPos().getZ()));
         }
 
-        if (connectedParts.isEmpty()) {
+        if (connectedParts.isEmpty())
+        {
             // Destroy/unregister
             MultiblockRegistry.addDeadController(this.worldObj, this);
             return;
@@ -281,7 +304,8 @@ public abstract class MultiblockControllerBase {
         MultiblockRegistry.addDirtyController(this.worldObj, this);
 
         // Find new save delegate if we need to.
-        if (referenceCoord == null) {
+        if (referenceCoord == null)
+        {
             selectNewReferenceCoord();
         }
     }
@@ -329,7 +353,8 @@ public abstract class MultiblockControllerBase {
      *
      * @return The minimum X dimension size of the machine
      */
-    protected int getMinimumXSize() {
+    protected int getMinimumXSize()
+    {
         return 1;
     }
 
@@ -339,7 +364,8 @@ public abstract class MultiblockControllerBase {
      *
      * @return The minimum Y dimension size of the machine
      */
-    protected int getMinimumYSize() {
+    protected int getMinimumYSize()
+    {
         return 1;
     }
 
@@ -349,7 +375,8 @@ public abstract class MultiblockControllerBase {
      *
      * @return The minimum Z dimension size of the machine
      */
-    protected int getMinimumZSize() {
+    protected int getMinimumZSize()
+    {
         return 1;
     }
 
@@ -357,7 +384,8 @@ public abstract class MultiblockControllerBase {
      * @return An exception representing the last error encountered when trying
      * to assemble this multiblock, or null if there is no error.
      */
-    public MultiblockValidationException getLastValidationException() {
+    public MultiblockValidationException getLastValidationException()
+    {
         return lastValidationException;
     }
 
@@ -374,22 +402,27 @@ public abstract class MultiblockControllerBase {
      *
      * @return
      */
-    public void checkIfMachineIsWhole() {
+    public void checkIfMachineIsWhole()
+    {
         AssemblyState oldState = this.assemblyState;
         boolean isWhole;
         this.lastValidationException = null;
-        try {
+        try
+        {
             isMachineWhole();
             isWhole = true;
-        } catch (MultiblockValidationException e) {
+        } catch (MultiblockValidationException e)
+        {
             lastValidationException = e;
             isWhole = false;
         }
 
-        if (isWhole) {
+        if (isWhole)
+        {
             // This will alter assembly state
             assembleMachine(oldState);
-        } else if (oldState == AssemblyState.Assembled) {
+        } else if (oldState == AssemblyState.Assembled)
+        {
             // This will alter assembly state
             disassembleMachine();
         }
@@ -401,15 +434,19 @@ public abstract class MultiblockControllerBase {
      * game-logically finished machine. Calls onMachineAssembled on all attached
      * parts.
      */
-    private void assembleMachine(AssemblyState oldState) {
-        for (IMultiblockPart part : connectedParts) {
+    private void assembleMachine(AssemblyState oldState)
+    {
+        for (IMultiblockPart part : connectedParts)
+        {
             part.onMachineAssembled(this);
         }
 
         this.assemblyState = AssemblyState.Assembled;
-        if (oldState == AssemblyState.Paused) {
+        if (oldState == AssemblyState.Paused)
+        {
             onMachineRestored();
-        } else {
+        } else
+        {
             onMachineAssembled();
         }
     }
@@ -419,8 +456,10 @@ public abstract class MultiblockControllerBase {
      * "whole" and should not be functional, usually as a result of a block
      * being removed. Calls onMachineBroken on all attached parts.
      */
-    private void disassembleMachine() {
-        for (IMultiblockPart part : connectedParts) {
+    private void disassembleMachine()
+    {
+        for (IMultiblockPart part : connectedParts)
+        {
             part.onMachineBroken();
         }
 
@@ -434,11 +473,12 @@ public abstract class MultiblockControllerBase {
      *
      * @param other The controller to merge into this one.
      */
-    public void assimilate(MultiblockControllerBase other) {
+    public void assimilate(MultiblockControllerBase other)
+    {
         BlockPos otherReferenceCoord = other.getReferenceCoord();
-        if (otherReferenceCoord != null && getReferenceCoord().compareTo(otherReferenceCoord) >= 0) {
-            throw new IllegalArgumentException(
-                    "The controller with the lowest minimum-coord value must consume the one with the higher coords");
+        if (otherReferenceCoord != null && getReferenceCoord().compareTo(otherReferenceCoord) >= 0)
+        {
+            throw new IllegalArgumentException("The controller with the lowest minimum-coord value must consume the one with the higher coords");
         }
 
         Set<IMultiblockPart> partsToAcquire = new HashSet<IMultiblockPart>(other.connectedParts);
@@ -446,9 +486,11 @@ public abstract class MultiblockControllerBase {
         // releases all blocks and references gently so they can be incorporated into another multiblock
         other._onAssimilated(this);
 
-        for (IMultiblockPart acquiredPart : partsToAcquire) {
+        for (IMultiblockPart acquiredPart : partsToAcquire)
+        {
             // By definition, none of these can be the minimum block.
-            if (acquiredPart.isInvalid()) {
+            if (acquiredPart.isInvalid())
+            {
                 continue;
             }
 
@@ -467,11 +509,15 @@ public abstract class MultiblockControllerBase {
      *
      * @param otherController The controller consuming this controller.
      */
-    private void _onAssimilated(MultiblockControllerBase otherController) {
-        if (referenceCoord != null) {
-            if (this.worldObj.isLoaded(this.referenceCoord)) {
+    private void _onAssimilated(MultiblockControllerBase otherController)
+    {
+        if (referenceCoord != null)
+        {
+            if (this.worldObj.isLoaded(this.referenceCoord))
+            {
                 BlockEntity te = this.worldObj.getBlockEntity(referenceCoord);
-                if (te instanceof IMultiblockPart) {
+                if (te instanceof IMultiblockPart)
+                {
                     ((IMultiblockPart) te).forfeitMultiblockSaveDelegate();
                 }
             }
@@ -501,33 +547,40 @@ public abstract class MultiblockControllerBase {
      * Driver for the update loop. If the machine is assembled, runs the game
      * logic update method.
      */
-    public final void updateMultiblockEntity() {
-        if (connectedParts.isEmpty()) {
+    public final void updateMultiblockEntity()
+    {
+        if (connectedParts.isEmpty())
+        {
             // This shouldn't happen, but just in case...
             MultiblockRegistry.addDeadController(this.worldObj, this);
             return;
         }
 
-        if (this.assemblyState != AssemblyState.Assembled) {
+        if (this.assemblyState != AssemblyState.Assembled)
+        {
             // Not assembled - don't run game logic
             return;
         }
 
-        if (worldObj.isClientSide) {
+        if (worldObj.isClientSide)
+        {
             updateClient();
-        } else if (updateServer()) {
+        } else if (updateServer())
+        {
             // If this returns true, the server has changed its internal data.
             // If our chunks are loaded (they should be), we must mark our
             // chunks as dirty.
-            if (minimumCoord != null && maximumCoord != null
-                    && this.worldObj.isAreaLoaded(this.minimumCoord, 5)) {
+            if (minimumCoord != null && maximumCoord != null && this.worldObj.isAreaLoaded(this.minimumCoord, 5))
+            {
                 int minChunkX = minimumCoord.getX() >> 4;
                 int minChunkZ = minimumCoord.getZ() >> 4;
                 int maxChunkX = maximumCoord.getX() >> 4;
                 int maxChunkZ = maximumCoord.getZ() >> 4;
 
-                for (int x = minChunkX; x <= maxChunkX; x++) {
-                    for (int z = minChunkZ; z <= maxChunkZ; z++) {
+                for (int x = minChunkX; x <= maxChunkX; x++)
+                {
+                    for (int z = minChunkZ; z <= maxChunkZ; z++)
+                    {
                         // Ensure that we save our data, even if the our save
                         // delegate is in has no TEs.
                         LevelChunk chunkToSave = this.worldObj.getChunk(x, z);
@@ -568,9 +621,9 @@ public abstract class MultiblockControllerBase {
      * @param z     Z coordinate of the block being tested
      * @throws MultiblockValidationException if the tested block is not allowed on the machine's frame
      */
-    protected void isBlockGoodForFrame(Level world, int x, int y, int z) throws MultiblockValidationException {
-        throw new MultiblockValidationException(
-                String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
+    protected void isBlockGoodForFrame(Level world, int x, int y, int z) throws MultiblockValidationException
+    {
+        throw new MultiblockValidationException(String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
     }
 
     /**
@@ -583,9 +636,9 @@ public abstract class MultiblockControllerBase {
      * @param z     Z coordinate of the block being tested
      * @throws MultiblockValidationException if the tested block is not allowed on the machine's top face
      */
-    protected void isBlockGoodForTop(Level world, int x, int y, int z) throws MultiblockValidationException {
-        throw new MultiblockValidationException(
-                String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
+    protected void isBlockGoodForTop(Level world, int x, int y, int z) throws MultiblockValidationException
+    {
+        throw new MultiblockValidationException(String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
     }
 
     /**
@@ -599,9 +652,9 @@ public abstract class MultiblockControllerBase {
      * @throws MultiblockValidationException if the tested block is not allowed on the machine's bottom
      *                                       face
      */
-    protected void isBlockGoodForBottom(Level world, int x, int y, int z) throws MultiblockValidationException {
-        throw new MultiblockValidationException(
-                String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
+    protected void isBlockGoodForBottom(Level world, int x, int y, int z) throws MultiblockValidationException
+    {
+        throw new MultiblockValidationException(String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
     }
 
     /**
@@ -615,9 +668,9 @@ public abstract class MultiblockControllerBase {
      * @throws MultiblockValidationException if the tested block is not allowed on the machine's side
      *                                       faces
      */
-    protected void isBlockGoodForSides(Level world, int x, int y, int z) throws MultiblockValidationException {
-        throw new MultiblockValidationException(
-                String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
+    protected void isBlockGoodForSides(Level world, int x, int y, int z) throws MultiblockValidationException
+    {
+        throw new MultiblockValidationException(String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
     }
 
     /**
@@ -630,17 +683,19 @@ public abstract class MultiblockControllerBase {
      * @param z     Z coordinate of the block being tested
      * @throws MultiblockValidationException if the tested block is not allowed in the machine's interior
      */
-    protected void isBlockGoodForInterior(Level world, int x, int y, int z) throws MultiblockValidationException {
-        throw new MultiblockValidationException(
-                String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
+    protected void isBlockGoodForInterior(Level world, int x, int y, int z) throws MultiblockValidationException
+    {
+        throw new MultiblockValidationException(String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
     }
 
     /**
      * @return The reference coordinate, the block with the lowest x, y, z
      * coordinates, evaluated in that order.
      */
-    public BlockPos getReferenceCoord() {
-        if (referenceCoord == null) {
+    public BlockPos getReferenceCoord()
+    {
+        if (referenceCoord == null)
+        {
             selectNewReferenceCoord();
         }
         return referenceCoord;
@@ -649,7 +704,8 @@ public abstract class MultiblockControllerBase {
     /**
      * @return The number of blocks connected to this controller.
      */
-    public int getNumConnectedBlocks() {
+    public int getNumConnectedBlocks()
+    {
         return connectedParts.size();
     }
 
@@ -661,30 +717,38 @@ public abstract class MultiblockControllerBase {
      * Force this multiblock to recalculate its minimum and maximum coordinates
      * from the list of connected parts.
      */
-    public void recalculateMinMaxCoords() {
+    public void recalculateMinMaxCoords()
+    {
         Integer minX, minY, minZ;
         Integer maxX, maxY, maxZ;
         minX = minY = minZ = Integer.MAX_VALUE;
         maxX = maxY = maxZ = Integer.MIN_VALUE;
 
-        for (IMultiblockPart part : connectedParts) {
+        for (IMultiblockPart part : connectedParts)
+        {
             BlockPos pos = part.getBlockPos();
-            if (pos.getX() < minX) {
+            if (pos.getX() < minX)
+            {
                 minX = pos.getX();
             }
-            if (pos.getX() > maxX) {
+            if (pos.getX() > maxX)
+            {
                 maxX = pos.getX();
             }
-            if (pos.getY() < minY) {
+            if (pos.getY() < minY)
+            {
                 minY = pos.getY();
             }
-            if (pos.getY() > maxY) {
+            if (pos.getY() > maxY)
+            {
                 maxY = pos.getY();
             }
-            if (pos.getZ() < minZ) {
+            if (pos.getZ() < minZ)
+            {
                 minZ = pos.getZ();
             }
-            if (pos.getZ() > maxZ) {
+            if (pos.getZ() > maxZ)
+            {
                 maxZ = pos.getZ();
             }
         }
@@ -696,8 +760,10 @@ public abstract class MultiblockControllerBase {
      * @return The minimum bounding-box coordinate containing this machine's
      * blocks.
      */
-    public BlockPos getMinimumCoord() {
-        if (minimumCoord == null) {
+    public BlockPos getMinimumCoord()
+    {
+        if (minimumCoord == null)
+        {
             recalculateMinMaxCoords();
         }
         return minimumCoord;
@@ -707,8 +773,10 @@ public abstract class MultiblockControllerBase {
      * @return The maximum bounding-box coordinate containing this machine's
      * blocks.
      */
-    public BlockPos getMaximumCoord() {
-        if (maximumCoord == null) {
+    public BlockPos getMaximumCoord()
+    {
+        if (maximumCoord == null)
+        {
             recalculateMinMaxCoords();
         }
         return maximumCoord;
@@ -733,7 +801,8 @@ public abstract class MultiblockControllerBase {
     /**
      * @return True if this controller has no associated blocks, false otherwise
      */
-    public boolean isEmpty() {
+    public boolean isEmpty()
+    {
         return connectedParts.isEmpty();
     }
 
@@ -746,68 +815,76 @@ public abstract class MultiblockControllerBase {
      * @return True if this multiblock should consume the other, false
      * otherwise.
      */
-    public boolean shouldConsume(MultiblockControllerBase otherController) {
-        if (!otherController.getClass().equals(getClass())) {
-            throw new IllegalArgumentException(
-                    "Attempting to merge two multiblocks with different master classes - this should never happen!");
+    public boolean shouldConsume(MultiblockControllerBase otherController)
+    {
+        if (!otherController.getClass().equals(getClass()))
+        {
+            throw new IllegalArgumentException("Attempting to merge two multiblocks with different master classes - this should never happen!");
         }
 
-        if (otherController == this) {
+        if (otherController == this)
+        {
             return false;
         } // Don't be silly, don't eat yourself.
 
         int res = _shouldConsume(otherController);
-        if (res < 0) {
+        if (res < 0)
+        {
             return true;
-        } else if (res > 0) {
+        } else if (res > 0)
+        {
             return false;
-        } else {
+        } else
+        {
             // Strip dead parts from both and retry
-            RebornStorage.logger.warning(
-                    String.format("[%s] Encountered two controllers with the same reference coordinate. Auditing connected parts and retrying.",
-                            worldObj.isClientSide ? "CLIENT" : "SERVER"));
+            RebornStorage.logger.warning(String.format("[%s] Encountered two controllers with the same reference coordinate. Auditing connected parts and retrying.", worldObj.isClientSide ? "CLIENT" : "SERVER"));
             auditParts();
             otherController.auditParts();
 
             res = _shouldConsume(otherController);
-            if (res < 0) {
+            if (res < 0)
+            {
                 return true;
-            } else if (res > 0) {
+            } else if (res > 0)
+            {
                 return false;
-            } else {
-                RebornStorage.logger.warning(String.format("My Controller (%d): size (%d), parts: %s", hashCode(), connectedParts.size(),
-                        getPartsListString()));
-                RebornStorage.logger.warning(String.format("Other Controller (%d): size (%d), coords: %s", otherController.hashCode(),
-                        otherController.connectedParts.size(), otherController.getPartsListString()));
-                throw new IllegalArgumentException("[" + (worldObj.isClientSide ? "CLIENT" : "SERVER")
-                        + "] Two controllers with the same reference coord that somehow both have valid parts - this should never happen!");
+            } else
+            {
+                RebornStorage.logger.warning(String.format("My Controller (%d): size (%d), parts: %s", hashCode(), connectedParts.size(), getPartsListString()));
+                RebornStorage.logger.warning(String.format("Other Controller (%d): size (%d), coords: %s", otherController.hashCode(), otherController.connectedParts.size(), otherController.getPartsListString()));
+                throw new IllegalArgumentException("[" + (worldObj.isClientSide ? "CLIENT" : "SERVER") + "] Two controllers with the same reference coord that somehow both have valid parts - this should never happen!");
             }
 
         }
     }
 
-    private int _shouldConsume(MultiblockControllerBase otherController) {
+    private int _shouldConsume(MultiblockControllerBase otherController)
+    {
         BlockPos myCoord = getReferenceCoord();
         BlockPos theirCoord = otherController.getReferenceCoord();
 
         // Always consume other controllers if their reference coordinate is
         // null - this means they're empty and can be assimilated on the cheap
-        if (theirCoord == null) {
+        if (theirCoord == null)
+        {
             return -1;
-        } else {
+        } else
+        {
             return myCoord.compareTo(theirCoord);
         }
     }
 
-    private String getPartsListString() {
+    private String getPartsListString()
+    {
         StringBuilder sb = new StringBuilder();
         boolean first = true;
-        for (IMultiblockPart part : connectedParts) {
-            if (!first) {
+        for (IMultiblockPart part : connectedParts)
+        {
+            if (!first)
+            {
                 sb.append(", ");
             }
-            sb.append(String.format("(%d: %d, %d, %d)", part.hashCode(), part.getBlockPos().getX(), part.getBlockPos().getY(),
-                    part.getBlockPos().getZ()));
+            sb.append(String.format("(%d: %d, %d, %d)", part.hashCode(), part.getBlockPos().getX(), part.getBlockPos().getY(), part.getBlockPos().getZ()));
             first = false;
         }
 
@@ -818,18 +895,20 @@ public abstract class MultiblockControllerBase {
      * Checks all of the parts in the controller. If any are dead or do not
      * exist in the world, they are removed.
      */
-    private void auditParts() {
+    private void auditParts()
+    {
         HashSet<IMultiblockPart> deadParts = new HashSet<IMultiblockPart>();
-        for (IMultiblockPart part : connectedParts) {
-            if (part.isInvalid() || worldObj.getBlockEntity(part.getBlockPos()) != part) {
+        for (IMultiblockPart part : connectedParts)
+        {
+            if (part.isInvalid() || worldObj.getBlockEntity(part.getBlockPos()) != part)
+            {
                 onDetachBlock(part);
                 deadParts.add(part);
             }
         }
 
         connectedParts.removeAll(deadParts);
-        RebornStorage.logger.warning(String.format("[%s] Controller found %d dead parts during an audit, %d parts remain attached",
-                worldObj.isClientSide ? "CLIENT" : "SERVER", deadParts.size(), connectedParts.size()));
+        RebornStorage.logger.warning(String.format("[%s] Controller found %d dead parts during an audit, %d parts remain attached", worldObj.isClientSide ? "CLIENT" : "SERVER", deadParts.size(), connectedParts.size()));
     }
 
     /**
@@ -838,12 +917,15 @@ public abstract class MultiblockControllerBase {
      *
      * @return
      */
-    public Set<IMultiblockPart> checkForDisconnections() {
-        if (!this.shouldCheckForDisconnections) {
+    public Set<IMultiblockPart> checkForDisconnections()
+    {
+        if (!this.shouldCheckForDisconnections)
+        {
             return null;
         }
 
-        if (this.isEmpty()) {
+        if (this.isEmpty())
+        {
             MultiblockRegistry.addDeadController(worldObj, this);
             return null;
         }
@@ -858,15 +940,18 @@ public abstract class MultiblockControllerBase {
 
         int originalSize = connectedParts.size();
 
-        for (IMultiblockPart part : connectedParts) {
+        for (IMultiblockPart part : connectedParts)
+        {
             pos = part.getWorldLocation();
-            if (!this.worldObj.isLoaded(pos) || part.isInvalid()) {
+            if (!this.worldObj.isLoaded(pos) || part.isInvalid())
+            {
                 deadParts.add(part);
                 onDetachBlock(part);
                 continue;
             }
 
-            if (worldObj.getBlockEntity(pos) != part) {
+            if (worldObj.getBlockEntity(pos) != part)
+            {
                 deadParts.add(part);
                 onDetachBlock(part);
                 continue;
@@ -875,10 +960,12 @@ public abstract class MultiblockControllerBase {
             part.setUnvisited();
             part.forfeitMultiblockSaveDelegate();
 
-            if (referenceCoord == null) {
+            if (referenceCoord == null)
+            {
                 referenceCoord = pos;
                 referencePart = part;
-            } else if (pos.compareTo(referenceCoord) < 0) {
+            } else if (pos.compareTo(referenceCoord) < 0)
+            {
                 referenceCoord = pos;
                 referencePart = part;
             }
@@ -887,13 +974,15 @@ public abstract class MultiblockControllerBase {
         connectedParts.removeAll(deadParts);
         deadParts.clear();
 
-        if (referencePart == null || isEmpty()) {
+        if (referencePart == null || isEmpty())
+        {
             // There are no valid parts remaining. The entire multiblock was
             // unloaded during a chunk unload. Halt.
             shouldCheckForDisconnections = false;
             MultiblockRegistry.addDeadController(worldObj, this);
             return null;
-        } else {
+        } else
+        {
             referencePart.becomeMultiblockSaveDelegate();
         }
 
@@ -906,20 +995,24 @@ public abstract class MultiblockControllerBase {
 
         partsToCheck.add(referencePart);
 
-        while (!partsToCheck.isEmpty()) {
+        while (!partsToCheck.isEmpty())
+        {
             part = partsToCheck.removeFirst();
             part.setVisited();
             visitedParts++;
 
             // Chunk-safe on server, but not on client
             nearbyParts = part.getNeighboringParts();
-            for (IMultiblockPart nearbyPart : nearbyParts) {
+            for (IMultiblockPart nearbyPart : nearbyParts)
+            {
                 // Ignore different machines
-                if (nearbyPart.getMultiblockController() != this) {
+                if (nearbyPart.getMultiblockController() != this)
+                {
                     continue;
                 }
 
-                if (!nearbyPart.isVisited()) {
+                if (!nearbyPart.isVisited())
+                {
                     nearbyPart.setVisited();
                     partsToCheck.add(nearbyPart);
                 }
@@ -928,8 +1021,10 @@ public abstract class MultiblockControllerBase {
 
         // Finally, remove all parts that remain disconnected.
         Set<IMultiblockPart> removedParts = new HashSet<IMultiblockPart>();
-        for (IMultiblockPart orphanCandidate : connectedParts) {
-            if (!orphanCandidate.isVisited()) {
+        for (IMultiblockPart orphanCandidate : connectedParts)
+        {
+            if (!orphanCandidate.isVisited())
+            {
                 deadParts.add(orphanCandidate);
                 orphanCandidate.onOrphaned(this, originalSize, visitedParts);
                 onDetachBlock(orphanCandidate);
@@ -944,7 +1039,8 @@ public abstract class MultiblockControllerBase {
         deadParts.clear();
 
         // Juuuust in case.
-        if (referenceCoord == null) {
+        if (referenceCoord == null)
+        {
             selectNewReferenceCoord();
         }
 
@@ -960,13 +1056,17 @@ public abstract class MultiblockControllerBase {
      *
      * @return A set of all parts which still have a valid tile entity.
      */
-    public Set<IMultiblockPart> detachAllBlocks() {
-        if (worldObj == null) {
+    public Set<IMultiblockPart> detachAllBlocks()
+    {
+        if (worldObj == null)
+        {
             return new HashSet<IMultiblockPart>();
         }
 
-        for (IMultiblockPart part : connectedParts) {
-            if (this.worldObj.isLoaded(part.getWorldLocation())) {
+        for (IMultiblockPart part : connectedParts)
+        {
+            if (this.worldObj.isLoaded(part.getWorldLocation()))
+            {
                 onDetachBlock(part);
             }
         }
@@ -980,29 +1080,35 @@ public abstract class MultiblockControllerBase {
      * @return True if this multiblock machine is considered assembled and ready
      * to go.
      */
-    public boolean isAssembled() {
+    public boolean isAssembled()
+    {
         return this.assemblyState == AssemblyState.Assembled;
     }
 
-    private void selectNewReferenceCoord() {
+    private void selectNewReferenceCoord()
+    {
         IMultiblockPart theChosenOne = null;
         BlockPos pos;
         referenceCoord = null;
 
-        for (IMultiblockPart part : connectedParts) {
+        for (IMultiblockPart part : connectedParts)
+        {
             pos = part.getWorldLocation();
-            if (part.isInvalid() || !this.worldObj.isLoaded(pos)) {
+            if (part.isInvalid() || !this.worldObj.isLoaded(pos))
+            {
                 // Chunk is unloading, skip this coord to prevent chunk thrashing
                 continue;
             }
 
-            if (referenceCoord == null || referenceCoord.compareTo(pos) > 0) {
+            if (referenceCoord == null || referenceCoord.compareTo(pos) > 0)
+            {
                 referenceCoord = pos;
                 theChosenOne = part;
             }
         }
 
-        if (theChosenOne != null) {
+        if (theChosenOne != null)
+        {
             theChosenOne.becomeMultiblockSaveDelegate();
         }
     }
@@ -1017,18 +1123,22 @@ public abstract class MultiblockControllerBase {
      * <p>
      * On the client, this will mark the block for a rendering update.
      */
-    protected void markReferenceCoordForUpdate() {
-        if (worldObj == null || worldObj.isClientSide) {
+    protected void markReferenceCoordForUpdate()
+    {
+        if (worldObj == null || worldObj.isClientSide)
+        {
             return;
         }
 
         BlockPos referenceCoord = getReferenceCoord();
-        if (referenceCoord == null) {
+        if (referenceCoord == null)
+        {
             return;
         }
     }
 
-    public static void updateBlock(Level world, BlockPos pos) {
+    public static void updateBlock(Level world, BlockPos pos)
+    {
         BlockState state = world.getBlockState(pos);
         //TODO
 //		world.notifyBlockUpdate(pos, state, state, 3);
@@ -1045,13 +1155,16 @@ public abstract class MultiblockControllerBase {
      *
      * @see MultiblockControllerBase#markReferenceCoordForUpdate()
      */
-    protected void markReferenceCoordDirty() {
-        if (worldObj == null || worldObj.isClientSide) {
+    protected void markReferenceCoordDirty()
+    {
+        if (worldObj == null || worldObj.isClientSide)
+        {
             return;
         }
 
         BlockPos referenceCoord = getReferenceCoord();
-        if (referenceCoord == null) {
+        if (referenceCoord == null)
+        {
             return;
         }
 
