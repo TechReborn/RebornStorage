@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "refinedstorage:256k_fluid_storage_part",
+    "rebornstorage:small_fluid_disk_part"
+  ]
+}

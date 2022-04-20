@@ -23,7 +23,7 @@
     ],
     "P": [
       {
-        "item": "rebornstorage:small_item_disk_part"
+        "tag": "refinedstorage:parts/items/256k"
       }
     ]
   },

@@ -23,7 +23,7 @@
     ],
     "P": [
       {
-        "item": "rebornstorage:medium_item_disk_part"
+        "tag": "refinedstorage:parts/items/1024k"
       }
     ]
   },
