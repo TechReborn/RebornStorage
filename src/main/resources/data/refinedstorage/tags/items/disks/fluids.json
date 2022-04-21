@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    "#refinedstorage:disks/fluids/16384k"
+  ]
+}

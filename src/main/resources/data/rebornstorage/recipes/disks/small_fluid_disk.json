@@ -23,7 +23,7 @@
     ],
     "P": [
       {
-        "item": "rebornstorage:small_fluid_disk_part"
+        "tag": "refinedstorage:parts/fluids/256k"
       }
     ]
   },

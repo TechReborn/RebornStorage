@@ -23,7 +23,7 @@
     ],
     "P": [
       {
-        "item": "rebornstorage:large_fluid_disk_part"
+        "tag": "refinedstorage:parts/fluids/4096k"
       }
     ]
   },
