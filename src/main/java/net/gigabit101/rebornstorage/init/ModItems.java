@@ -1,7 +1,10 @@
 package net.gigabit101.rebornstorage.init;
 
 import com.refinedmods.refinedstorage.api.storage.StorageType;
+import com.refinedmods.refinedstorage.block.BaseBlock;
+import com.refinedmods.refinedstorage.item.blockitem.BaseBlockItem;
 import net.gigabit101.rebornstorage.client.CreativeTabRebornStorage;
+import net.gigabit101.rebornstorage.items.ItemFluidRebornStorageCell;
 import net.gigabit101.rebornstorage.items.ItemRebornStorageCell;
 import net.gigabit101.rebornstorage.Constants;
 import net.minecraft.world.item.BlockItem;
@@ -28,10 +31,10 @@ public class ModItems
     public static final RegistryObject<Item> STORAGE_DISK_4096K = ITEMS.register("large_item_disk", () -> new ItemRebornStorageCell(4096000, StorageType.ITEM));
     public static final RegistryObject<Item> STORAGE_DISK_16384K = ITEMS.register("larger_item_disk", () -> new ItemRebornStorageCell(16384000, StorageType.ITEM));
 
-    public static final RegistryObject<Item> STORAGE_DISK_FLUID_256k = ITEMS.register("small_fluid_disk", () -> new ItemRebornStorageCell(256000, StorageType.FLUID));
-    public static final RegistryObject<Item> STORAGE_DISK_FLUID_1024k = ITEMS.register("medium_fluid_disk", () -> new ItemRebornStorageCell(1024000, StorageType.FLUID));
-    public static final RegistryObject<Item> STORAGE_DISK_FLUID_4096K = ITEMS.register("large_fluid_disk", () -> new ItemRebornStorageCell(4096000, StorageType.FLUID));
-    public static final RegistryObject<Item> STORAGE_DISK_FLUID_16384K = ITEMS.register("larger_fluid_disk", () -> new ItemRebornStorageCell(16384000, StorageType.FLUID));
+    public static final RegistryObject<Item> STORAGE_DISK_FLUID_256k = ITEMS.register("small_fluid_disk", () -> new ItemFluidRebornStorageCell(4096000, StorageType.FLUID));
+    public static final RegistryObject<Item> STORAGE_DISK_FLUID_1024k = ITEMS.register("medium_fluid_disk", () -> new ItemFluidRebornStorageCell(16384000, StorageType.FLUID));
+    public static final RegistryObject<Item> STORAGE_DISK_FLUID_4096K = ITEMS.register("large_fluid_disk", () -> new ItemFluidRebornStorageCell(49152000, StorageType.FLUID));
+    public static final RegistryObject<Item> STORAGE_DISK_FLUID_16384K = ITEMS.register("larger_fluid_disk", () -> new ItemFluidRebornStorageCell(147456000, StorageType.FLUID));
 
     public static final RegistryObject<Item> STORAGE_DISK_256k_PART = ITEMS.register("small_item_disk_part", () -> new Item(PROPERTIES));
     public static final RegistryObject<Item> STORAGE_DISK_1024k_PART = ITEMS.register("medium_item_disk_part", () -> new Item(PROPERTIES));
@@ -42,4 +45,6 @@ public class ModItems
     public static final RegistryObject<Item> STORAGE_DISK_1024k_FLUID_PART = ITEMS.register("medium_fluid_disk_part", () -> new Item(PROPERTIES));
     public static final RegistryObject<Item> STORAGE_DISK_4096K_FLUID_PART = ITEMS.register("large_fluid_disk_part", () -> new Item(PROPERTIES));
     public static final RegistryObject<Item> STORAGE_DISK_16384K_FLUID_PART = ITEMS.register("larger_fluid_disk_part", () -> new Item(PROPERTIES));
+
+    public static final RegistryObject<Item> ADVANCED_WIRELESS_TRANSMITTER_ITEM = ITEMS.register("advanced_wireless_transmitter", () -> new BaseBlockItem((BaseBlock) ModBlocks.BLOCK_ADVANCED_WIRELESS_TRANSMITTER.get(), ITEM_GROUP));
 }

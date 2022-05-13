@@ -12,6 +12,7 @@ import net.gigabit101.rebornstorage.core.multiblock.rectangular.RectangularMulti
 import net.gigabit101.rebornstorage.init.ModBlocks;
 import net.gigabit101.rebornstorage.Constants;
 import net.gigabit101.rebornstorage.multiblocks.MultiBlockCrafter;
+import net.gigabit101.rebornstorage.nodes.CraftingNode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

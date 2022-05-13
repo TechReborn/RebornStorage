@@ -30,6 +30,10 @@ public class RebornStorageConfig
     public static ForgeConfigSpec.IntValue MULTIBLOCK_MIN_YSIZE;
     public static ForgeConfigSpec.IntValue MULTIBLOCK_MIN_ZSIZE;
 
+    public static ForgeConfigSpec.IntValue ADVANCED_WIRELESS_TRANSMITTER_RANGE;
+    public static ForgeConfigSpec.IntValue ADVANCED_WIRELESS_TRANSMITTER_POWER_COST;
+
+
     static
     {
         COMMON_BUILDER.comment("General Settings").push(CATEGORY_GENERAL);
@@ -50,6 +54,9 @@ public class RebornStorageConfig
         MULTIBLOCK_MIN_XSIZE = COMMON_BUILDER.comment("Maximum X size").defineInRange("multiblock_crafter_min_x", 3, 3, 64);
         MULTIBLOCK_MIN_YSIZE = COMMON_BUILDER.comment("Maximum Y size").defineInRange("multiblock_crafter_min_y", 3, 3, 64);
         MULTIBLOCK_MIN_ZSIZE = COMMON_BUILDER.comment("Maximum Z size").defineInRange("multiblock_crafter_min_z", 3, 3, 64);
+
+        ADVANCED_WIRELESS_TRANSMITTER_RANGE = COMMON_BUILDER.defineInRange("advanced_wireless_transmitter_range", 1000, 0, 100000);
+        ADVANCED_WIRELESS_TRANSMITTER_POWER_COST = COMMON_BUILDER.defineInRange("advanced_wireless_transmitter_cost", 100, 0, 100000);
 
         COMMON_BUILDER.pop();
 

@@ -1,4 +1,4 @@
-package net.gigabit101.rebornstorage.blockentities;
+package net.gigabit101.rebornstorage.nodes;
 
 import com.refinedmods.refinedstorage.api.autocrafting.ICraftingPattern;
 import com.refinedmods.refinedstorage.api.autocrafting.ICraftingPatternContainer;
@@ -14,6 +14,7 @@ import com.refinedmods.refinedstorage.util.StackUtils;
 import net.gigabit101.rebornstorage.RebornStorage;
 import net.gigabit101.rebornstorage.RebornStorageConfig;
 import net.gigabit101.rebornstorage.RebornStorageEventHandler;
+import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.gigabit101.rebornstorage.init.ModBlocks;
 import net.gigabit101.rebornstorage.Constants;
 import net.gigabit101.rebornstorage.multiblocks.MultiBlockCrafter;

@@ -10,6 +10,8 @@ import net.gigabit101.rebornstorage.init.ModScreens;
 import net.gigabit101.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.gigabit101.rebornstorage.packet.PacketHandler;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -59,6 +61,7 @@ public class RebornStorage
     {
         ModScreens.init();
         MinecraftForge.EVENT_BUS.register(new MultiblockClientTickHandler());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOCK_ADVANCED_WIRELESS_TRANSMITTER.get(), RenderType.cutout());
     }
 
     public static MultiBlockCrafter getMultiBlock(Level world, BlockPos pos)

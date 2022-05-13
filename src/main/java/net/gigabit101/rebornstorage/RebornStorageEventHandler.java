@@ -4,7 +4,7 @@ import com.refinedmods.refinedstorage.api.autocrafting.ICraftingManager;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.util.StackUtils;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockRegistry;
-import net.gigabit101.rebornstorage.blockentities.CraftingNode;
+import net.gigabit101.rebornstorage.nodes.CraftingNode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;

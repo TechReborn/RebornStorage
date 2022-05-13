@@ -1,5 +1,7 @@
 package net.gigabit101.rebornstorage.init;
 
+import net.gigabit101.rebornstorage.blockentities.BlockEntityAdvancedWirelessTransmitter;
+import net.gigabit101.rebornstorage.blocks.BlockAdvancedWirelessTransmitter;
 import net.gigabit101.rebornstorage.blocks.BlockMultiCrafter;
 import net.gigabit101.rebornstorage.Constants;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
@@ -19,5 +21,8 @@ public class ModBlocks
     public static final RegistryObject<Block> BLOCK_MULTI_CPU = BLOCKS.register("multiblock_cpu", BlockMultiCrafter::new);
     public static final RegistryObject<Block> BLOCK_MULTI_STORAGE = BLOCKS.register("multiblock_storage", BlockMultiCrafter::new);
 
+    public static final RegistryObject<Block> BLOCK_ADVANCED_WIRELESS_TRANSMITTER = BLOCKS.register("advanced_wireless_transmitter", BlockAdvancedWirelessTransmitter::new);
+
     public static final RegistryObject<BlockEntityType<BlockEntityMultiCrafter>> CRAFTER_TILE = TILES_ENTITIES.register("multiblock_frame", () -> BlockEntityType.Builder.of(BlockEntityMultiCrafter::new, ModBlocks.BLOCK_MULTI_FRAME.get(), ModBlocks.BLOCK_MULTI_STORAGE.get(), ModBlocks.BLOCK_MULTI_CPU.get(), ModBlocks.BLOCK_MULTI_HEAT.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BlockEntityAdvancedWirelessTransmitter>> ADVANCED_WIRELESS_TRANSMITTER = TILES_ENTITIES.register("advanced_wireless_transmitter", () -> BlockEntityType.Builder.of(BlockEntityAdvancedWirelessTransmitter::new, ModBlocks.BLOCK_ADVANCED_WIRELESS_TRANSMITTER.get()).build(null));
 }

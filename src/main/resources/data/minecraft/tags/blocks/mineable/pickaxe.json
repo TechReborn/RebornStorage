@@ -4,6 +4,7 @@
     "rebornstorage:multiblock_frame",
     "rebornstorage:multiblock_heat",
     "rebornstorage:multiblock_cpu",
-    "rebornstorage:multiblock_storage"
+    "rebornstorage:multiblock_storage",
+    "rebornstorage:advanced_wireless_transmitter"
   ]
 }
