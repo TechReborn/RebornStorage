@@ -16,7 +16,6 @@ import java.util.TreeMap;
 
 public class MultiBlockCrafter extends RectangularMultiblockControllerBase
 {
-
     public Map<Integer, ItemStackHandler> invs = new TreeMap<>();
     public int speed = 0;
     public int pages = 0;

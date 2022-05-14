@@ -98,7 +98,7 @@ public class ScreenMultiCrafter extends AbstractContainerScreen<ContainerMultiCr
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
 
-        this.font.draw(matrixStack, new TextComponent("Page " + crafter.currentPage + " of " + crafter.invs.size()), 125, 224, 4210752);
+        this.font.draw(matrixStack, new TextComponent("Page " + crafter.currentPage + " of " + crafter.invs.size()), leftPos + 10, topPos + 224, 4210752);
         if(buttonNext.isMouseOver(mouseX, mouseY) || buttonBack.isMouseOver(mouseX, mouseY))
         {
             renderTooltip(matrixStack, new TextComponent("Hold <Left-Shift> to increment by 10"), mouseX, mouseY);

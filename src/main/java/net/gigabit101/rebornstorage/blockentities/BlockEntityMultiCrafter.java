@@ -74,7 +74,7 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
         Block block = level.getBlockState(getBlockPos()).getBlock();
         if (block != ModBlocks.BLOCK_MULTI_HEAT.get())
         {
-            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the sides of the block");
+            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the top of the block");
         }
     }
 
@@ -89,7 +89,7 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
 
         if (block != ModBlocks.BLOCK_MULTI_HEAT.get())
         {
-            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the sides of the block");
+            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the bottom of the block");
         }
     }
 

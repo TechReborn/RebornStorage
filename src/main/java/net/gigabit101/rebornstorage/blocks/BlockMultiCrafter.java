@@ -58,6 +58,7 @@ public class BlockMultiCrafter extends BaseEntityBlock
     {
         if (level.getBlockEntity(blockPos) == null) return InteractionResult.FAIL;
 
+
         BlockEntityMultiCrafter tile = (BlockEntityMultiCrafter) level.getBlockEntity(blockPos);
         if (tile.getMultiblockController() != null)
         {
@@ -67,10 +68,9 @@ public class BlockMultiCrafter extends BaseEntityBlock
                 {
                     if (level.isClientSide && player.getItemInHand(hand).isEmpty())
                     {
-                        player.sendMessage(new TextComponent(tile.getMultiblockController().getLastValidationException().getMessage()), Util.NIL_UUID);
+//                        player.sendMessage(new TextComponent(tile.getMultiblockController().getLastValidationException().getMessage()), Util.NIL_UUID);
                         return InteractionResult.SUCCESS;
                     }
-                    return super.use(blockState, level, blockPos, player, hand, blockHitResult);
                 }
             } else
             {
