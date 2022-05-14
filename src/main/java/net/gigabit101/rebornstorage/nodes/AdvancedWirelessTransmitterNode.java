@@ -1,5 +1,6 @@
 package net.gigabit101.rebornstorage.nodes;
 
+import com.refinedmods.refinedstorage.RS;
 import com.refinedmods.refinedstorage.api.network.IWirelessTransmitter;
 import com.refinedmods.refinedstorage.apiimpl.network.node.NetworkNode;
 import com.refinedmods.refinedstorage.inventory.item.UpgradeItemHandler;
@@ -14,6 +15,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.Nullable;
 
 public class AdvancedWirelessTransmitterNode extends NetworkNode implements IWirelessTransmitter
 {
@@ -28,7 +31,7 @@ public class AdvancedWirelessTransmitterNode extends NetworkNode implements IWir
     @Override
     public int getRange()
     {
-        return 1000;//RebornStorageConfig.ADVANCED_WIRELESS_TRANSMITTER_RANGE.get();
+        return RebornStorageConfig.ADVANCED_WIRELESS_TRANSMITTER_RANGE.get() + this.upgrades.getUpgradeCount(UpgradeItem.Type.RANGE) * RS.SERVER_CONFIG.getWirelessTransmitter().getRangePerUpgrade();
     }
 
     @Override
@@ -85,5 +88,12 @@ public class AdvancedWirelessTransmitterNode extends NetworkNode implements IWir
     public UpgradeItemHandler getUpgrades()
     {
         return upgrades;
+    }
+
+    @Nullable
+    @Override
+    public IItemHandler getDrops()
+    {
+        return getUpgrades();
     }
 }

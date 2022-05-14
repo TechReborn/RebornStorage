@@ -1,5 +1,6 @@
 package net.gigabit101.rebornstorage.containers;
 
+import com.refinedmods.refinedstorage.blockentity.BaseBlockEntity;
 import com.refinedmods.refinedstorage.container.BaseContainerMenu;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityAdvancedWirelessTransmitter;
 import net.gigabit101.rebornstorage.init.ModContainers;
@@ -21,6 +22,13 @@ public class AdvancedWirelessTransmitterContainer extends BaseContainerMenu
         addPlayerInventory(8, 55);
 
         transferManager.addBiTransfer(player.getInventory(), wirelessTransmitter.getNode().getUpgrades());
+    }
+
+    @Nullable
+    @Override
+    public BlockEntityAdvancedWirelessTransmitter getBlockEntity()
+    {
+        return (BlockEntityAdvancedWirelessTransmitter) super.getBlockEntity();
     }
 
     @Override

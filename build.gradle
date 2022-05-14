@@ -100,6 +100,9 @@ repositories {
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
+        url = "https://maven.creeperhost.net"
+    }
+    maven {
         url "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
@@ -123,8 +126,7 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${project.mc_version}-${project.forge_version}"
-    compileOnly "com.refinedmods:refinedstorage:1.10.2"
-    runtimeOnly fg.deobf("com.refinedmods:refinedstorage:1.10.2") {
+    implementation fg.deobf("com.refinedmods:refinedstorage:${project.rs_version}") {
         transitive false
     }
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")

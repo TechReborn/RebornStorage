@@ -13,15 +13,12 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class AdvancedWirelessTransmitterScreen extends BaseScreen<AdvancedWirelessTransmitterContainer>
 {
+    AdvancedWirelessTransmitterContainer container;
+
     public AdvancedWirelessTransmitterScreen(AdvancedWirelessTransmitterContainer containerMenu, Inventory inventory, Component title)
     {
         super(containerMenu, 211, 137, inventory, title);
-    }
-
-    @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
-    {
-        renderBackground(poseStack, leftPos, topPos, mouseX, mouseY);
+        this.container = containerMenu;
     }
 
     @Override
@@ -44,7 +41,7 @@ public class AdvancedWirelessTransmitterScreen extends BaseScreen<AdvancedWirele
     public void renderForeground(PoseStack poseStack, int i, int i1)
     {
         renderString(poseStack, 7, 7, title.getString());
-        renderString(poseStack, 28, 25, I18n.get("gui.refinedstorage.wireless_transmitter.distance", BlockEntityAdvancedWirelessTransmitter.RANGE.getValue()));
+        renderString(poseStack, 28, 25, I18n.get("gui.refinedstorage.wireless_transmitter.distance", container.getBlockEntity() != null ? container.getBlockEntity().getNode().getRange() : 0));
         renderString(poseStack, 7, 43, I18n.get("container.inventory"));
     }
 }
