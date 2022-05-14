@@ -1,5 +1,7 @@
 package net.gigabit101.rebornstorage;
 
+import com.refinedmods.refinedstorage.api.IRSAPI;
+import com.refinedmods.refinedstorage.api.RSAPIInject;
 import com.refinedmods.refinedstorage.api.network.node.INetworkNode;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.apiimpl.network.node.NetworkNode;
@@ -7,6 +9,8 @@ import com.refinedmods.refinedstorage.util.StackUtils;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockClientTickHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockEventHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockServerTickHandler;
+import net.gigabit101.rebornstorage.grid.pattern.WirelessPatternGridGridFactory;
+import net.gigabit101.rebornstorage.grid.crafting.WirelessCraftingGridGridFactory;
 import net.gigabit101.rebornstorage.init.ModBlocks;
 import net.gigabit101.rebornstorage.init.ModContainers;
 import net.gigabit101.rebornstorage.init.ModItems;
@@ -36,6 +40,9 @@ import java.util.logging.Logger;
 @Mod(Constants.MOD_ID)
 public class RebornStorage
 {
+    @RSAPIInject
+    public static IRSAPI RSAPI;
+
     public static Logger logger = Logger.getLogger(Constants.MOD_ID);
 
     public static RebornStorage INSTANCE;
@@ -68,6 +75,9 @@ public class RebornStorage
             return node;
         });
         API.instance().getNetworkNodeRegistry().add(AdvancedWirelessTransmitterNode.ID, (tag, world, pos) -> readAndReturn(tag, new AdvancedWirelessTransmitterNode(world, pos)));
+        API.instance().getGridManager().add(WirelessCraftingGridGridFactory.ID, new WirelessCraftingGridGridFactory());
+        API.instance().getGridManager().add(WirelessPatternGridGridFactory.ID, new WirelessPatternGridGridFactory());
+
     }
 
     @SubscribeEvent

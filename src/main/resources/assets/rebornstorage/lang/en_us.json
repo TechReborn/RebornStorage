@@ -21,5 +21,8 @@
   "block.rebornstorage.multiblock_frame": "Crafting Frame",
   "block.rebornstorage.multiblock_storage": "Crafting Storage",
   "block.rebornstorage.advanced_wireless_transmitter": "Advanced Wireless Transmitter",
-  "gui.rebornstorage.advanced_wireless_transmitter": "Advanced Wireless Transmitter"
+  "gui.rebornstorage.advanced_wireless_transmitter": "Advanced Wireless Transmitter",
+  "item.rebornstorage.super_wireless_crafting_grid": "Super Wireless Crafting Grid",
+  "item.rebornstorage.creative_super_wireless_crafting_grid": "Creative Super Wireless Crafting Grid"
+
 }

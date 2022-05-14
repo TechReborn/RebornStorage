@@ -4,11 +4,13 @@ import com.refinedmods.refinedstorage.api.storage.StorageType;
 import com.refinedmods.refinedstorage.block.BaseBlock;
 import com.refinedmods.refinedstorage.item.blockitem.BaseBlockItem;
 import net.gigabit101.rebornstorage.client.CreativeTabRebornStorage;
+import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
 import net.gigabit101.rebornstorage.items.ItemFluidRebornStorageCell;
 import net.gigabit101.rebornstorage.items.ItemRebornStorageCell;
 import net.gigabit101.rebornstorage.Constants;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -48,6 +50,9 @@ public class ModItems
 
     public static final RegistryObject<Item> RAW_SUPER_ADVANCED_PROCESSOR = ITEMS.register("raw_super_advanced_processor", () -> new Item(PROPERTIES));
     public static final RegistryObject<Item> SUPER_ADVANCED_PROCESSOR = ITEMS.register("super_advanced_processor", () -> new Item(PROPERTIES));
+
+    public static final RegistryObject<Item> WIRELESS_GRID = ITEMS.register("super_wireless_crafting_grid", () -> new ItemWirelessGrid(PROPERTIES.stacksTo(1).rarity(Rarity.EPIC), ItemWirelessGrid.Type.NORMAL, () -> 100000));
+    public static final RegistryObject<Item> CREATIVE_WIRELESS_GRID = ITEMS.register("creative_super_wireless_crafting_grid", () -> new ItemWirelessGrid(PROPERTIES.stacksTo(1).rarity(Rarity.EPIC), ItemWirelessGrid.Type.CREATIVE, () -> 100000));
 
     public static final RegistryObject<Item> ADVANCED_WIRELESS_TRANSMITTER_ITEM = ITEMS.register("advanced_wireless_transmitter", () -> new BaseBlockItem((BaseBlock) ModBlocks.BLOCK_ADVANCED_WIRELESS_TRANSMITTER.get(), ITEM_GROUP));
 }
