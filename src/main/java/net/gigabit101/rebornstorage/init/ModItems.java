@@ -46,5 +46,8 @@ public class ModItems
     public static final RegistryObject<Item> STORAGE_DISK_4096K_FLUID_PART = ITEMS.register("large_fluid_disk_part", () -> new Item(PROPERTIES));
     public static final RegistryObject<Item> STORAGE_DISK_16384K_FLUID_PART = ITEMS.register("larger_fluid_disk_part", () -> new Item(PROPERTIES));
 
+    public static final RegistryObject<Item> RAW_SUPER_ADVANCED_PROCESSOR = ITEMS.register("raw_super_advanced_processor", () -> new Item(PROPERTIES));
+    public static final RegistryObject<Item> SUPER_ADVANCED_PROCESSOR = ITEMS.register("super_advanced_processor", () -> new Item(PROPERTIES));
+
     public static final RegistryObject<Item> ADVANCED_WIRELESS_TRANSMITTER_ITEM = ITEMS.register("advanced_wireless_transmitter", () -> new BaseBlockItem((BaseBlock) ModBlocks.BLOCK_ADVANCED_WIRELESS_TRANSMITTER.get(), ITEM_GROUP));
 }

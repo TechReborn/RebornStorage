@@ -2,15 +2,26 @@ package net.gigabit101.rebornstorage.blocks;
 
 import com.refinedmods.refinedstorage.block.BlockDirection;
 import com.refinedmods.refinedstorage.block.ColoredNetworkBlock;
+import com.refinedmods.refinedstorage.container.factory.BlockEntityMenuProvider;
+import com.refinedmods.refinedstorage.util.NetworkUtils;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityAdvancedWirelessTransmitter;
+import net.gigabit101.rebornstorage.containers.AdvancedWirelessTransmitterContainer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,11 +74,28 @@ public class BlockAdvancedWirelessTransmitter extends ColoredNetworkBlock
         }
     }
 
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState)
     {
         return new BlockEntityAdvancedWirelessTransmitter(blockPos, blockState);
+    }
+
+    @Override
+    public @NotNull InteractionResult use(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult blockHitResult)
+    {
+        if (!level.isClientSide)
+        {
+            return NetworkUtils.attemptModify(level, blockPos, player, () -> NetworkHooks.openGui(
+                    (ServerPlayer) player,
+                    new BlockEntityMenuProvider<BlockEntityAdvancedWirelessTransmitter>(
+                            new TranslatableComponent("gui.refinedstorage.wireless_transmitter"),
+                            (blockEntity, windowId, inventory, p) -> new AdvancedWirelessTransmitterContainer(blockEntity, player, windowId),
+                            blockPos
+                    ),
+                    blockPos
+            ));
+        }
+        return InteractionResult.SUCCESS;
     }
 }
