@@ -58,13 +58,13 @@ public class ItemWirelessGrid extends NetworkItem
                     player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + MODE.MONITOR.name()), true);
                     return InteractionResultHolder.success(stack);
                 case MONITOR:
-                    setMode(stack, MODE.PATTERN);
+                    setMode(stack, MODE.CRAFTING);
                     player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + MODE.PATTERN.name()), true);
                     return InteractionResultHolder.success(stack);
-                case PATTERN:
-                    setMode(stack, MODE.CRAFTING);
-                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + MODE.CRAFTING.name()), true);
-                    return InteractionResultHolder.success(stack);
+//                case PATTERN:
+//                    setMode(stack, MODE.CRAFTING);
+//                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + MODE.CRAFTING.name()), true);
+//                    return InteractionResultHolder.success(stack);
             }
         }
         return super.use(level, player, hand);
@@ -103,8 +103,8 @@ public class ItemWirelessGrid extends NetworkItem
                 return new WirelessFluidGridNetworkItemExt(iNetworkItemManager, player, itemStack, playerSlot);
             case MONITOR:
                 return new WirelessCraftingMonitorNetworkItemExt(iNetworkItemManager, player, itemStack, playerSlot);
-            case PATTERN:
-                return new WirelessPatternGridNetworkItem(iNetworkItemManager, player, itemStack, playerSlot);
+//            case PATTERN:
+//                return new WirelessPatternGridNetworkItem(iNetworkItemManager, player, itemStack, playerSlot);
 
         }
         return new WirelessCraftingGridNetworkItem(iNetworkItemManager, player, itemStack, playerSlot);
