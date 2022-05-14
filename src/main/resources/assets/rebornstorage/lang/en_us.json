@@ -23,6 +23,7 @@
   "block.rebornstorage.advanced_wireless_transmitter": "Advanced Wireless Transmitter",
   "gui.rebornstorage.advanced_wireless_transmitter": "Advanced Wireless Transmitter",
   "item.rebornstorage.super_wireless_crafting_grid": "Super Wireless Crafting Grid",
-  "item.rebornstorage.creative_super_wireless_crafting_grid": "Creative Super Wireless Crafting Grid"
-
+  "item.rebornstorage.creative_super_wireless_crafting_grid": "Creative Super Wireless Crafting Grid",
+  "item.rebornstorage.raw_super_advanced_processor": "Raw Super Advanced Processor",
+  "item.rebornstorage.super_advanced_processor": "Super Advanced Processor"
 }
