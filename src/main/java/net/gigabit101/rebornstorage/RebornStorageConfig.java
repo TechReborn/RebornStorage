@@ -33,6 +33,8 @@ public class RebornStorageConfig
     public static ForgeConfigSpec.IntValue ADVANCED_WIRELESS_TRANSMITTER_RANGE;
     public static ForgeConfigSpec.IntValue ADVANCED_WIRELESS_TRANSMITTER_POWER_COST;
 
+    public static ForgeConfigSpec.IntValue ADVANCED_WIRELESS_RAGE_BOOSTER_RANGE;
+
 
     static
     {
@@ -58,6 +60,7 @@ public class RebornStorageConfig
         ADVANCED_WIRELESS_TRANSMITTER_RANGE = COMMON_BUILDER.defineInRange("advanced_wireless_transmitter_range", 1000, 0, 100000);
         ADVANCED_WIRELESS_TRANSMITTER_POWER_COST = COMMON_BUILDER.defineInRange("advanced_wireless_transmitter_cost", 100, 0, 100000);
 
+        ADVANCED_WIRELESS_RAGE_BOOSTER_RANGE = COMMON_BUILDER.defineInRange("advanced_wireless_transmitter_range_booster_range", 500, 0, 100000);
         COMMON_BUILDER.pop();
 
         COMMON_CONFIG = COMMON_BUILDER.build();
