@@ -9,7 +9,6 @@ import com.refinedmods.refinedstorage.util.StackUtils;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockClientTickHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockEventHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockServerTickHandler;
-import net.gigabit101.rebornstorage.grid.pattern.WirelessPatternGridGridFactory;
 import net.gigabit101.rebornstorage.grid.crafting.WirelessCraftingGridGridFactory;
 import net.gigabit101.rebornstorage.init.ModBlocks;
 import net.gigabit101.rebornstorage.init.ModContainers;
@@ -76,8 +75,6 @@ public class RebornStorage
         });
         API.instance().getNetworkNodeRegistry().add(AdvancedWirelessTransmitterNode.ID, (tag, world, pos) -> readAndReturn(tag, new AdvancedWirelessTransmitterNode(world, pos)));
         API.instance().getGridManager().add(WirelessCraftingGridGridFactory.ID, new WirelessCraftingGridGridFactory());
-        API.instance().getGridManager().add(WirelessPatternGridGridFactory.ID, new WirelessPatternGridGridFactory());
-
     }
 
     @SubscribeEvent

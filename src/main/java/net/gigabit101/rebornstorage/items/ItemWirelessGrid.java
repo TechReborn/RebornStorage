@@ -4,7 +4,6 @@ import com.refinedmods.refinedstorage.api.network.item.INetworkItem;
 import com.refinedmods.refinedstorage.api.network.item.INetworkItemManager;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.item.NetworkItem;
-import net.gigabit101.rebornstorage.grid.pattern.WirelessPatternGridNetworkItem;
 import net.gigabit101.rebornstorage.grid.crafting.WirelessCraftingGridNetworkItem;
 import net.gigabit101.rebornstorage.grid.monitor.WirelessCraftingMonitorNetworkItemExt;
 import net.gigabit101.rebornstorage.grid.fluid.WirelessFluidGridNetworkItemExt;
@@ -59,12 +58,8 @@ public class ItemWirelessGrid extends NetworkItem
                     return InteractionResultHolder.success(stack);
                 case MONITOR:
                     setMode(stack, MODE.CRAFTING);
-                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + MODE.PATTERN.name()), true);
+                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + MODE.CRAFTING.name()), true);
                     return InteractionResultHolder.success(stack);
-//                case PATTERN:
-//                    setMode(stack, MODE.CRAFTING);
-//                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + MODE.CRAFTING.name()), true);
-//                    return InteractionResultHolder.success(stack);
             }
         }
         return super.use(level, player, hand);
@@ -103,8 +98,6 @@ public class ItemWirelessGrid extends NetworkItem
                 return new WirelessFluidGridNetworkItemExt(iNetworkItemManager, player, itemStack, playerSlot);
             case MONITOR:
                 return new WirelessCraftingMonitorNetworkItemExt(iNetworkItemManager, player, itemStack, playerSlot);
-//            case PATTERN:
-//                return new WirelessPatternGridNetworkItem(iNetworkItemManager, player, itemStack, playerSlot);
 
         }
         return new WirelessCraftingGridNetworkItem(iNetworkItemManager, player, itemStack, playerSlot);
@@ -114,14 +107,20 @@ public class ItemWirelessGrid extends NetworkItem
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag)
     {
         super.appendHoverText(stack, level, tooltip, flag);
-        tooltip.add(new TextComponent(ChatFormatting.GOLD + "MODE: " + getMode(stack)));
+        try
+        {
+            tooltip.add(new TextComponent(ChatFormatting.GOLD + "MODE: " + getMode(stack)));
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public enum MODE
     {
         CRAFTING,
         FLUID,
-        MONITOR,
-        PATTERN
+        MONITOR
     }
 }

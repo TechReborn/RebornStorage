@@ -31,7 +31,7 @@ public class AdvancedWirelessTransmitterNode extends NetworkNode implements IWir
     @Override
     public int getRange()
     {
-        return RebornStorageConfig.ADVANCED_WIRELESS_TRANSMITTER_RANGE.get() + this.upgrades.getUpgradeCount(UpgradeItem.Type.RANGE) * RS.SERVER_CONFIG.getWirelessTransmitter().getRangePerUpgrade();
+        return RebornStorageConfig.ADVANCED_WIRELESS_TRANSMITTER_RANGE.get() + this.upgrades.getUpgradeCount(UpgradeItem.Type.RANGE) * 500;
     }
 
     @Override
