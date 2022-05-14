@@ -89,7 +89,7 @@ public class BlockAdvancedWirelessTransmitter extends ColoredNetworkBlock
             return NetworkUtils.attemptModify(level, blockPos, player, () -> NetworkHooks.openGui(
                     (ServerPlayer) player,
                     new BlockEntityMenuProvider<BlockEntityAdvancedWirelessTransmitter>(
-                            new TranslatableComponent("gui.refinedstorage.wireless_transmitter"),
+                            new TranslatableComponent("gui.rebornstorage.advanced_wireless_transmitter"),
                             (blockEntity, windowId, inventory, p) -> new AdvancedWirelessTransmitterContainer(blockEntity, player, windowId),
                             blockPos
                     ),

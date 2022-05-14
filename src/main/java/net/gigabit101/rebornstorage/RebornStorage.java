@@ -1,5 +1,9 @@
 package net.gigabit101.rebornstorage;
 
+import com.refinedmods.refinedstorage.api.network.node.INetworkNode;
+import com.refinedmods.refinedstorage.apiimpl.API;
+import com.refinedmods.refinedstorage.apiimpl.network.node.NetworkNode;
+import com.refinedmods.refinedstorage.util.StackUtils;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockClientTickHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockEventHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockServerTickHandler;
@@ -8,11 +12,14 @@ import net.gigabit101.rebornstorage.init.ModContainers;
 import net.gigabit101.rebornstorage.init.ModItems;
 import net.gigabit101.rebornstorage.init.ModScreens;
 import net.gigabit101.rebornstorage.multiblocks.MultiBlockCrafter;
+import net.gigabit101.rebornstorage.nodes.AdvancedWirelessTransmitterNode;
+import net.gigabit101.rebornstorage.nodes.CraftingNode;
 import net.gigabit101.rebornstorage.packet.PacketHandler;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.MinecraftForge;
@@ -54,6 +61,13 @@ public class RebornStorage
     public void preInit(FMLCommonSetupEvent event)
     {
         PacketHandler.register();
+        API.instance().getNetworkNodeRegistry().add(Constants.MULTI_BLOCK_ID, (tag, world, pos) ->
+        {
+            CraftingNode node = new CraftingNode(world, pos);
+            StackUtils.readItems(node.patterns, 0, tag);
+            return node;
+        });
+        API.instance().getNetworkNodeRegistry().add(AdvancedWirelessTransmitterNode.ID, (tag, world, pos) -> readAndReturn(tag, new AdvancedWirelessTransmitterNode(world, pos)));
     }
 
     @SubscribeEvent
@@ -72,5 +86,11 @@ public class RebornStorage
             return (MultiBlockCrafter) ((BlockEntityMultiCrafter) tileEntity).getMultiblockController();
         }
         return null;
+    }
+
+    private static INetworkNode readAndReturn(CompoundTag tag, NetworkNode node)
+    {
+        node.read(tag);
+        return node;
     }
 }
