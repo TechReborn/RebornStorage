@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "rebornstorage:raw_super_advanced_processor"
+  },
+  "result": "rebornstorage:super_advanced_processor",
+  "experience": 0.5
+}
