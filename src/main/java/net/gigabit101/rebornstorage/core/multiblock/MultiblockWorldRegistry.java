@@ -45,7 +45,7 @@ public class MultiblockWorldRegistry
     // Mutexes to protect lists which may be changed due to asynchronous events,
     // such as chunk loads
     private Object partsAwaitingChunkLoadMutex;
-    private Object orphanedPartsMutex;
+    private final Object orphanedPartsMutex;
 
     public MultiblockWorldRegistry(final Level world)
     {
@@ -231,7 +231,7 @@ public class MultiblockWorldRegistry
 
                 if (newMaster == null)
                 {
-                    RebornStorage.logger.warning(String.format("Multiblock system checked a merge pool of size %d, found no master candidates. This should never happen.", mergePool.size()));
+                    RebornStorage.logger.error(String.format("Multiblock system checked a merge pool of size %d, found no master candidates. This should never happen.", mergePool.size()));
                 } else
                 {
                     // Merge all the other machines into the master machine,
@@ -297,7 +297,7 @@ public class MultiblockWorldRegistry
                 // Validate that they are empty/dead, then unregister them.
                 if (!controller.isEmpty())
                 {
-                    RebornStorage.logger.warning("Found a non-empty controller. Forcing it to shed its blocks and die. This should never happen!");
+                    RebornStorage.logger.error("Found a non-empty controller. Forcing it to shed its blocks and die. This should never happen!");
                     detachedParts.addAll(controller.detachAllBlocks());
                 }
 

@@ -8,6 +8,8 @@ import net.gigabit101.rebornstorage.RebornStorage;
 import net.gigabit101.rebornstorage.RebornStorageEventHandler;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockRegistry;
+import net.gigabit101.rebornstorage.packet.PacketGui;
+import net.gigabit101.rebornstorage.packet.PacketHandler;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
@@ -57,27 +59,32 @@ public class BlockMultiCrafter extends BaseEntityBlock
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult blockHitResult)
     {
         if (level.getBlockEntity(blockPos) == null) return InteractionResult.FAIL;
-
-
         BlockEntityMultiCrafter tile = (BlockEntityMultiCrafter) level.getBlockEntity(blockPos);
+        if(tile == null) return InteractionResult.FAIL;
+
+//        System.out.println("isAssembled " + tile.getMultiBlock().isAssembled() + (level.isClientSide ? " Client" : " Sever"));
+//        tile.load(tile.getUpdateTag());
+
         if (tile.getMultiblockController() != null)
         {
             if (!tile.getMultiblockController().isAssembled())
             {
                 if (tile.getMultiblockController().getLastValidationException() != null)
                 {
-                    if (level.isClientSide && player.getItemInHand(hand).isEmpty())
+                    if (player.getItemInHand(hand).isEmpty())
                     {
-//                        player.sendMessage(new TextComponent(tile.getMultiblockController().getLastValidationException().getMessage()), Util.NIL_UUID);
+                        if(level.isClientSide)
+                        {
+                            player.sendMessage(new TextComponent(tile.getMultiblockController().getLastValidationException().getMessage()), Util.NIL_UUID);
+                        }
+
                         return InteractionResult.SUCCESS;
                     }
                 }
             } else
             {
-                if (!level.isClientSide)
-                {
-                    NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) level.getBlockEntity(blockPos), blockPos);
-                }
+                if(level.isClientSide)
+                    PacketHandler.sendToServer(new PacketGui(1, blockPos));
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.SUCCESS;
@@ -100,7 +107,7 @@ public class BlockMultiCrafter extends BaseEntityBlock
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean p_60519_)
     {
-        if (level.isClientSide()) return;
+//        if (level.isClientSide()) return;
 
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity != null && blockEntity instanceof BlockEntityMultiCrafter blockEntityMultiCrafter)

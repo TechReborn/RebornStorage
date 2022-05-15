@@ -60,7 +60,7 @@ public class RebornStorageEventHandler
             {
                 if (debugLogging)
                 {
-                    RebornStorage.logger.warning("Triggering cached crafting manager rebuild pos:" + rebuildReasonPair.getRight().toString());
+                    RebornStorage.logger.error("Triggering cached crafting manager rebuild pos:" + rebuildReasonPair.getRight().toString());
                 }
                 rebuildReasonPair.getLeft().invalidate();
             }

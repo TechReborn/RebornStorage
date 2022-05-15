@@ -1,5 +1,6 @@
 package net.gigabit101.rebornstorage.multiblocks;
 
+import net.gigabit101.rebornstorage.RebornStorage;
 import net.gigabit101.rebornstorage.RebornStorageConfig;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.gigabit101.rebornstorage.core.multiblock.IMultiblockPart;
@@ -20,7 +21,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase
     public int speed = 0;
     public int pages = 0;
     public Level level;
-    public int currentPage = 0;
+    public int currentPage = 1;
 
     public MultiBlockCrafter(Level world)
     {
@@ -45,13 +46,14 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase
     }
 
     @Override
-    protected void onMachineAssembled()
+    public void onMachineAssembled()
     {
         updateInfo("machineAssembled");
     }
 
     public void updateInfo(String reason)
     {
+        RebornStorage.logger.info("Rebuilding Multiblock Crafter due to " + reason);
         speed = 0;
         pages = 0;
         TreeMap<Integer, BlockEntityMultiCrafter> collector = new TreeMap<>();
@@ -175,7 +177,7 @@ public class MultiBlockCrafter extends RectangularMultiblockControllerBase
     }
 
     @Override
-    protected void updateClient()
+    public void updateClient()
     {
     }
 

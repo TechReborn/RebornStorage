@@ -33,8 +33,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(Constants.MOD_ID)
 public class RebornStorage
@@ -42,7 +42,7 @@ public class RebornStorage
     @RSAPIInject
     public static IRSAPI RSAPI;
 
-    public static Logger logger = Logger.getLogger(Constants.MOD_ID);
+    public static Logger logger = LogManager.getLogger();
 
     public static RebornStorage INSTANCE;
 

@@ -48,7 +48,8 @@ public class ScreenMultiCrafter extends AbstractContainerScreen<ContainerMultiCr
                 }
             }
             crafter.currentPage = next;
-            PacketHandler.sendToServer(new PacketGui(next, containerMultiCrafter.blockPos));
+            if(containerMultiCrafter != null && containerMultiCrafter.blockPos != null)
+                PacketHandler.sendToServer(new PacketGui(next, containerMultiCrafter.blockPos));
         });
         buttonBack = new Button(this.leftPos + 13, this.topPos + 172, 20, 20, new TextComponent("<"), p_onPress_1_ ->
         {
@@ -63,7 +64,8 @@ public class ScreenMultiCrafter extends AbstractContainerScreen<ContainerMultiCr
                 }
             }
             crafter.currentPage = next;
-            PacketHandler.sendToServer(new PacketGui(next, containerMultiCrafter.blockPos));
+            if(containerMultiCrafter != null && containerMultiCrafter.blockPos != null)
+                PacketHandler.sendToServer(new PacketGui(next, containerMultiCrafter.blockPos));
         });
         addRenderableWidget(buttonBack);
         addRenderableWidget(buttonNext);

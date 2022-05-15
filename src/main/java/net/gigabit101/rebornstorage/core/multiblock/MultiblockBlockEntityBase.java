@@ -5,10 +5,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -126,12 +129,21 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
         MultiblockRegistry.onPartAdded(this.getLevel(), this);
     }
 
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket()
+    {
+        CompoundTag compoundTag = new CompoundTag();
+        encodeDescriptionPacket(compoundTag);
+        return ClientboundBlockEntityDataPacket.create(this, blockEntity -> compoundTag);
+    }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt)
     {
         super.onDataPacket(net, pkt);
-        decodeDescriptionPacket(pkt.getTag());
+        if(pkt != null && pkt.getTag() != null)
+            decodeDescriptionPacket(pkt.getTag());
     }
 
     /**

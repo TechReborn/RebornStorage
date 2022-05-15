@@ -35,7 +35,6 @@ import java.util.Optional;
 
 public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase implements MenuProvider, INetworkNodeProxy<CraftingNode>
 {
-
     @Override
     public void isGoodForFrame() throws MultiblockValidationException
     {
@@ -46,7 +45,7 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
         Block block = level.getBlockState(getBlockPos()).getBlock();
         if (block != ModBlocks.BLOCK_MULTI_FRAME.get())
         {
-            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the frame of the block");
+            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the frame of the block" + getBlockPos());
         }
     }
 
@@ -60,7 +59,7 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
         Block block = level.getBlockState(getBlockPos()).getBlock();
         if (block != ModBlocks.BLOCK_MULTI_HEAT.get())
         {
-            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the sides of the block");
+            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the sides of the block" + getBlockPos());
         }
     }
 
@@ -74,7 +73,7 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
         Block block = level.getBlockState(getBlockPos()).getBlock();
         if (block != ModBlocks.BLOCK_MULTI_HEAT.get())
         {
-            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the top of the block");
+            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the top of the block" + getBlockPos());
         }
     }
 
@@ -89,7 +88,7 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
 
         if (block != ModBlocks.BLOCK_MULTI_HEAT.get())
         {
-            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the bottom of the block");
+            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the bottom of the block, BlockPos:" + getBlockPos());
         }
     }
 
@@ -104,7 +103,7 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
 
         if (block != ModBlocks.BLOCK_MULTI_CPU.get() && block != ModBlocks.BLOCK_MULTI_STORAGE.get())
         {
-            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the inside of the block");
+            throw new MultiblockValidationException(block.getDescriptionId() + " is not valid for the inside of the block" + getBlockPos());
         }
     }
 
@@ -175,7 +174,7 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
     @Override
     public CompoundTag getUpdateTag()
     {
-        CompoundTag tag = new CompoundTag();
+        CompoundTag tag = super.getUpdateTag();
         saveAdditional(tag);
         return tag;
     }

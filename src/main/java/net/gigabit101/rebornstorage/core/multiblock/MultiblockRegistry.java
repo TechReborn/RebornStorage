@@ -103,7 +103,7 @@ public class MultiblockRegistry
             registries.get(world).addDirtyController(controller);
         } else
         {
-            RebornStorage.logger.warning("Adding a dirty controller to a world that has no registered controllers! This is most likey not an issue with reborn core, please check the full log file for more infomation!");
+            RebornStorage.logger.error("Adding a dirty controller to a world that has no registered controllers! This is most likey not an issue with reborn core, please check the full log file for more infomation!");
         }
     }
 
@@ -121,7 +121,7 @@ public class MultiblockRegistry
             registries.get(world).addDeadController(controller);
         } else
         {
-            RebornStorage.logger.warning(String.format("Controller %d in world %s marked as dead, but that world is not tracked! Controller is being ignored.", controller.hashCode(), world));
+            RebornStorage.logger.error(String.format("Controller %d in world %s marked as dead, but that world is not tracked! Controller is being ignored.", controller.hashCode(), world));
         }
     }
 

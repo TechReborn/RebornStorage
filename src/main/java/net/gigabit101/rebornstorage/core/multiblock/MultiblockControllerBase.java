@@ -133,7 +133,7 @@ public abstract class MultiblockControllerBase
 
         if (!connectedParts.add(part))
         {
-            RebornStorage.logger.warning(String.format("[%s] Controller %s is double-adding part %d @ %s. This is unusual. If you encounter odd behavior, please tear down the machine and rebuild it.", (worldObj.isClientSide ? "CLIENT" : "SERVER"), hashCode(), part.hashCode(), coord));
+            RebornStorage.logger.error(String.format("[%s] Controller %s is double-adding part %d @ %s. This is unusual. If you encounter odd behavior, please tear down the machine and rebuild it.", (worldObj.isClientSide ? "CLIENT" : "SERVER"), hashCode(), part.hashCode(), coord));
         }
 
         part.onAttached(this);
@@ -153,7 +153,13 @@ public abstract class MultiblockControllerBase
         } else if (coord.compareTo(referenceCoord) < 0)
         {
             BlockEntity te = this.worldObj.getBlockEntity(referenceCoord);
-            ((IMultiblockPart) te).forfeitMultiblockSaveDelegate();
+            if(te != null)
+            {
+                ((IMultiblockPart) te).forfeitMultiblockSaveDelegate();
+            } else
+            {
+                RebornStorage.logger.error("BlockEntity at " + referenceCoord + " is null");
+            }
 
             referenceCoord = coord;
             part.becomeMultiblockSaveDelegate();
@@ -162,12 +168,11 @@ public abstract class MultiblockControllerBase
             part.forfeitMultiblockSaveDelegate();
         }
 
-        Boolean updateRequired = false;
+        boolean updateRequired = false;
         BlockPos partPos = part.getBlockPos();
 
         if (minimumCoord != null)
         {
-
             if (partPos.getX() < minimumCoord.getX())
             {
                 updateRequired = true;
@@ -291,7 +296,7 @@ public abstract class MultiblockControllerBase
         onDetachBlock(part);
         if (!connectedParts.remove(part))
         {
-            RebornStorage.logger.warning(String.format("[%s] Double-removing part (%d) @ %d, %d, %d, this is unexpected and may cause problems. If you encounter anomalies, please tear down the reactor and rebuild it.", worldObj.isClientSide ? "CLIENT" : "SERVER", part.hashCode(), part.getBlockPos().getX(), part.getBlockPos().getY(), part.getBlockPos().getZ()));
+            RebornStorage.logger.error(String.format("[%s] Double-removing part (%d) @ %d, %d, %d, this is unexpected and may cause problems. If you encounter anomalies, please tear down the reactor and rebuild it.", worldObj.isClientSide ? "CLIENT" : "SERVER", part.hashCode(), part.getBlockPos().getX(), part.getBlockPos().getY(), part.getBlockPos().getZ()));
         }
 
         if (connectedParts.isEmpty())
@@ -837,7 +842,7 @@ public abstract class MultiblockControllerBase
         } else
         {
             // Strip dead parts from both and retry
-            RebornStorage.logger.warning(String.format("[%s] Encountered two controllers with the same reference coordinate. Auditing connected parts and retrying.", worldObj.isClientSide ? "CLIENT" : "SERVER"));
+            RebornStorage.logger.error(String.format("[%s] Encountered two controllers with the same reference coordinate. Auditing connected parts and retrying.", worldObj.isClientSide ? "CLIENT" : "SERVER"));
             auditParts();
             otherController.auditParts();
 
@@ -850,8 +855,8 @@ public abstract class MultiblockControllerBase
                 return false;
             } else
             {
-                RebornStorage.logger.warning(String.format("My Controller (%d): size (%d), parts: %s", hashCode(), connectedParts.size(), getPartsListString()));
-                RebornStorage.logger.warning(String.format("Other Controller (%d): size (%d), coords: %s", otherController.hashCode(), otherController.connectedParts.size(), otherController.getPartsListString()));
+                RebornStorage.logger.error(String.format("My Controller (%d): size (%d), parts: %s", hashCode(), connectedParts.size(), getPartsListString()));
+                RebornStorage.logger.error(String.format("Other Controller (%d): size (%d), coords: %s", otherController.hashCode(), otherController.connectedParts.size(), otherController.getPartsListString()));
                 throw new IllegalArgumentException("[" + (worldObj.isClientSide ? "CLIENT" : "SERVER") + "] Two controllers with the same reference coord that somehow both have valid parts - this should never happen!");
             }
 
@@ -908,7 +913,7 @@ public abstract class MultiblockControllerBase
         }
 
         connectedParts.removeAll(deadParts);
-        RebornStorage.logger.warning(String.format("[%s] Controller found %d dead parts during an audit, %d parts remain attached", worldObj.isClientSide ? "CLIENT" : "SERVER", deadParts.size(), connectedParts.size()));
+        RebornStorage.logger.error(String.format("[%s] Controller found %d dead parts during an audit, %d parts remain attached", worldObj.isClientSide ? "CLIENT" : "SERVER", deadParts.size(), connectedParts.size()));
     }
 
     /**
@@ -1140,8 +1145,7 @@ public abstract class MultiblockControllerBase
     public static void updateBlock(Level world, BlockPos pos)
     {
         BlockState state = world.getBlockState(pos);
-        //TODO
-//		world.notifyBlockUpdate(pos, state, state, 3);
+        world.sendBlockUpdated(pos, state, state, 3);
     }
 
     /**
@@ -1161,16 +1165,11 @@ public abstract class MultiblockControllerBase
         {
             return;
         }
-
         BlockPos referenceCoord = getReferenceCoord();
         if (referenceCoord == null)
         {
             return;
         }
-
-        BlockEntity saveTe = worldObj.getBlockEntity(referenceCoord);
-        //TODO
-//		worldObj.markChunkDirty(referenceCoord, saveTe);
+        worldObj.blockEntityChanged(referenceCoord);
     }
-
 }

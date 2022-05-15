@@ -45,10 +45,13 @@ public class PacketGui
                 if (player == null) return;
 
                 BlockEntity blockEntity = player.getLevel().getBlockEntity(message.blockPos);
-                if (blockEntity != null && blockEntity instanceof BlockEntityMultiCrafter blockEntityMultiCrafter)
+                if (blockEntity != null && blockEntity instanceof BlockEntityMultiCrafter blockEntityMultiCrafter && blockEntityMultiCrafter.getMultiBlock().isAssembled())
                 {
-                    blockEntityMultiCrafter.getMultiBlock().currentPage = message.page;
-                    blockEntityMultiCrafter.setChanged();
+                    if(message.page > 0)
+                    {
+                        blockEntityMultiCrafter.getMultiBlock().currentPage = message.page;
+                        blockEntityMultiCrafter.setChanged();
+                    }
                 }
                 openGUI(player.getLevel(), player, message.blockPos);
             });
