@@ -254,13 +254,12 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
     @Override
     public int getEnergyUsage()
     {
+        int max = 10000;
         if (getBlock() == null) return 0;
-        if (getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get()) return RebornStorageConfig.STORAGE_COST.get();
+        if (getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get()) return RebornStorageConfig.FRAME_COST.get();
         if (getBlock() == ModBlocks.BLOCK_MULTI_HEAT.get()) return RebornStorageConfig.HEAT_COST.get();
-        if (getBlock() == ModBlocks.BLOCK_MULTI_CPU.get())
-            return (RebornStorageConfig.CPU_COST.get() * getCraftingCpus());
-        if (getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get())
-            return (RebornStorageConfig.FRAME_COST.get() * getStorage());
+        if (getBlock() == ModBlocks.BLOCK_MULTI_CPU.get()) return (RebornStorageConfig.CPU_COST.get());
+        if (getBlock() == ModBlocks.BLOCK_MULTI_STORAGE.get()) return (RebornStorageConfig.STORAGE_COST.get());
 
         return 0;
     }
