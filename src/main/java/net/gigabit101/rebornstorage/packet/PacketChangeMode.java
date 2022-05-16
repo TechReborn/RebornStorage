@@ -94,17 +94,14 @@ public class PacketChangeMode
                     itemWirelessGrid.setMode(stack, ItemWirelessGrid.MODE.FLUID);
                     player.sendMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.FLUID.name()), Util.NIL_UUID);
                     break;
-//                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.FLUID.name()), true);
                 case FLUID:
                     itemWirelessGrid.setMode(stack, ItemWirelessGrid.MODE.MONITOR);
                     player.sendMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.MONITOR.name()), Util.NIL_UUID);
                     break;
-//                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.MONITOR.name()), true);
                 case MONITOR:
                     itemWirelessGrid.setMode(stack, ItemWirelessGrid.MODE.CRAFTING);
                     player.sendMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.CRAFTING.name()), Util.NIL_UUID);
                     break;
-//                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.CRAFTING.name()), true);
             }
         }
     }

@@ -97,13 +97,18 @@ public class RebornStorage
         ClientRegistry.registerKeyBinding(KeyBindings.OPEN_WIRELESS_CRAFTING_GRID);
         ClientRegistry.registerKeyBinding(KeyBindings.MODE_SWITCH_WIRELESS_CRAFTING_GRID);
     }
+
     @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent e) {
-        if (Minecraft.getInstance().player != null) {
-            if (KeyBindings.OPEN_WIRELESS_CRAFTING_GRID.consumeClick()) {
+    public void onKeyInput(InputEvent.KeyInputEvent e)
+    {
+        if (Minecraft.getInstance().player != null)
+        {
+            if (KeyBindings.OPEN_WIRELESS_CRAFTING_GRID.consumeClick())
+            {
                 KeyInputListener.findAndOpen(ModItems.WIRELESS_GRID.get(), ModItems.CREATIVE_WIRELESS_GRID.get());
             }
-            if (KeyBindings.MODE_SWITCH_WIRELESS_CRAFTING_GRID.consumeClick() && e.getAction() == 1) {
+            if (KeyBindings.MODE_SWITCH_WIRELESS_CRAFTING_GRID.consumeClick() && e.getAction() == 1)
+            {
                 PacketHandler.sendToServer(new PacketChangeMode());
             }
         }
