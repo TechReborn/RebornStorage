@@ -5,7 +5,9 @@ import com.refinedmods.refinedstorage.api.RSAPIInject;
 import com.refinedmods.refinedstorage.api.network.node.INetworkNode;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.apiimpl.network.node.NetworkNode;
+import com.refinedmods.refinedstorage.screen.KeyInputListener;
 import com.refinedmods.refinedstorage.util.StackUtils;
+import net.gigabit101.rebornstorage.client.KeyBindings;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockClientTickHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockEventHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockServerTickHandler;
@@ -19,15 +21,20 @@ import net.gigabit101.rebornstorage.nodes.AdvancedWirelessTransmitterNode;
 import net.gigabit101.rebornstorage.nodes.CraftingNode;
 import net.gigabit101.rebornstorage.packet.PacketHandler;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -61,6 +68,9 @@ public class RebornStorage
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new MultiblockEventHandler());
         MinecraftForge.EVENT_BUS.register(new MultiblockServerTickHandler());
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+            MinecraftForge.EVENT_BUS.addListener(this::onKeyInput);
+        });
     }
 
     @SubscribeEvent
@@ -83,6 +93,15 @@ public class RebornStorage
         ModScreens.init();
         MinecraftForge.EVENT_BUS.register(new MultiblockClientTickHandler());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOCK_ADVANCED_WIRELESS_TRANSMITTER.get(), RenderType.cutout());
+        ClientRegistry.registerKeyBinding(KeyBindings.OPEN_WIRELESS_CRAFTING_GRID);
+    }
+    @SubscribeEvent
+    public void onKeyInput(InputEvent.KeyInputEvent e) {
+        if (Minecraft.getInstance().player != null) {
+            if (KeyBindings.OPEN_WIRELESS_CRAFTING_GRID.isDown()) {
+                KeyInputListener.findAndOpen(ModItems.WIRELESS_GRID.get(), ModItems.CREATIVE_WIRELESS_GRID.get());
+            }
+        }
     }
 
     public static MultiBlockCrafter getMultiBlock(Level world, BlockPos pos)
@@ -100,4 +119,5 @@ public class RebornStorage
         node.read(tag);
         return node;
     }
+
 }
