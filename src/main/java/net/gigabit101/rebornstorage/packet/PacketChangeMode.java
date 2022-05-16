@@ -4,6 +4,7 @@ import com.refinedmods.refinedstorage.integration.curios.CuriosIntegration;
 import net.gigabit101.rebornstorage.init.ModItems;
 import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,7 +37,7 @@ public class PacketChangeMode
     {
         public static void handle(final PacketChangeMode message, Supplier<NetworkEvent.Context> ctx)
         {
-            Set<Item> validItems = new HashSet(Arrays.asList(ModItems.WIRELESS_GRID, ModItems.CREATIVE_WIRELESS_GRID));
+            Set<Item> validItems = new HashSet(Arrays.asList(ModItems.WIRELESS_GRID.get(), ModItems.CREATIVE_WIRELESS_GRID.get()));
 
             ctx.get().enqueueWork(() ->
             {
@@ -82,6 +83,8 @@ public class PacketChangeMode
 
     public static void updateStack(ItemStack stack, Player player)
     {
+        if (player.level.isClientSide)
+            return;
         if(stack.getItem() instanceof ItemWirelessGrid itemWirelessGrid)
         {
             ItemWirelessGrid.MODE current = itemWirelessGrid.getMode(stack);
@@ -89,13 +92,19 @@ public class PacketChangeMode
             {
                 case CRAFTING:
                     itemWirelessGrid.setMode(stack, ItemWirelessGrid.MODE.FLUID);
-                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.FLUID.name()), true);
+                    player.sendMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.FLUID.name()), Util.NIL_UUID);
+                    break;
+//                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.FLUID.name()), true);
                 case FLUID:
                     itemWirelessGrid.setMode(stack, ItemWirelessGrid.MODE.MONITOR);
-                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.MONITOR.name()), true);
+                    player.sendMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.MONITOR.name()), Util.NIL_UUID);
+                    break;
+//                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.MONITOR.name()), true);
                 case MONITOR:
                     itemWirelessGrid.setMode(stack, ItemWirelessGrid.MODE.CRAFTING);
-                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.CRAFTING.name()), true);
+                    player.sendMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.CRAFTING.name()), Util.NIL_UUID);
+                    break;
+//                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.CRAFTING.name()), true);
             }
         }
     }

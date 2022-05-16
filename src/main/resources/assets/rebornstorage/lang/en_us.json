@@ -1,5 +1,6 @@
 {
   "key.rebornstorage.openWirelessCraftingGrid": "Open Super Wireless Grid",
+  "key.rebornstorage.switchModeWirelessCraftingGrid": "Switch Super Wireless Grid Mode",
   "itemGroup.rebornstorage": "Reborn Storage",
   "item.rebornstorage.small_item_disk": "256k Storage Disk",
   "item.rebornstorage.medium_item_disk": "1024k Storage Disk",

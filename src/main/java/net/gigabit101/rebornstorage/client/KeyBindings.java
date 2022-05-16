@@ -15,4 +15,12 @@ public class KeyBindings {
         GLFW.GLFW_KEY_G,
         "Reborn Storage"
     );
+    public static final KeyMapping MODE_SWITCH_WIRELESS_CRAFTING_GRID = new KeyMapping(
+            "key.rebornstorage.switchModeWirelessCraftingGrid",
+            KeyConflictContext.IN_GAME,
+            KeyModifier.CONTROL,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_G,
+            "Reborn Storage"
+    );
 }

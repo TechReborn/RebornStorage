@@ -19,6 +19,7 @@ import net.gigabit101.rebornstorage.init.ModScreens;
 import net.gigabit101.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.gigabit101.rebornstorage.nodes.AdvancedWirelessTransmitterNode;
 import net.gigabit101.rebornstorage.nodes.CraftingNode;
+import net.gigabit101.rebornstorage.packet.PacketChangeMode;
 import net.gigabit101.rebornstorage.packet.PacketHandler;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.minecraft.client.Minecraft;
@@ -94,12 +95,16 @@ public class RebornStorage
         MinecraftForge.EVENT_BUS.register(new MultiblockClientTickHandler());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOCK_ADVANCED_WIRELESS_TRANSMITTER.get(), RenderType.cutout());
         ClientRegistry.registerKeyBinding(KeyBindings.OPEN_WIRELESS_CRAFTING_GRID);
+        ClientRegistry.registerKeyBinding(KeyBindings.MODE_SWITCH_WIRELESS_CRAFTING_GRID);
     }
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent e) {
         if (Minecraft.getInstance().player != null) {
-            if (KeyBindings.OPEN_WIRELESS_CRAFTING_GRID.isDown()) {
+            if (KeyBindings.OPEN_WIRELESS_CRAFTING_GRID.consumeClick()) {
                 KeyInputListener.findAndOpen(ModItems.WIRELESS_GRID.get(), ModItems.CREATIVE_WIRELESS_GRID.get());
+            }
+            if (KeyBindings.MODE_SWITCH_WIRELESS_CRAFTING_GRID.consumeClick() && e.getAction() == 1) {
+                PacketHandler.sendToServer(new PacketChangeMode());
             }
         }
     }
