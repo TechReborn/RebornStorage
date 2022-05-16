@@ -17,6 +17,7 @@ public class PacketHandler
     {
         int disc = 0;
         HANDLER.registerMessage(disc++, PacketGui.class, PacketGui::encode, PacketGui::decode, PacketGui.Handler::handle);
+        HANDLER.registerMessage(disc++, PacketChangeMode.class, PacketChangeMode::encode, PacketChangeMode::decode, PacketChangeMode.Handler::handle);
     }
 
     public static void sendTo(Object msg, ServerPlayer player)

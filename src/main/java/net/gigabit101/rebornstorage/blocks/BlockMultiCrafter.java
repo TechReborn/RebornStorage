@@ -2,8 +2,15 @@ package net.gigabit101.rebornstorage.blocks;
 
 import com.refinedmods.refinedstorage.api.network.node.INetworkNode;
 import com.refinedmods.refinedstorage.api.network.node.INetworkNodeManager;
+import com.refinedmods.refinedstorage.api.network.security.Permission;
 import com.refinedmods.refinedstorage.api.util.Action;
 import com.refinedmods.refinedstorage.apiimpl.API;
+import com.refinedmods.refinedstorage.apiimpl.network.node.CrafterManagerNetworkNode;
+import com.refinedmods.refinedstorage.blockentity.CrafterManagerBlockEntity;
+import com.refinedmods.refinedstorage.container.CrafterManagerContainerMenu;
+import com.refinedmods.refinedstorage.container.factory.CrafterManagerMenuProvider;
+import com.refinedmods.refinedstorage.screen.EmptyScreenInfoProvider;
+import com.refinedmods.refinedstorage.util.NetworkUtils;
 import net.gigabit101.rebornstorage.RebornStorage;
 import net.gigabit101.rebornstorage.RebornStorageEventHandler;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
@@ -12,7 +19,10 @@ import net.gigabit101.rebornstorage.packet.PacketGui;
 import net.gigabit101.rebornstorage.packet.PacketHandler;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
@@ -21,7 +31,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -31,9 +43,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class BlockMultiCrafter extends BaseEntityBlock
 {
