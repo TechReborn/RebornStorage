@@ -15,6 +15,7 @@ import net.gigabit101.rebornstorage.RebornStorage;
 import net.gigabit101.rebornstorage.RebornStorageEventHandler;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockRegistry;
+import net.gigabit101.rebornstorage.init.ModBlocks;
 import net.gigabit101.rebornstorage.packet.PacketGui;
 import net.gigabit101.rebornstorage.packet.PacketHandler;
 import net.minecraft.Util;
@@ -35,11 +36,16 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
@@ -54,15 +60,49 @@ import java.util.Map;
 
 public class BlockMultiCrafter extends BaseEntityBlock
 {
+    public static final BooleanProperty UP_DOWN_CONNECTION = BooleanProperty.create("up_down");
+    public static final BooleanProperty LEFT_RIGHT_CONNECTION = BooleanProperty.create("left_right");
+
     public BlockMultiCrafter()
     {
         super(Properties.of(Material.METAL).strength(2.0F));
+        this.registerDefaultState(getStateDefinition().any().setValue(UP_DOWN_CONNECTION, false).setValue(LEFT_RIGHT_CONNECTION, false));
     }
 
     @Override
     public @NotNull RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.MODEL;
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext)
+    {
+        Level level = blockPlaceContext.getLevel();
+        BlockPos pos = blockPlaceContext.getClickedPos();
+
+        if(level.getBlockState(pos.below()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get() && level.getBlockState(pos.above()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get())
+        {
+            return super.getStateForPlacement(blockPlaceContext).setValue(UP_DOWN_CONNECTION, true);
+        }
+        if(level.getBlockState(pos.north()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get() && level.getBlockState(pos.south()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get())
+        {
+            return super.getStateForPlacement(blockPlaceContext).setValue(LEFT_RIGHT_CONNECTION, true);
+        }
+        if(level.getBlockState(pos.east()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get() && level.getBlockState(pos.west()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get())
+        {
+            return super.getStateForPlacement(blockPlaceContext).setValue(LEFT_RIGHT_CONNECTION, true);
+        }
+
+            //TODO
+        return defaultBlockState();
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        builder.add(UP_DOWN_CONNECTION, LEFT_RIGHT_CONNECTION);
     }
 
     @org.jetbrains.annotations.Nullable
