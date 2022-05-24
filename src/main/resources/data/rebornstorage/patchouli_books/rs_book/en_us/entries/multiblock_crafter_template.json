@@ -1,0 +1,28 @@
+{
+  "name": "rebornstorage.entry.multiblock_crafter_template",
+  "category": "rebornstorage:multiblock",
+  "icon": "rebornstorage:multiblock_cpu",
+  "pages": [
+    {
+      "type": "multiblock",
+      "name": "multiblock_crafter",
+      "multiblock": {
+        "pattern": [
+          ["FFFFF", "FTTTF", "FTTTF", "FTTTF", "FFFFF"],
+          ["FTTTF", "TRRRT", "TRRRT", "TRRRT", "FTTTF"],
+          ["FTTTF", "TRRRT", "TRRRT", "TRRRT", "FTTTF"],
+          ["FTTTF", "TCCCT", "TCCCT", "TCCCT", "FTTTF"],
+          ["FFFFF", "FTTTF", "FT0TF", "FTTTF", "FFFFF"]
+        ],
+        "mapping": {
+          "0": "rebornstorage:multiblock_frame",
+          "F": "rebornstorage:multiblock_frame",
+          "T": "rebornstorage:multiblock_heat",
+          "R": "rebornstorage:multiblock_storage",
+          "C": "rebornstorage:multiblock_cpu"
+        },
+        "symmetrical": true
+      }
+    }
+  ]
+}

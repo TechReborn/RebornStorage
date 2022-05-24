@@ -1,0 +1,12 @@
+{
+  "name": "Advanced Wireless Transmitter",
+  "sortnum": 1,
+  "category": "rebornstorage:blocks",
+  "icon": "rebornstorage:advanced_wireless_transmitter",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Wireless that goes real far (Warning can cause COVID)"
+    }
+  ]
+}

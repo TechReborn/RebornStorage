@@ -4,6 +4,7 @@ import com.refinedmods.refinedstorage.api.storage.StorageType;
 import com.refinedmods.refinedstorage.block.BaseBlock;
 import com.refinedmods.refinedstorage.item.blockitem.BaseBlockItem;
 import net.gigabit101.rebornstorage.client.CreativeTabRebornStorage;
+import net.gigabit101.rebornstorage.items.ItemBook;
 import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
 import net.gigabit101.rebornstorage.items.ItemFluidRebornStorageCell;
 import net.gigabit101.rebornstorage.items.ItemRebornStorageCell;
@@ -21,6 +22,7 @@ public class ModItems
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
     public static final Item.Properties PROPERTIES = new Item.Properties().tab(CreativeTabRebornStorage.INSTANCE);
 
+//    public static final RegistryObject<Item> BOOK = ITEMS.register("rs_book", () -> new ItemBook());
 
     //ItemBlocks
     public static final RegistryObject<Item> BLOCK_MULTI_FRAME_ITEM = ITEMS.register("multiblock_frame", () -> new BlockItem(ModBlocks.BLOCK_MULTI_FRAME.get(), ITEM_GROUP));
