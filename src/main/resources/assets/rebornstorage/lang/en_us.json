@@ -27,5 +27,7 @@
   "item.rebornstorage.super_wireless_crafting_grid": "Super Wireless Grid",
   "item.rebornstorage.creative_super_wireless_crafting_grid": "Creative Super Wireless Grid",
   "item.rebornstorage.raw_super_advanced_processor": "Raw Super Advanced Processor",
-  "item.rebornstorage.super_advanced_processor": "Super Advanced Processor"
+  "item.rebornstorage.super_advanced_processor": "Super Advanced Processor",
+  "item.rebornstorage.rs_book": "Book of Reborn Storage",
+  "info.rebornstorage.book.landing": "Welcome to Reborn Storage, you will find some things you need to know"
 }
