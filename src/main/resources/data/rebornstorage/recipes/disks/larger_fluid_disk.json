@@ -23,7 +23,7 @@
     ],
     "P": [
       {
-        "tag": "refinedstorage:parts/fluids/16384k"
+        "tag": "refinedstorage:parts/fluids/1048576k"
       }
     ]
   },

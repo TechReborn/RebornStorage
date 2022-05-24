@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#refinedstorage:parts/fluids/16384k"
+    "#refinedstorage:parts/fluids/16384k",
+    "#refinedstorage:parts/fluids/65536k",
+    "#refinedstorage:parts/fluids/262144k",
+    "#refinedstorage:parts/fluids/1048576k"
   ]
 }

@@ -35,20 +35,20 @@ public class ModItems
     public static final RegistryObject<Item> STORAGE_DISK_4096K = ITEMS.register("large_item_disk", () -> new ItemRebornStorageCell(4096000, StorageType.ITEM));
     public static final RegistryObject<Item> STORAGE_DISK_16384K = ITEMS.register("larger_item_disk", () -> new ItemRebornStorageCell(16384000, StorageType.ITEM));
 
-    public static final RegistryObject<Item> STORAGE_DISK_FLUID_256k = ITEMS.register("small_fluid_disk", () -> new ItemFluidRebornStorageCell(4096000, StorageType.FLUID));
-    public static final RegistryObject<Item> STORAGE_DISK_FLUID_1024k = ITEMS.register("medium_fluid_disk", () -> new ItemFluidRebornStorageCell(16384000, StorageType.FLUID));
-    public static final RegistryObject<Item> STORAGE_DISK_FLUID_4096K = ITEMS.register("large_fluid_disk", () -> new ItemFluidRebornStorageCell(49152000, StorageType.FLUID));
-    public static final RegistryObject<Item> STORAGE_DISK_FLUID_16384K = ITEMS.register("larger_fluid_disk", () -> new ItemFluidRebornStorageCell(147456000, StorageType.FLUID));
+    public static final RegistryObject<Item> STORAGE_DISK_FLUID_16384K = ITEMS.register("small_fluid_disk", () -> new ItemFluidRebornStorageCell(16384000, StorageType.FLUID));
+    public static final RegistryObject<Item> STORAGE_DISK_FLUID_65536K = ITEMS.register("medium_fluid_disk", () -> new ItemFluidRebornStorageCell(65536000, StorageType.FLUID));
+    public static final RegistryObject<Item> STORAGE_DISK_FLUID_262M = ITEMS.register("large_fluid_disk", () -> new ItemFluidRebornStorageCell(262144000, StorageType.FLUID));
+    public static final RegistryObject<Item> STORAGE_DISK_FLUID_1048M = ITEMS.register("larger_fluid_disk", () -> new ItemFluidRebornStorageCell(1048576000, StorageType.FLUID));
 
     public static final RegistryObject<Item> STORAGE_DISK_256k_PART = ITEMS.register("small_item_disk_part", () -> new Item(PROPERTIES));
     public static final RegistryObject<Item> STORAGE_DISK_1024k_PART = ITEMS.register("medium_item_disk_part", () -> new Item(PROPERTIES));
     public static final RegistryObject<Item> STORAGE_DISK_4096K_PART = ITEMS.register("large_item_disk_part", () -> new Item(PROPERTIES));
     public static final RegistryObject<Item> STORAGE_DISK_16384K_PART = ITEMS.register("larger_item_disk_part", () -> new Item(PROPERTIES));
 
-    public static final RegistryObject<Item> STORAGE_DISK_256k_FLUID_PART = ITEMS.register("small_fluid_disk_part", () -> new Item(PROPERTIES));
-    public static final RegistryObject<Item> STORAGE_DISK_1024k_FLUID_PART = ITEMS.register("medium_fluid_disk_part", () -> new Item(PROPERTIES));
-    public static final RegistryObject<Item> STORAGE_DISK_4096K_FLUID_PART = ITEMS.register("large_fluid_disk_part", () -> new Item(PROPERTIES));
-    public static final RegistryObject<Item> STORAGE_DISK_16384K_FLUID_PART = ITEMS.register("larger_fluid_disk_part", () -> new Item(PROPERTIES));
+    public static final RegistryObject<Item> STORAGE_DISK_16384K_FLUID_PART = ITEMS.register("small_fluid_disk_part", () -> new Item(PROPERTIES));
+    public static final RegistryObject<Item> STORAGE_DISK_65536K_FLUID_PART = ITEMS.register("medium_fluid_disk_part", () -> new Item(PROPERTIES));
+    public static final RegistryObject<Item> STORAGE_DISK_262M_FLUID_PART = ITEMS.register("large_fluid_disk_part", () -> new Item(PROPERTIES));
+    public static final RegistryObject<Item> STORAGE_DISK_1048M_FLUID_PART = ITEMS.register("larger_fluid_disk_part", () -> new Item(PROPERTIES));
 
     public static final RegistryObject<Item> RAW_SUPER_ADVANCED_PROCESSOR = ITEMS.register("raw_super_advanced_processor", () -> new Item(PROPERTIES));
     public static final RegistryObject<Item> SUPER_ADVANCED_PROCESSOR = ITEMS.register("super_advanced_processor", () -> new Item(PROPERTIES));

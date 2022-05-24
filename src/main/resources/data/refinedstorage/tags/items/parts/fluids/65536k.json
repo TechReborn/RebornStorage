@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "refinedstorage:1024k_fluid_storage_part",
     "rebornstorage:medium_fluid_disk_part"
   ]
 }

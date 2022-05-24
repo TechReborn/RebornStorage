@@ -4,6 +4,9 @@
     "#refinedstorage:parts/items/256k",
     "#refinedstorage:parts/items/1024k",
     "#refinedstorage:parts/items/4096k",
-    "#refinedstorage:parts/items/16384k"
+    "#refinedstorage:parts/items/16384k",
+    "#refinedstorage:parts/items/65536k",
+    "#refinedstorage:parts/items/262144k",
+    "#refinedstorage:parts/items/1048576k"
   ]
 }

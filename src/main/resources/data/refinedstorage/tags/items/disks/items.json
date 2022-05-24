@@ -4,6 +4,9 @@
     "#refinedstorage:disks/items/256k",
     "#refinedstorage:disks/items/1024k",
     "#refinedstorage:disks/items/4096k",
-    "#refinedstorage:disks/items/16384k"
+    "#refinedstorage:disks/items/16384k",
+    "#refinedstorage:disks/items/65536k",
+    "#refinedstorage:disks/items/262144k",
+    "#refinedstorage:disks/items/1048576k"
   ]
 }

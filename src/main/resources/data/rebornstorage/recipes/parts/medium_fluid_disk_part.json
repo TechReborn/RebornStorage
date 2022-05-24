@@ -8,7 +8,7 @@
   "key": {
     "G": [
       {
-        "tag": "refinedstorage:parts/fluids/256k"
+        "tag": "refinedstorage:parts/fluids/16384k"
       }
     ],
     "D": [
