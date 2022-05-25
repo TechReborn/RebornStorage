@@ -18,8 +18,8 @@
           "0": "rebornstorage:multiblock_frame",
           "F": "rebornstorage:multiblock_frame",
           "T": "rebornstorage:multiblock_heat",
-          "R": "rebornstorage:multiblock_storage",
-          "C": "rebornstorage:multiblock_cpu"
+          "R": "#rebornstorage:multiblock_inner_base",
+          "C": "#rebornstorage:multiblock_inner_base"
         },
         "symmetrical": true
       }

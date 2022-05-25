@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "rebornstorage:multiblock_storage",
+    "rebornstorage:multiblock_cpu"
+  ]
+}
