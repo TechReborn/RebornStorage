@@ -60,13 +60,17 @@ import java.util.Map;
 
 public class BlockMultiCrafter extends BaseEntityBlock
 {
-    public static final BooleanProperty UP_DOWN_CONNECTION = BooleanProperty.create("up_down");
-    public static final BooleanProperty LEFT_RIGHT_CONNECTION = BooleanProperty.create("left_right");
+// TODO Disabled by Rid
+
+//    public static final BooleanProperty UP_DOWN_CONNECTION = BooleanProperty.create("up_down");
+//    public static final BooleanProperty LEFT_RIGHT_CONNECTION = BooleanProperty.create("left_right");
 
     public BlockMultiCrafter()
     {
         super(Properties.of(Material.METAL).strength(2.0F));
-        this.registerDefaultState(getStateDefinition().any().setValue(UP_DOWN_CONNECTION, false).setValue(LEFT_RIGHT_CONNECTION, false));
+// TODO Disabled by Rid
+
+//        this.registerDefaultState(getStateDefinition().any().setValue(UP_DOWN_CONNECTION, false).setValue(LEFT_RIGHT_CONNECTION, false));
     }
 
     @Override
@@ -82,28 +86,32 @@ public class BlockMultiCrafter extends BaseEntityBlock
         Level level = blockPlaceContext.getLevel();
         BlockPos pos = blockPlaceContext.getClickedPos();
 
-        if(level.getBlockState(pos.below()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get() && level.getBlockState(pos.above()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get())
-        {
-            return super.getStateForPlacement(blockPlaceContext).setValue(UP_DOWN_CONNECTION, true);
-        }
-        if(level.getBlockState(pos.north()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get() && level.getBlockState(pos.south()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get())
-        {
-            return super.getStateForPlacement(blockPlaceContext).setValue(LEFT_RIGHT_CONNECTION, true);
-        }
-        if(level.getBlockState(pos.east()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get() && level.getBlockState(pos.west()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get())
-        {
-            return super.getStateForPlacement(blockPlaceContext).setValue(LEFT_RIGHT_CONNECTION, true);
-        }
+// TODO Disabled by Rid
+
+//        if(level.getBlockState(pos.below()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get() && level.getBlockState(pos.above()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get())
+//        {
+//            return super.getStateForPlacement(blockPlaceContext).setValue(UP_DOWN_CONNECTION, true);
+//        }
+//        if(level.getBlockState(pos.north()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get() && level.getBlockState(pos.south()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get())
+//        {
+//            return super.getStateForPlacement(blockPlaceContext).setValue(LEFT_RIGHT_CONNECTION, true);
+//        }
+//        if(level.getBlockState(pos.east()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get() && level.getBlockState(pos.west()).getBlock() == ModBlocks.BLOCK_MULTI_FRAME.get())
+//        {
+//            return super.getStateForPlacement(blockPlaceContext).setValue(LEFT_RIGHT_CONNECTION, true);
+//        }
 
             //TODO
         return defaultBlockState();
     }
 
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-    {
-        builder.add(UP_DOWN_CONNECTION, LEFT_RIGHT_CONNECTION);
-    }
+// TODO Disabled by Rid
+    
+//    @Override
+//    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+//    {
+//        builder.add(UP_DOWN_CONNECTION, LEFT_RIGHT_CONNECTION);
+//    }
 
     @org.jetbrains.annotations.Nullable
     @Override
