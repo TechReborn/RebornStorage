@@ -1,13 +1,5 @@
 {
   "variants": {
-    "up_down=true,left_right=false": {
-      "model": "rebornstorage:block/multiblock_frame_up_down"
-    },
-    "up_down=false,left_right=false": {
-      "model": "rebornstorage:block/multiblock_frame"
-    },
-    "left_right=true,up_down=false": {
-      "model": "rebornstorage:block/multiblock_frame_left_right"
-    }
+    "": {"model": "rebornstorage:block/multiblock_frame"}
   }
 }

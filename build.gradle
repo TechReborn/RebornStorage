@@ -152,6 +152,9 @@ dependencies {
 
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+
+    compileOnly fg.deobf("team.chisel.ctm:CTM:${project.ctm_version}")
+    runtimeOnly fg.deobf("team.chisel.ctm:CTM:${project.ctm_version}")
 }
 
 jar {
