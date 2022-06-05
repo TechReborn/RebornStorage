@@ -27,15 +27,18 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -43,6 +46,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import top.theillusivec4.curios.api.SlotTypeMessage;
+import top.theillusivec4.curios.api.SlotTypePreset;
+
+import javax.swing.text.TabExpander;
+import javax.swing.text.TextAction;
 
 @Mod(Constants.MOD_ID)
 public class RebornStorage
@@ -65,13 +73,21 @@ public class RebornStorage
         ModContainers.CONTAINERS.register(eventBus);
         eventBus.addListener(this::preInit);
         eventBus.addListener(this::clientInit);
-
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().size(4).build());
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("grid").icon(new ResourceLocation(Constants.MOD_ID, "items/grid")).size(1).build());
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new MultiblockEventHandler());
         MinecraftForge.EVENT_BUS.register(new MultiblockServerTickHandler());
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(this::onKeyInput);
+            MinecraftForge.EVENT_BUS.addListener(this::textureStitch);
         });
+    }
+
+    @SubscribeEvent
+    public void textureStitch(TextureStitchEvent.Pre event)
+    {
+        event.addSprite(new ResourceLocation(Constants.MOD_ID, "items/grid"));
     }
 
     @SubscribeEvent
