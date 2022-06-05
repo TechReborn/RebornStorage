@@ -80,14 +80,7 @@ public class RebornStorage
         MinecraftForge.EVENT_BUS.register(new MultiblockServerTickHandler());
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(this::onKeyInput);
-            MinecraftForge.EVENT_BUS.addListener(this::textureStitch);
         });
-    }
-
-    @SubscribeEvent
-    public void textureStitch(TextureStitchEvent.Pre event)
-    {
-        event.addSprite(new ResourceLocation(Constants.MOD_ID, "items/grid"));
     }
 
     @SubscribeEvent
