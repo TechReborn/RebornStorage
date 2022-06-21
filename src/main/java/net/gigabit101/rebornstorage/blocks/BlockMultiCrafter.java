@@ -149,7 +149,7 @@ public class BlockMultiCrafter extends BaseEntityBlock
             } else
             {
                 if(level.isClientSide)
-                    PacketHandler.sendToServer(new PacketGui(1, blockPos));
+                    PacketHandler.sendToServer(new PacketGui(0, blockPos));
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.SUCCESS;
