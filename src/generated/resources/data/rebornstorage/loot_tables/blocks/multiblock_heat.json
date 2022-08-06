@@ -2,8 +2,9 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "rebornstorage:multiblock_frame",
-      "rolls": 1,
+      "name": "rebornstorage:multiblock_heat",
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -13,7 +14,7 @@
               "source": "block_entity"
             }
           ],
-          "name": "rebornstorage:multiblock_frame"
+          "name": "rebornstorage:multiblock_heat"
         }
       ],
       "conditions": [

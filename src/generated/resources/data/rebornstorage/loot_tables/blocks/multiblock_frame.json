@@ -2,8 +2,9 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "rebornstorage:advanced_wireless_transmitter",
-      "rolls": 1,
+      "name": "rebornstorage:multiblock_frame",
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -13,7 +14,7 @@
               "source": "block_entity"
             }
           ],
-          "name": "rebornstorage:advanced_wireless_transmitter"
+          "name": "rebornstorage:multiblock_frame"
         }
       ],
       "conditions": [
