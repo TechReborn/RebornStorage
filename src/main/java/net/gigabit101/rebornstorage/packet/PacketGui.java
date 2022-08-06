@@ -60,7 +60,7 @@ public class PacketGui
 
         public static void openGUI(Level world, Player player, BlockPos blockPos)
         {
-            NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) world.getBlockEntity(blockPos), blockPos);
+            NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider) world.getBlockEntity(blockPos), blockPos);
         }
     }
 }

@@ -7,7 +7,7 @@ import com.refinedmods.refinedstorage.util.NetworkUtils;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityAdvancedWirelessTransmitter;
 import net.gigabit101.rebornstorage.containers.AdvancedWirelessTransmitterContainer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -86,10 +86,10 @@ public class BlockAdvancedWirelessTransmitter extends ColoredNetworkBlock
     {
         if (!level.isClientSide)
         {
-            return NetworkUtils.attemptModify(level, blockPos, player, () -> NetworkHooks.openGui(
+            return NetworkUtils.attemptModify(level, blockPos, player, () -> NetworkHooks.openScreen(
                     (ServerPlayer) player,
                     new BlockEntityMenuProvider<BlockEntityAdvancedWirelessTransmitter>(
-                            new TranslatableComponent("gui.rebornstorage.advanced_wireless_transmitter"),
+                            Component.translatable("gui.rebornstorage.advanced_wireless_transmitter"),
                             (blockEntity, windowId, inventory, p) -> new AdvancedWirelessTransmitterContainer(blockEntity, player, windowId),
                             blockPos
                     ),

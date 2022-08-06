@@ -31,8 +31,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -97,18 +97,24 @@ public class RebornStorage
         API.instance().getGridManager().add(WirelessCraftingGridGridFactory.ID, new WirelessCraftingGridGridFactory());
     }
 
+    @SuppressWarnings("all")
     @SubscribeEvent
     public void clientInit(FMLClientSetupEvent event)
     {
         ModScreens.init();
         MinecraftForge.EVENT_BUS.register(new MultiblockClientTickHandler());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOCK_ADVANCED_WIRELESS_TRANSMITTER.get(), RenderType.cutout());
-        ClientRegistry.registerKeyBinding(KeyBindings.OPEN_WIRELESS_CRAFTING_GRID);
-        ClientRegistry.registerKeyBinding(KeyBindings.MODE_SWITCH_WIRELESS_CRAFTING_GRID);
     }
 
     @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent e)
+    public void keyRegisterEvent(RegisterKeyMappingsEvent event)
+    {
+        event.register(KeyBindings.OPEN_WIRELESS_CRAFTING_GRID);
+        event.register(KeyBindings.MODE_SWITCH_WIRELESS_CRAFTING_GRID);
+    }
+
+    @SubscribeEvent
+    public void onKeyInput(InputEvent.Key e)
     {
         if (Minecraft.getInstance().player != null)
         {

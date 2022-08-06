@@ -10,11 +10,10 @@ import com.refinedmods.refinedstorage.blockentity.craftingmonitor.CraftingMonito
 import com.refinedmods.refinedstorage.blockentity.craftingmonitor.WirelessCraftingMonitor;
 import com.refinedmods.refinedstorage.container.factory.CraftingMonitorMenuProvider;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
-import com.refinedmods.refinedstorage.item.WirelessCraftingMonitorItem;
 import com.refinedmods.refinedstorage.util.LevelUtils;
 import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -53,7 +52,7 @@ public class WirelessCraftingMonitorNetworkItemExt extends WirelessCraftingMonit
             CraftingMonitorMenuProvider var10001 = new CraftingMonitorMenuProvider(RSContainerMenus.WIRELESS_CRAFTING_MONITOR, wirelessCraftingMonitor, (CraftingMonitorBlockEntity)null);
             PlayerSlot var10002 = this.slot;
             Objects.requireNonNull(var10002);
-            NetworkHooks.openGui(var10000, var10001, var10002::writePlayerSlot);
+            NetworkHooks.openScreen(var10000, var10001, var10002::writePlayerSlot);
             this.drainEnergy(RS.SERVER_CONFIG.getWirelessCraftingMonitor().getOpenUsage());
             return true;
         } else {
@@ -79,6 +78,6 @@ public class WirelessCraftingMonitorNetworkItemExt extends WirelessCraftingMonit
 
     public void sendOutOfEnergyMessage()
     {
-        this.player.sendMessage(new TranslatableComponent("misc.refinedstorage.network_item.out_of_energy", new Object[]{new TranslatableComponent(this.stack.getItem().getDescriptionId())}), this.player.getUUID());
+        this.player.displayClientMessage(Component.translatable("misc.refinedstorage.network_item.out_of_energy", new Object[]{Component.translatable(this.stack.getItem().getDescriptionId())}), false);
     }
 }

@@ -10,7 +10,7 @@ import com.refinedmods.refinedstorage.apiimpl.network.item.WirelessFluidGridNetw
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.util.LevelUtils;
 import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -64,6 +64,6 @@ public class WirelessFluidGridNetworkItemExt extends WirelessFluidGridNetworkIte
     }
 
     private void sendOutOfEnergyMessage() {
-        this.player.sendMessage(new TranslatableComponent("misc.refinedstorage.network_item.out_of_energy", new Object[]{new TranslatableComponent(this.stack.getItem().getDescriptionId())}), this.player.getUUID());
+        this.player.displayClientMessage(Component.translatable("misc.refinedstorage.network_item.out_of_energy", new Object[]{Component.translatable(this.stack.getItem().getDescriptionId())}), false);
     }
 }

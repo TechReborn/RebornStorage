@@ -13,7 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModContainers
 {
-    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Constants.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Constants.MOD_ID);
     public static final RegistryObject<MenuType<ContainerMultiCrafter>> MULTI_CRAFTER_CONTAINER = CONTAINERS.register("container_multiblock_crafter", () -> IForgeMenuType.create(ContainerMultiCrafter::new));
     public static final RegistryObject<MenuType<AdvancedWirelessTransmitterContainer>> ADVANCED_WIRELESS_CONTAINER = CONTAINERS.register("container_advanced_wireless_transmitter",
             () -> IForgeMenuType.create(new BlockEntityContainerFactory<AdvancedWirelessTransmitterContainer, BlockEntityAdvancedWirelessTransmitter>(((i, inventory, wirelessTransmitter)

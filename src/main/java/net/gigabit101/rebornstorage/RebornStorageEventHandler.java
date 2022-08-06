@@ -14,7 +14,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.lang3.tuple.Pair;
@@ -43,17 +42,17 @@ public class RebornStorageEventHandler
                 return;
             }
         }
-        rebuildQueue.add(Pair.of(craftingManager, new RebuildReason(node.getPos(), node.getLevel().dimension().getRegistryName(), reason)));
+        rebuildQueue.add(Pair.of(craftingManager, new RebuildReason(node.getPos(), node.getLevel().dimension().registry(), reason)));
     }
 
     @SubscribeEvent
-    public static void tick(TickEvent.WorldTickEvent event)
+    public static void tick(TickEvent.LevelTickEvent event)
     {
         if (event.phase == TickEvent.Phase.START)
         {
-            MultiblockRegistry.tickStart(event.world);
+            MultiblockRegistry.tickStart(event.level);
         }
-        if (event.phase == TickEvent.Phase.END && !event.world.isClientSide())
+        if (event.phase == TickEvent.Phase.END && !event.level.isClientSide())
         {
             Pair<ICraftingManager, RebuildReason> rebuildReasonPair = rebuildQueue.poll();
             if (rebuildReasonPair != null)

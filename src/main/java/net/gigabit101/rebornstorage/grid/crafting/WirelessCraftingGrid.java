@@ -12,9 +12,9 @@ import com.refinedmods.refinedstorage.util.StackUtils;
 import net.gigabit101.rebornstorage.RebornStorage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.TickTask;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -45,6 +45,12 @@ public class WirelessCraftingGrid extends WirelessGrid
         public boolean stillValid(@NotNull Player player)
         {
             return false;
+        }
+
+        @Override
+        public ItemStack quickMoveStack(Player player, int i)
+        {
+            return ItemStack.EMPTY;
         }
 
         @Override
@@ -96,7 +102,7 @@ public class WirelessCraftingGrid extends WirelessGrid
     @Override
     public Component getTitle()
     {
-        return new TranslatableComponent("gui.refinedstorage.crafting_grid");
+        return Component.translatable("gui.refinedstorage.crafting_grid");
     }
 
     @Override

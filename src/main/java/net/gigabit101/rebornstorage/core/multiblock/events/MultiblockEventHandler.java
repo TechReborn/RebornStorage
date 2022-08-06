@@ -4,8 +4,8 @@ import net.gigabit101.rebornstorage.core.multiblock.MultiblockRegistry;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.level.ChunkEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -20,8 +20,8 @@ public class MultiblockEventHandler
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onWorldUnload(WorldEvent.Unload event)
+    public void onWorldUnload(LevelEvent.Unload event)
     {
-        MultiblockRegistry.onWorldUnloaded((Level) event.getWorld());
+        MultiblockRegistry.onWorldUnloaded((Level) event.getLevel());
     }
 }

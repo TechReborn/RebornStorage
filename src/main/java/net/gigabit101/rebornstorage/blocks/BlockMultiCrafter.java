@@ -22,8 +22,6 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
@@ -127,9 +125,6 @@ public class BlockMultiCrafter extends BaseEntityBlock
         BlockEntityMultiCrafter tile = (BlockEntityMultiCrafter) level.getBlockEntity(blockPos);
         if(tile == null) return InteractionResult.FAIL;
 
-//        System.out.println("isAssembled " + tile.getMultiBlock().isAssembled() + (level.isClientSide ? " Client" : " Sever"));
-//        tile.load(tile.getUpdateTag());
-
         if (tile.getMultiblockController() != null)
         {
             if (!tile.getMultiblockController().isAssembled())
@@ -140,7 +135,7 @@ public class BlockMultiCrafter extends BaseEntityBlock
                     {
                         if(level.isClientSide)
                         {
-                            player.sendMessage(new TextComponent(tile.getMultiblockController().getLastValidationException().getMessage()), Util.NIL_UUID);
+                            player.sendSystemMessage(Component.literal(tile.getMultiblockController().getLastValidationException().getMessage()));
                         }
 
                         return InteractionResult.SUCCESS;

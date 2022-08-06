@@ -30,9 +30,9 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -52,16 +52,16 @@ public class RebornStorageDataGenerator
 
         if (event.includeServer())
         {
-            generator.addProvider(new GeneratorRecipes(generator));
-            generator.addProvider(new GeneratorLoots(generator));
+            generator.addProvider(true, new GeneratorRecipes(generator));
+            generator.addProvider(true,new GeneratorLoots(generator));
         }
 
         if (event.includeClient())
         {
-            generator.addProvider(new GeneratorBlockTags(generator, event.getExistingFileHelper()));
-            generator.addProvider(new GeneratorLanguage(generator));
-            generator.addProvider(new GeneratorBlockStates(generator, event.getExistingFileHelper()));
-            generator.addProvider(new GeneratorItemModels(generator, event.getExistingFileHelper()));
+            generator.addProvider(true,new GeneratorBlockTags(generator, event.getExistingFileHelper()));
+            generator.addProvider(true,new GeneratorLanguage(generator));
+            generator.addProvider(true,new GeneratorBlockStates(generator, event.getExistingFileHelper()));
+            generator.addProvider(true,new GeneratorItemModels(generator, event.getExistingFileHelper()));
         }
     }
 

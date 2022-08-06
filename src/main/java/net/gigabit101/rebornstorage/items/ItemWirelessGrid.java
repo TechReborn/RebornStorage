@@ -10,7 +10,6 @@ import net.gigabit101.rebornstorage.grid.fluid.WirelessFluidGridNetworkItemExt;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -50,15 +49,15 @@ public class ItemWirelessGrid extends NetworkItem
             {
                 case CRAFTING:
                     setMode(stack, MODE.FLUID);
-                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + MODE.FLUID.name()), true);
+                    player.displayClientMessage(Component.literal(ChatFormatting.GOLD + "MODE: " + MODE.FLUID.name()), true);
                     return InteractionResultHolder.success(stack);
                 case FLUID:
                     setMode(stack, MODE.MONITOR);
-                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + MODE.MONITOR.name()), true);
+                    player.displayClientMessage(Component.literal(ChatFormatting.GOLD + "MODE: " + MODE.MONITOR.name()), true);
                     return InteractionResultHolder.success(stack);
                 case MONITOR:
                     setMode(stack, MODE.CRAFTING);
-                    player.displayClientMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + MODE.CRAFTING.name()), true);
+                    player.displayClientMessage(Component.literal(ChatFormatting.GOLD + "MODE: " + MODE.CRAFTING.name()), true);
                     return InteractionResultHolder.success(stack);
             }
         }
@@ -109,7 +108,7 @@ public class ItemWirelessGrid extends NetworkItem
         super.appendHoverText(stack, level, tooltip, flag);
         try
         {
-            tooltip.add(new TextComponent(ChatFormatting.GOLD + "MODE: " + getMode(stack)));
+            tooltip.add(Component.literal(ChatFormatting.GOLD + "MODE: " + getMode(stack)));
 
         } catch (Exception e)
         {

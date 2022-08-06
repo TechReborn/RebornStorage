@@ -9,7 +9,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ScreenMultiCrafter extends AbstractContainerScreen<ContainerMultiCrafter>
@@ -35,7 +34,7 @@ public class ScreenMultiCrafter extends AbstractContainerScreen<ContainerMultiCr
     public void init()
     {
         super.init();
-        buttonNext = new Button(this.leftPos + 209, this.topPos + 172, 20, 20, new TextComponent(">"), p_onPress_1_ ->
+        buttonNext = new Button(this.leftPos + 209, this.topPos + 172, 20, 20, Component.literal(">"), p_onPress_1_ ->
         {
             boolean shift = Screen.hasShiftDown();
             int next = crafter.currentPage + 1;
@@ -51,7 +50,7 @@ public class ScreenMultiCrafter extends AbstractContainerScreen<ContainerMultiCr
             if(containerMultiCrafter != null && containerMultiCrafter.blockPos != null)
                 PacketHandler.sendToServer(new PacketGui(next, containerMultiCrafter.blockPos));
         });
-        buttonBack = new Button(this.leftPos + 13, this.topPos + 172, 20, 20, new TextComponent("<"), p_onPress_1_ ->
+        buttonBack = new Button(this.leftPos + 13, this.topPos + 172, 20, 20, Component.literal("<"), p_onPress_1_ ->
         {
             boolean shift = Screen.hasShiftDown();
             int next = crafter.currentPage - 1;
@@ -100,10 +99,10 @@ public class ScreenMultiCrafter extends AbstractContainerScreen<ContainerMultiCr
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
 
-        this.font.draw(matrixStack, new TextComponent("Page " + crafter.currentPage + " of " + crafter.invs.size()), leftPos + 10, topPos + 224, 4210752);
+        this.font.draw(matrixStack, Component.literal("Page " + crafter.currentPage + " of " + crafter.invs.size()), leftPos + 10, topPos + 224, 4210752);
         if(buttonNext.isMouseOver(mouseX, mouseY) || buttonBack.isMouseOver(mouseX, mouseY))
         {
-            renderTooltip(matrixStack, new TextComponent("Hold <Left-Shift> to increment by 10"), mouseX, mouseY);
+            renderTooltip(matrixStack, Component.literal("Hold <Left-Shift> to increment by 10"), mouseX, mouseY);
         }
     }
 

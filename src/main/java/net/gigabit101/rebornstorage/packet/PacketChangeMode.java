@@ -4,9 +4,8 @@ import com.refinedmods.refinedstorage.integration.curios.CuriosIntegration;
 import net.gigabit101.rebornstorage.init.ModItems;
 import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -92,15 +91,15 @@ public class PacketChangeMode
             {
                 case CRAFTING:
                     itemWirelessGrid.setMode(stack, ItemWirelessGrid.MODE.FLUID);
-                    player.sendMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.FLUID.name()), Util.NIL_UUID);
+                    player.displayClientMessage(Component.literal(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.FLUID.name()), false);
                     break;
                 case FLUID:
                     itemWirelessGrid.setMode(stack, ItemWirelessGrid.MODE.MONITOR);
-                    player.sendMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.MONITOR.name()), Util.NIL_UUID);
+                    player.displayClientMessage(Component.literal(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.MONITOR.name()), false);
                     break;
                 case MONITOR:
                     itemWirelessGrid.setMode(stack, ItemWirelessGrid.MODE.CRAFTING);
-                    player.sendMessage(new TextComponent(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.CRAFTING.name()), Util.NIL_UUID);
+                    player.displayClientMessage(Component.literal(ChatFormatting.GOLD + "MODE: " + ItemWirelessGrid.MODE.CRAFTING.name()), false);
                     break;
             }
         }

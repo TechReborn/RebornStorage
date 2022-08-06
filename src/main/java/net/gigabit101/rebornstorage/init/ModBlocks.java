@@ -14,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModBlocks
 {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.MOD_ID);
-    public static final DeferredRegister<BlockEntityType<?>> TILES_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Constants.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> TILES_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Constants.MOD_ID);
 
     public static final RegistryObject<Block> BLOCK_MULTI_FRAME = BLOCKS.register("multiblock_frame", BlockMultiCrafter::new);
     public static final RegistryObject<Block> BLOCK_MULTI_HEAT = BLOCKS.register("multiblock_heat", BlockMultiCrafter::new);

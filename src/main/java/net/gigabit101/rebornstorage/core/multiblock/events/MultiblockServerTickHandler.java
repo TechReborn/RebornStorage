@@ -7,8 +7,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class MultiblockServerTickHandler
 {
     @SubscribeEvent
-    public void onWorldTick(TickEvent.WorldTickEvent event)
+    public void onWorldTick(TickEvent.LevelTickEvent event)
     {
-        if (event.phase == TickEvent.Phase.START) MultiblockRegistry.tickStart(event.world);
+        if (event.phase == TickEvent.Phase.START) MultiblockRegistry.tickStart(event.level);
     }
 }
