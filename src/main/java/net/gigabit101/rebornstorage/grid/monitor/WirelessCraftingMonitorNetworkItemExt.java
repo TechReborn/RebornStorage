@@ -49,7 +49,7 @@ public class WirelessCraftingMonitorNetworkItemExt extends WirelessCraftingMonit
         } else if (network.getSecurityManager().hasPermission(Permission.MODIFY, this.player) && network.getSecurityManager().hasPermission(Permission.AUTOCRAFTING, this.player)) {
             WirelessCraftingMonitor wirelessCraftingMonitor = new WirelessCraftingMonitor(this.stack, this.player.getServer(), this.slot);
             ServerPlayer var10000 = (ServerPlayer)this.player;
-            CraftingMonitorMenuProvider var10001 = new CraftingMonitorMenuProvider(RSContainerMenus.WIRELESS_CRAFTING_MONITOR, wirelessCraftingMonitor, (CraftingMonitorBlockEntity)null);
+            CraftingMonitorMenuProvider var10001 = new CraftingMonitorMenuProvider(RSContainerMenus.WIRELESS_CRAFTING_MONITOR.get(), wirelessCraftingMonitor, (CraftingMonitorBlockEntity)null);
             PlayerSlot var10002 = this.slot;
             Objects.requireNonNull(var10002);
             NetworkHooks.openScreen(var10000, var10001, var10002::writePlayerSlot);

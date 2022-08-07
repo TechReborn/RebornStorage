@@ -1,5 +1,5 @@
 modLoader = "javafml" #mandatory
-loaderVersion = "[40,]" #mandatory
+loaderVersion = "[41,]" #mandatory
 license = "MIT License"
 credits = "" #optional
 authors = "gigabit101" #optional
@@ -13,13 +13,13 @@ description = ''' A large multiblock that can store all of your crafting pattern
 [[dependencies.rebornstorage]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.18.2]"
+versionRange = "[1.19,]"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.rebornstorage]]
 modId = "refinedstorage"
 mandatory = true
-versionRange = "[1.10.2,)"
+versionRange = "[1.11.0,)"
 ordering = "AFTER"
 side = "BOTH"
