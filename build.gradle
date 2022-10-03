@@ -144,9 +144,9 @@ repositories {
         url = "https://maven.theillusivec4.top/"
     }
 
-    flatDir {
-        dirs '/libs'
-    }
+//    flatDir {
+//        dirs '/libs'
+//    }
 }
 
 dependencies {
