@@ -27,7 +27,11 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
@@ -44,6 +48,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.SlotTypeMessage;
@@ -73,6 +78,7 @@ public class RebornStorage
         ModContainers.CONTAINERS.register(eventBus);
         eventBus.addListener(this::preInit);
         eventBus.addListener(this::clientInit);
+        eventBus.addListener(this::registerCreativeTab);
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().size(4).build());
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("grid").icon(new ResourceLocation(Constants.MOD_ID, "items/grid")).size(1).build());
         MinecraftForge.EVENT_BUS.register(new MultiblockEventHandler());
@@ -127,6 +133,19 @@ public class RebornStorage
                 PacketHandler.sendToServer(new PacketChangeMode());
             }
         }
+    }
+
+    private void registerCreativeTab(RegisterEvent event) {
+        ResourceKey<CreativeModeTab> TAB = ResourceKey.create(net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB, new ResourceLocation(Constants.MOD_ID, "creative_tab"));
+        event.register(net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB, creativeModeTabRegisterHelper ->
+        {
+            creativeModeTabRegisterHelper.register(TAB, CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.BLOCK_MULTI_STORAGE.get()))
+                    .title(Component.translatable("itemGroup." + Constants.MOD_ID))
+                    .displayItems((params, output) -> {
+                        ModItems.ITEMS.getEntries().forEach(itemRegistryObject -> output.accept(itemRegistryObject.get()));
+                    })
+                    .build());
+        });
     }
 
     public static MultiBlockCrafter getMultiBlock(Level world, BlockPos pos)

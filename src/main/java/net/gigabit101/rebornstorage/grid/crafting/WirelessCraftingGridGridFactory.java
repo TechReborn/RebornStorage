@@ -23,7 +23,7 @@ public class WirelessCraftingGridGridFactory implements IGridFactory
     @Override
     public IGrid createFromStack(Player player, ItemStack stack, PlayerSlot slot)
     {
-        return new WirelessCraftingGrid(stack, player.getLevel(), player.getServer(), slot);
+        return new WirelessCraftingGrid(stack, player.level(), player.getServer(), slot);
     }
 
     @Nullable

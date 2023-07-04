@@ -5,7 +5,6 @@ import com.refinedmods.refinedstorage.api.storage.disk.IStorageDiskProvider;
 import com.refinedmods.refinedstorage.api.storage.disk.StorageDiskSyncData;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.render.Styles;
-import net.gigabit101.rebornstorage.client.CreativeTabRebornStorage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -28,7 +27,7 @@ public class ItemRebornStorageCell extends Item implements IStorageDiskProvider
 
     public ItemRebornStorageCell(int capacity, StorageType storageType)
     {
-        super(new Item.Properties().tab(CreativeTabRebornStorage.INSTANCE).stacksTo(1));
+        super(new Item.Properties().stacksTo(1));
         this.capacity = capacity;
         this.storageType = storageType;
     }

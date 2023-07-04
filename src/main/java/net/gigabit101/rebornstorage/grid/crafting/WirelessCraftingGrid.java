@@ -10,6 +10,7 @@ import com.refinedmods.refinedstorage.blockentity.grid.WirelessGrid;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.util.StackUtils;
 import net.gigabit101.rebornstorage.RebornStorage;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.ResultContainer;
+import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -64,7 +66,7 @@ public class WirelessCraftingGrid extends WirelessGrid
     };
 
     private CraftingRecipe currentRecipe;
-    private final CraftingContainer craftingContainer = new CraftingContainer(craftingMenu, 3, 3)
+    private final CraftingContainer craftingContainer = new TransientCraftingContainer(craftingMenu, 3, 3)
     {
         @Override
         public void setChanged()
@@ -135,7 +137,7 @@ public class WirelessCraftingGrid extends WirelessGrid
             craftingResultContainer.setItem(0, ItemStack.EMPTY);
         } else
         {
-            craftingResultContainer.setItem(0, currentRecipe.assemble(craftingContainer));
+            craftingResultContainer.setItem(0, currentRecipe.assemble(craftingContainer, RegistryAccess.EMPTY));
         }
 
         listeners.forEach(ICraftingGridListener::onCraftingMatrixChanged);

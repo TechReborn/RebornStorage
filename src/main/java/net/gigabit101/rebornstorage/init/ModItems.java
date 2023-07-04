@@ -3,8 +3,6 @@ package net.gigabit101.rebornstorage.init;
 import com.refinedmods.refinedstorage.api.storage.StorageType;
 import com.refinedmods.refinedstorage.block.BaseBlock;
 import com.refinedmods.refinedstorage.item.blockitem.BaseBlockItem;
-import net.gigabit101.rebornstorage.client.CreativeTabRebornStorage;
-import net.gigabit101.rebornstorage.items.ItemBook;
 import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
 import net.gigabit101.rebornstorage.items.ItemFluidRebornStorageCell;
 import net.gigabit101.rebornstorage.items.ItemRebornStorageCell;
@@ -18,9 +16,9 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModItems
 {
-    public static final Item.Properties ITEM_GROUP = new Item.Properties().tab(CreativeTabRebornStorage.INSTANCE);
+    public static final Item.Properties ITEM_GROUP = new Item.Properties();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
-    public static final Item.Properties PROPERTIES = new Item.Properties().tab(CreativeTabRebornStorage.INSTANCE);
+    public static final Item.Properties PROPERTIES = new Item.Properties();
 
 //    public static final RegistryObject<Item> BOOK = ITEMS.register("rs_book", () -> new ItemBook());
 

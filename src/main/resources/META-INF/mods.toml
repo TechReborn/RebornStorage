@@ -13,13 +13,13 @@ description = ''' A large multiblock that can store all of your crafting pattern
 [[dependencies.rebornstorage]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19,]"
+versionRange = "[1.20,]"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.rebornstorage]]
 modId = "refinedstorage"
 mandatory = true
-versionRange = "[1.11.0,)"
+versionRange = "[1.12.0,)"
 ordering = "AFTER"
 side = "BOTH"

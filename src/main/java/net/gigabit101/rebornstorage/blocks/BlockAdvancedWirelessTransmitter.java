@@ -16,7 +16,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -36,7 +35,7 @@ public class BlockAdvancedWirelessTransmitter extends ColoredNetworkBlock
 
     public BlockAdvancedWirelessTransmitter()
     {
-        super(Properties.of(Material.METAL).strength(2.0F));
+        super(Properties.of().strength(2.0F));
     }
 
     @Override

@@ -44,7 +44,7 @@ public class PacketGui
                 ServerPlayer player = ctx.get().getSender();
                 if (player == null) return;
 
-                BlockEntity blockEntity = player.getLevel().getBlockEntity(message.blockPos);
+                BlockEntity blockEntity = player.level().getBlockEntity(message.blockPos);
                 if (blockEntity != null && blockEntity instanceof BlockEntityMultiCrafter blockEntityMultiCrafter && blockEntityMultiCrafter.getMultiBlock().isAssembled())
                 {
                     if(message.page > 0)
@@ -53,7 +53,7 @@ public class PacketGui
                         blockEntityMultiCrafter.setChanged();
                     }
                 }
-                openGUI(player.getLevel(), player, message.blockPos);
+                openGUI(player.level(), player, message.blockPos);
             });
             ctx.get().setPacketHandled(true);
         }

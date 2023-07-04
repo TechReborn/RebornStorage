@@ -3,9 +3,9 @@
 	"parent": "block/cube",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "rebornstorage:blocks/wireless_transmitter/wireless_transmitter",
-		"torch": "rebornstorage:blocks/wireless_transmitter/wireless_transmitter",
-		"cutout": "rebornstorage:blocks/wireless_transmitter/cutouts/blue"
+		"particle": "rebornstorage:block/wireless_transmitter/wireless_transmitter",
+		"torch": "rebornstorage:block/wireless_transmitter/wireless_transmitter",
+		"cutout": "rebornstorage:block/wireless_transmitter/cutouts/blue"
 	},
 	"elements": [
 		{

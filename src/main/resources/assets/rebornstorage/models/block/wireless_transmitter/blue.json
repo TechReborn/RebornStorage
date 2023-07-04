@@ -1,6 +1,6 @@
 {
   "parent": "rebornstorage:block/wireless_transmitter",
   "textures": {
-    "cutout": "rebornstorage:blocks/wireless_transmitter/cutouts/blue"
+    "cutout": "rebornstorage:block/wireless_transmitter/cutouts/blue"
   }
 }

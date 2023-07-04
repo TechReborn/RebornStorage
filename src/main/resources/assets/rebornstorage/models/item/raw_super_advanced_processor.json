@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rebornstorage:items/raw_super_advanced_processor"
+    "layer0": "rebornstorage:item/raw_super_advanced_processor"
   }
 }

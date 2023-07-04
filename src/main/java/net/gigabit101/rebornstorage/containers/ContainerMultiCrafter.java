@@ -32,7 +32,7 @@ public class ContainerMultiCrafter extends ContainerBase
     public ContainerMultiCrafter(int id, Inventory playerInv, BlockEntityMultiCrafter multiBlockCrafter)
     {
         super(ModContainers.MULTI_CRAFTER_CONTAINER.get(), id);
-        Level level = playerInv.player.level;
+        Level level = playerInv.player.level();
         crafter = RebornStorage.getMultiBlock(level, multiBlockCrafter.getBlockPos());
         if(level.isClientSide)
         {
@@ -56,7 +56,7 @@ public class ContainerMultiCrafter extends ContainerBase
                 drawSlotsForPage(crafter.getInvForPage(crafter.currentPage));
             } else
             {
-                if(!playerInv.player.level.isClientSide)
+                if(!playerInv.player.level().isClientSide)
                 {
                     RebornStorage.logger.error("currentPage is out of bounds, Resetting to 1");
                     crafter.currentPage = 1;

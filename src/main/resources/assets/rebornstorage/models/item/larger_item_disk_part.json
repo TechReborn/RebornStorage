@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "rebornstorage:items/parts/larger_item_disk_part"
+    "layer0": "rebornstorage:item/parts/larger_item_disk_part"
   }
 }

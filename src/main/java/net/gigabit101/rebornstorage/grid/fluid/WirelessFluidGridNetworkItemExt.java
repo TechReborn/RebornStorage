@@ -14,7 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class WirelessFluidGridNetworkItemExt extends WirelessFluidGridNetworkItem
@@ -34,7 +34,7 @@ public class WirelessFluidGridNetworkItemExt extends WirelessFluidGridNetworkIte
     }
 
     public boolean onOpen(INetwork network) {
-        IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY, null).orElse(null);
+        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY, null).orElse(null);
         if (RS.SERVER_CONFIG.getWirelessFluidGrid().getUseEnergy() && ((ItemWirelessGrid)this.stack.getItem()).getType() != ItemWirelessGrid.Type.CREATIVE && energy != null && energy.getEnergyStored() <= RS.SERVER_CONFIG.getWirelessFluidGrid().getOpenUsage()) {
             this.sendOutOfEnergyMessage();
             return false;
@@ -52,7 +52,7 @@ public class WirelessFluidGridNetworkItemExt extends WirelessFluidGridNetworkIte
     public void drainEnergy(int energy)
     {
         if (RS.SERVER_CONFIG.getWirelessFluidGrid().getUseEnergy() && ((ItemWirelessGrid)this.stack.getItem()).getType() != ItemWirelessGrid.Type.CREATIVE) {
-            this.stack.getCapability(CapabilityEnergy.ENERGY).ifPresent((energyStorage) -> {
+            this.stack.getCapability(ForgeCapabilities.ENERGY).ifPresent((energyStorage) -> {
                 energyStorage.extractEnergy(energy, false);
                 if (energyStorage.getEnergyStored() <= 0) {
                     this.handler.close(this.player);

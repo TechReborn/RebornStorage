@@ -82,7 +82,7 @@ public class PacketChangeMode
 
     public static void updateStack(ItemStack stack, Player player)
     {
-        if (player.level.isClientSide)
+        if (player.level().isClientSide)
             return;
         if(stack.getItem() instanceof ItemWirelessGrid itemWirelessGrid)
         {
