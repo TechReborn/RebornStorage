@@ -1090,6 +1090,18 @@ public abstract class MultiblockControllerBase
         return this.assemblyState == AssemblyState.Assembled;
     }
 
+    public void setAssembled(boolean assembled)
+    {
+        if(assembled)
+        {
+            this.assemblyState = AssemblyState.Assembled;
+        }
+        else
+        {
+            this.assemblyState = AssemblyState.Disassembled;
+        }
+    }
+
     private void selectNewReferenceCoord()
     {
         IMultiblockPart theChosenOne = null;

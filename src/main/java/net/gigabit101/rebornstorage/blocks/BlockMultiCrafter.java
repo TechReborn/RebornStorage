@@ -7,6 +7,7 @@ import com.refinedmods.refinedstorage.apiimpl.API;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.gigabit101.rebornstorage.packet.PacketGui;
 import net.gigabit101.rebornstorage.packet.PacketHandler;
+import net.gigabit101.rebornstorage.packet.PacketRequestMultiblockUpdate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -53,6 +54,11 @@ public class BlockMultiCrafter extends BaseEntityBlock
 
         if (tile.getMultiblockController() != null)
         {
+            if(!tile.getMultiblockController().isAssembled())
+            {
+                //Check with the server
+                PacketHandler.sendToServer(new PacketRequestMultiblockUpdate(blockPos));
+            }
             if (!tile.getMultiblockController().isAssembled())
             {
                 if (tile.getMultiblockController().getLastValidationException() != null)

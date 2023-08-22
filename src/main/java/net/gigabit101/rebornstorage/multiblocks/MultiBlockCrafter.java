@@ -7,6 +7,7 @@ import net.gigabit101.rebornstorage.core.multiblock.IMultiblockPart;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockControllerBase;
 import net.gigabit101.rebornstorage.core.multiblock.rectangular.RectangularMultiblockControllerBase;
 import net.gigabit101.rebornstorage.init.ModBlocks;
+import net.gigabit101.rebornstorage.packet.PacketHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.ItemStackHandler;

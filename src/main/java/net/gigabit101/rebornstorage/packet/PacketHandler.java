@@ -18,6 +18,9 @@ public class PacketHandler
         int disc = 0;
         HANDLER.registerMessage(disc++, PacketGui.class, PacketGui::encode, PacketGui::decode, PacketGui.Handler::handle);
         HANDLER.registerMessage(disc++, PacketChangeMode.class, PacketChangeMode::encode, PacketChangeMode::decode, PacketChangeMode.Handler::handle);
+        HANDLER.registerMessage(disc++, PacketRequestMultiblockUpdate.class, PacketRequestMultiblockUpdate::encode, PacketRequestMultiblockUpdate::decode, PacketRequestMultiblockUpdate.Handler::handle);
+        HANDLER.registerMessage(disc++, PacketMultiblockUpdate.class, PacketMultiblockUpdate::encode, PacketMultiblockUpdate::decode, PacketMultiblockUpdate.Handler::handle);
+
     }
 
     public static void sendTo(Object msg, ServerPlayer player)
