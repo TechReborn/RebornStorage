@@ -162,6 +162,29 @@ jar {
     }
 }
 
+def ENV = System.getenv()
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            groupId "net.gigabit101"
+            artifactId = rootProject.archivesBaseName
+            from components.java
+        }
+    }
+    repositories {
+        if (ENV.MAVEN_TOKEN) {
+            maven {
+                url "https://maven.creeperhost.net/release"
+                credentials {
+                    username = "Gigabit101"
+                    password = "${ENV.MAVEN_TOKEN}"
+                }
+            }
+        }
+    }
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
