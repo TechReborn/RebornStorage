@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "refinedstorage:storage_housing"
+    },
+    {
+      "tag": "refinedstorage:parts/fluids/65536k"
+    }
+  ],
+  "result": {
+    "item": "rebornstorage:medium_fluid_disk"
+  }
+}
