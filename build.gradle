@@ -127,10 +127,6 @@ repositories {
         url = "https://maven.theillusivec4.top/"
     }
     maven {
-        name 'JEI'
-        url 'https://dvs1.progwml6.com/files/maven'
-    }
-    maven {
         url = uri("https://maven.pkg.github.com/refinedmods/refinedstorage")
         credentials {
             username = "anything"
