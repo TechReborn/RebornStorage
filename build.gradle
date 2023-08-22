@@ -126,16 +126,6 @@ repositories {
     maven {
         url = "https://maven.theillusivec4.top/"
     }
-    maven {
-        url = uri("https://maven.pkg.github.com/refinedmods/refinedstorage")
-        credentials {
-            username = "anything"
-            password = "\u0067hp_oGjcDFCn8jeTzIj4Ke9pLoEVtpnZMP4VQgaX"
-        }
-    }
-    maven {
-        url = "https://maven.theillusivec4.top/"
-    }
 
 //    flatDir {
 //        dirs '/libs'
