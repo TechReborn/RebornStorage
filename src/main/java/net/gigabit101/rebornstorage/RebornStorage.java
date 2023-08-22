@@ -79,8 +79,6 @@ public class RebornStorage
         eventBus.addListener(this::preInit);
         eventBus.addListener(this::clientInit);
         eventBus.addListener(this::registerCreativeTab);
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().size(4).build());
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("grid").icon(new ResourceLocation(Constants.MOD_ID, "items/grid")).size(1).build());
         MinecraftForge.EVENT_BUS.register(new MultiblockEventHandler());
         MinecraftForge.EVENT_BUS.register(new MultiblockServerTickHandler());
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
