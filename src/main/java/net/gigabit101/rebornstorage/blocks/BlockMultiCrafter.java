@@ -11,9 +11,11 @@ import net.gigabit101.rebornstorage.packet.PacketRequestMultiblockUpdate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 public class BlockMultiCrafter extends BaseEntityBlock
@@ -51,39 +54,23 @@ public class BlockMultiCrafter extends BaseEntityBlock
         if (level.getBlockEntity(blockPos) == null) return InteractionResult.FAIL;
         BlockEntityMultiCrafter tile = (BlockEntityMultiCrafter) level.getBlockEntity(blockPos);
         if(tile == null) return InteractionResult.FAIL;
-
-        if (tile.getMultiblockController() != null)
+        if(!level.isClientSide())
         {
-            if(!tile.getMultiblockController().isAssembled())
+            if(tile.getMultiblockController() != null)
             {
-                //Check with the server
-                PacketHandler.sendToServer(new PacketRequestMultiblockUpdate(blockPos));
-            }
-            if (!tile.getMultiblockController().isAssembled())
-            {
-                if (tile.getMultiblockController().getLastValidationException() != null)
+                if (tile.getMultiblockController().isAssembled())
                 {
-                    if (player.getItemInHand(hand).isEmpty())
-                    {
-                        if(level.isClientSide)
-                        {
-                            player.sendSystemMessage(Component.literal(tile.getMultiblockController().getLastValidationException().getMessage()));
-                        }
-
-                        return InteractionResult.SUCCESS;
-                    }
+                    NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider) tile, tile.getBlockPos());
+                    return InteractionResult.SUCCESS;
                 }
-            } else
-            {
-                if(level.isClientSide)
-                    PacketHandler.sendToServer(new PacketGui(0, blockPos));
-                return InteractionResult.SUCCESS;
+                else
+                {
+                    player.sendSystemMessage(Component.literal(tile.getMultiblockController().getLastValidationException().getMessage()));
+                    return InteractionResult.FAIL;
+                }
             }
-            return InteractionResult.SUCCESS;
-        } else
-        {
-            return super.use(blockState, level, blockPos, player, hand, blockHitResult);
         }
+        return super.use(blockState, level, blockPos, player, hand, blockHitResult);
     }
 
     @Override
