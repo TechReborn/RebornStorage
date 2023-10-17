@@ -401,7 +401,7 @@ public class CraftingNode extends NetworkNode implements ICraftingPatternContain
     @Override
     public int getMaximumSuccessfulCraftingUpdates()
     {
-        return Math.max(getCraftingCpus() / Math.max(craftingSpeed, 1), 1);
+        return getCraftingCpus();
     }
 
     public int getCraftingCpus()
