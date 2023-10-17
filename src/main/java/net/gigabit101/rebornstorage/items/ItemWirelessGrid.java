@@ -41,7 +41,7 @@ public class ItemWirelessGrid extends NetworkItem
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
-        if(player.isCrouching())
+        if(player.isShiftKeyDown())
         {
             ItemStack stack = player.getItemInHand(hand);
             MODE current = getMode(stack);
