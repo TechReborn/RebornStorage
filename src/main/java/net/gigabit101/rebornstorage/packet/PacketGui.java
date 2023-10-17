@@ -13,6 +13,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 import java.util.function.Supplier;
 
+@Deprecated
 public class PacketGui
 {
     private final int page;
