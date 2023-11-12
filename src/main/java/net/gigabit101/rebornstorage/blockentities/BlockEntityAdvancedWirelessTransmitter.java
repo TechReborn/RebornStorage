@@ -19,7 +19,7 @@ public class BlockEntityAdvancedWirelessTransmitter extends NetworkNodeBlockEnti
 
     public BlockEntityAdvancedWirelessTransmitter(BlockPos pos, BlockState state)
     {
-        super(ModBlocks.ADVANCED_WIRELESS_TRANSMITTER.get(), pos, state, SPEC);
+        super(ModBlocks.ADVANCED_WIRELESS_TRANSMITTER.get(), pos, state, SPEC, AdvancedWirelessTransmitterNode.class);
     }
 
     @Override
