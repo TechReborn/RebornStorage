@@ -5,9 +5,6 @@ import com.refinedmods.refinedstorage.api.network.node.INetworkNodeManager;
 import com.refinedmods.refinedstorage.api.util.Action;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
-import net.gigabit101.rebornstorage.packet.PacketGui;
-import net.gigabit101.rebornstorage.packet.PacketHandler;
-import net.gigabit101.rebornstorage.packet.PacketRequestMultiblockUpdate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -21,14 +18,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockMultiCrafter extends BaseEntityBlock
+public class BlockMultiCrafter extends Block implements EntityBlock
 {
     public BlockMultiCrafter()
     {
@@ -60,7 +58,7 @@ public class BlockMultiCrafter extends BaseEntityBlock
             {
                 if (tile.getMultiblockController().isAssembled())
                 {
-                    NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider) tile, tile.getBlockPos());
+                    player.openMenu((MenuProvider) tile, tile.getBlockPos());
                     return InteractionResult.SUCCESS;
                 }
                 else

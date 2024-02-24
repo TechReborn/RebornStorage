@@ -2,6 +2,7 @@ package net.gigabit101.rebornstorage.blocks;
 
 import com.refinedmods.refinedstorage.block.BlockDirection;
 import com.refinedmods.refinedstorage.block.ColoredNetworkBlock;
+import com.refinedmods.refinedstorage.container.WirelessTransmitterContainerMenu;
 import com.refinedmods.refinedstorage.container.factory.BlockEntityMenuProvider;
 import com.refinedmods.refinedstorage.util.NetworkUtils;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityAdvancedWirelessTransmitter;
@@ -20,7 +21,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -81,20 +81,13 @@ public class BlockAdvancedWirelessTransmitter extends ColoredNetworkBlock
     }
 
     @Override
-    public @NotNull InteractionResult use(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult blockHitResult)
+    public @NotNull InteractionResult use(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult blockHitResult)
     {
-        if (!level.isClientSide)
-        {
-            return NetworkUtils.attemptModify(level, blockPos, player, () -> NetworkHooks.openScreen(
-                    (ServerPlayer) player,
-                    new BlockEntityMenuProvider<BlockEntityAdvancedWirelessTransmitter>(
-                            Component.translatable("gui.rebornstorage.advanced_wireless_transmitter"),
-                            (blockEntity, windowId, inventory, p) -> new AdvancedWirelessTransmitterContainer(blockEntity, player, windowId),
-                            blockPos
-                    ),
-                    blockPos
-            ));
-        }
-        return InteractionResult.SUCCESS;
+
+        return !level.isClientSide ? NetworkUtils.attemptModify(level, pos, player, () -> {
+            player.openMenu(new BlockEntityMenuProvider<BlockEntityAdvancedWirelessTransmitter>(Component.translatable("gui.rebornstorage.advanced_wireless_transmitter"), (blockEntity, windowId, inventory, p) -> {
+                return new AdvancedWirelessTransmitterContainer(blockEntity, player, windowId);
+            }, pos), pos);
+        }) : InteractionResult.SUCCESS;
     }
 }

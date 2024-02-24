@@ -1,21 +1,23 @@
 package net.gigabit101.rebornstorage.packet;
 
+import net.gigabit101.rebornstorage.Constants;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityMultiCrafter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Supplier;
-
-@Deprecated
-public class PacketGui
+public class PacketGui implements CustomPacketPayload
 {
+    public static final ResourceLocation ID = new ResourceLocation(Constants.MOD_ID, "gui");
+
     private final int page;
     private final BlockPos blockPos;
 
@@ -25,10 +27,11 @@ public class PacketGui
         this.blockPos = blockPos;
     }
 
-    public static void encode(PacketGui packetGui, FriendlyByteBuf buf)
+    @Override
+    public void write(@NotNull FriendlyByteBuf buf)
     {
-        buf.writeInt(packetGui.page);
-        buf.writeBlockPos(packetGui.blockPos);
+        buf.writeInt(page);
+        buf.writeBlockPos(blockPos);
     }
 
     public static PacketGui decode(FriendlyByteBuf buf)
@@ -36,13 +39,19 @@ public class PacketGui
         return new PacketGui(buf.readInt(), buf.readBlockPos());
     }
 
+    @Override
+    public @NotNull ResourceLocation id()
+    {
+        return ID;
+    }
+
     public static class Handler
     {
-        public static void handle(final PacketGui message, Supplier<NetworkEvent.Context> ctx)
+        public static void handle(final PacketGui message, PlayPayloadContext ctx)
         {
-            ctx.get().enqueueWork(() ->
+            ctx.workHandler().execute(() ->
             {
-                ServerPlayer player = ctx.get().getSender();
+                ServerPlayer player = (ServerPlayer) ctx.player().get();
                 if (player == null) return;
 
                 BlockEntity blockEntity = player.level().getBlockEntity(message.blockPos);
@@ -56,12 +65,11 @@ public class PacketGui
                 }
                 openGUI(player.level(), player, message.blockPos);
             });
-            ctx.get().setPacketHandled(true);
         }
 
         public static void openGUI(Level world, Player player, BlockPos blockPos)
         {
-            NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider) world.getBlockEntity(blockPos), blockPos);
+            player.openMenu((MenuProvider) world.getBlockEntity(blockPos), blockPos);
         }
     }
 }

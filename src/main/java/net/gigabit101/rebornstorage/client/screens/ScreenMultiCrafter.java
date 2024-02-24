@@ -1,6 +1,5 @@
 package net.gigabit101.rebornstorage.client.screens;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.gigabit101.rebornstorage.containers.ContainerMultiCrafter;
 import net.gigabit101.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.gigabit101.rebornstorage.packet.PacketGui;
@@ -98,7 +97,7 @@ public class ScreenMultiCrafter extends AbstractContainerScreen<ContainerMultiCr
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        this.renderBackground(guiGraphics);
+        this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
 

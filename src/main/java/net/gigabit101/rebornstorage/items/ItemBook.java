@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+@Deprecated(forRemoval = true)
 public class ItemBook extends Item
 {
     public ItemBook()

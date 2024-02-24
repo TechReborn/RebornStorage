@@ -4,7 +4,6 @@ import com.refinedmods.refinedstorage.api.network.node.INetworkNode;
 import com.refinedmods.refinedstorage.api.network.node.INetworkNodeManager;
 import com.refinedmods.refinedstorage.api.network.node.INetworkNodeProxy;
 import com.refinedmods.refinedstorage.apiimpl.API;
-import com.refinedmods.refinedstorage.capability.NetworkNodeProxyCapability;
 import net.gigabit101.rebornstorage.containers.ContainerMultiCrafter;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockControllerBase;
 import net.gigabit101.rebornstorage.core.multiblock.MultiblockValidationException;
@@ -24,8 +23,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -207,26 +204,34 @@ public class BlockEntityMultiCrafter extends RectangularMultiblockTileEntityBase
         return (CraftingNode) node;
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability)
-    {
-        if (capability == NetworkNodeProxyCapability.NETWORK_NODE_PROXY_CAPABILITY)
-        {
-            return LazyOptional.of(() -> this).cast();
-        }
-        return super.getCapability(capability);
-    }
+    //TODO
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability)
+//    {
+//        if (capability == NetworkNodeProxyCapability.NETWORK_NODE_PROXY_CAPABILITY)
+//        {
+//            return LazyOptional.of(() -> this).cast();
+//        }
+//        return super.getCapability(capability);
+//    }
+//
+//    @NotNull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side)
+//    {
+//        if (capability == NetworkNodeProxyCapability.NETWORK_NODE_PROXY_CAPABILITY)
+//        {
+//            return LazyOptional.of(() -> this).cast();
+//        }
+//        return super.getCapability(capability, side);
+//    }
 
-    @NotNull
+
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side)
+    public boolean shouldTriggerClientSideContainerClosingOnOpen()
     {
-        if (capability == NetworkNodeProxyCapability.NETWORK_NODE_PROXY_CAPABILITY)
-        {
-            return LazyOptional.of(() -> this).cast();
-        }
-        return super.getCapability(capability, side);
+        return false;
     }
 
     @org.jetbrains.annotations.Nullable

@@ -7,14 +7,15 @@ import com.refinedmods.refinedstorage.api.network.item.INetworkItemManager;
 import com.refinedmods.refinedstorage.api.network.security.Permission;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
+import com.refinedmods.refinedstorage.item.WirelessFluidGridItem;
 import com.refinedmods.refinedstorage.util.LevelUtils;
 import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class WirelessCraftingGridNetworkItem implements INetworkItem
 {
@@ -41,10 +42,9 @@ public class WirelessCraftingGridNetworkItem implements INetworkItem
     @Override
     public boolean onOpen(INetwork network)
     {
-        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY, null).orElse(null);
+        IEnergyStorage energy = (IEnergyStorage)this.stack.getCapability(Capabilities.EnergyStorage.ITEM);
 
-        if (((ItemWirelessGrid) stack.getItem()).getType() != ItemWirelessGrid.Type.CREATIVE &&
-                energy != null && energy.getEnergyStored() <= RS.SERVER_CONFIG.getWirelessFluidGrid().getOpenUsage())
+        if (((ItemWirelessGrid) stack.getItem()).getType() != ItemWirelessGrid.Type.CREATIVE && energy != null && energy.getEnergyStored() <= RS.SERVER_CONFIG.getWirelessFluidGrid().getOpenUsage())
         {
             sendOutOfEnergyMessage();
             return false;
@@ -71,15 +71,16 @@ public class WirelessCraftingGridNetworkItem implements INetworkItem
     @Override
     public void drainEnergy(int energy)
     {
-        if (RS.SERVER_CONFIG.getWirelessGrid().getUseEnergy() && ((ItemWirelessGrid)this.stack.getItem()).getType() != ItemWirelessGrid.Type.CREATIVE) {
-            this.stack.getCapability(ForgeCapabilities.ENERGY).ifPresent((energyStorage) -> {
+        if (RS.SERVER_CONFIG.getWirelessFluidGrid().getUseEnergy() && ((WirelessFluidGridItem)this.stack.getItem()).getType() != WirelessFluidGridItem.Type.CREATIVE) {
+            IEnergyStorage energyStorage = (IEnergyStorage)this.stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            if (energyStorage != null) {
                 energyStorage.extractEnergy(energy, false);
                 if (energyStorage.getEnergyStored() <= 0) {
                     this.handler.close(this.player);
                     this.player.closeContainer();
                     this.sendOutOfEnergyMessage();
                 }
-            });
+            }
         }
     }
 }

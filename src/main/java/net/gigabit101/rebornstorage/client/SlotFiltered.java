@@ -2,8 +2,8 @@ package net.gigabit101.rebornstorage.client;
 
 import com.refinedmods.refinedstorage.api.autocrafting.ICraftingPatternProvider;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class SlotFiltered extends SlotItemHandler

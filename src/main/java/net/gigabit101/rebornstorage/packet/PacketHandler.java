@@ -1,38 +1,43 @@
 package net.gigabit101.rebornstorage.packet;
 
 import net.gigabit101.rebornstorage.Constants;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+
 
 public class PacketHandler
 {
     private static final String PROTOCOL_VERSION = Integer.toString(1);
-    private static final SimpleChannel HANDLER = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(Constants.MOD_ID, "main_channel")).clientAcceptedVersions(PROTOCOL_VERSION::equals).serverAcceptedVersions(PROTOCOL_VERSION::equals).networkProtocolVersion(() -> PROTOCOL_VERSION).simpleChannel();
 
-    public static void register()
-    {
-        int disc = 0;
-        HANDLER.registerMessage(disc++, PacketGui.class, PacketGui::encode, PacketGui::decode, PacketGui.Handler::handle);
-        HANDLER.registerMessage(disc++, PacketChangeMode.class, PacketChangeMode::encode, PacketChangeMode::decode, PacketChangeMode.Handler::handle);
-        HANDLER.registerMessage(disc++, PacketRequestMultiblockUpdate.class, PacketRequestMultiblockUpdate::encode, PacketRequestMultiblockUpdate::decode, PacketRequestMultiblockUpdate.Handler::handle);
-        HANDLER.registerMessage(disc++, PacketMultiblockUpdate.class, PacketMultiblockUpdate::encode, PacketMultiblockUpdate::decode, PacketMultiblockUpdate.Handler::handle);
-
+    public static void init(IEventBus bus) {
+        bus.addListener(PacketHandler::registerEvent);
     }
 
-    public static void sendTo(Object msg, ServerPlayer player)
+    public static void registerEvent(RegisterPayloadHandlerEvent event)
+    {
+        IPayloadRegistrar registrar = event.registrar(Constants.MOD_ID).versioned(PROTOCOL_VERSION);
+
+        registrar.play(PacketGui.ID, PacketGui::decode, PacketGui.Handler::handle);
+        registrar.play(PacketChangeMode.ID, PacketChangeMode::decode, PacketChangeMode.Handler::handle);
+        registrar.play(PacketRequestMultiblockUpdate.ID, PacketRequestMultiblockUpdate::decode, PacketRequestMultiblockUpdate.Handler::handle);
+        registrar.play(PacketMultiblockUpdate.ID, PacketMultiblockUpdate::decode, PacketMultiblockUpdate.Handler::handle);
+    }
+
+    public static void sendTo(CustomPacketPayload msg, ServerPlayer player)
     {
         if (!(player instanceof FakePlayer))
         {
-            HANDLER.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+            PacketDistributor.PLAYER.with(player).send(msg);
         }
     }
 
-    public static void sendToServer(Object msg)
+    public static void sendToServer(CustomPacketPayload msg)
     {
-        HANDLER.sendToServer(msg);
+        PacketDistributor.SERVER.noArg().send(msg);
     }
 }

@@ -1,46 +1,60 @@
 package net.gigabit101.rebornstorage.packet;
 
 import com.refinedmods.refinedstorage.integration.curios.CuriosIntegration;
+import net.gigabit101.rebornstorage.Constants;
 import net.gigabit101.rebornstorage.init.ModItems;
 import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
-import top.theillusivec4.curios.api.CuriosApi;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 
-public class PacketChangeMode
+public class PacketChangeMode implements CustomPacketPayload
 {
-    public PacketChangeMode() {}
+    public static final ResourceLocation ID = new ResourceLocation(Constants.MOD_ID, "changemode");
 
-    public static void encode(PacketChangeMode packetGui, FriendlyByteBuf buf) {}
+    public PacketChangeMode() {}
 
     public static PacketChangeMode decode(FriendlyByteBuf buf)
     {
         return new PacketChangeMode();
     }
 
+    @Override
+    public void write(@NotNull FriendlyByteBuf buf)
+    {
+
+    }
+
+    @Override
+    public @NotNull ResourceLocation id()
+    {
+        return ID;
+    }
+
     public static class Handler
     {
-        public static void handle(final PacketChangeMode message, Supplier<NetworkEvent.Context> ctx)
+        public static void handle(final PacketChangeMode message, PlayPayloadContext ctx)
         {
             Set<Item> validItems = new HashSet(Arrays.asList(ModItems.WIRELESS_GRID.get(), ModItems.CREATIVE_WIRELESS_GRID.get()));
 
-            ctx.get().enqueueWork(() ->
+            ctx.workHandler().execute(() ->
             {
-                ServerPlayer player = ctx.get().getSender();
+                ServerPlayer player = (ServerPlayer) ctx.player().get();
                 if (player == null) return;
                 Container inv = player.getInventory();
                 int slotFound = -1;
@@ -61,13 +75,14 @@ public class PacketChangeMode
                 //If we don't find our stack and Curio is loaded look in the curio slots
                 if (CuriosIntegration.isLoaded() && slotFound == -1)
                 {
-                    Optional<ImmutableTriple<String, Integer, ItemStack>> curio = CuriosApi.getCuriosHelper().findEquippedCurio((stack) -> validItems.contains(stack.getItem()), player);
-                    if (curio.isPresent())
-                    {
-                        //if we find our stack update its nbt/mode
-                        updateStack(curio.get().getRight(), player);
-                        return;
-                    }
+                    //TODO
+//                    Optional<ImmutableTriple<String, Integer, ItemStack>> curio = CuriosApi.getCuriosHelper().findEquippedCurio((stack) -> validItems.contains(stack.getItem()), player);
+//                    if (curio.isPresent())
+//                    {
+//                        //if we find our stack update its nbt/mode
+//                        updateStack(curio.get().getRight(), player);
+//                        return;
+//                    }
                 }
                 if (slotFound != -1)
                 {
@@ -76,7 +91,6 @@ public class PacketChangeMode
                 }
 
             });
-            ctx.get().setPacketHandled(true);
         }
     }
 

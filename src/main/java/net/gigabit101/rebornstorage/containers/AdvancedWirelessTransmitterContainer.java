@@ -1,11 +1,10 @@
 package net.gigabit101.rebornstorage.containers;
 
-import com.refinedmods.refinedstorage.blockentity.BaseBlockEntity;
 import com.refinedmods.refinedstorage.container.BaseContainerMenu;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityAdvancedWirelessTransmitter;
 import net.gigabit101.rebornstorage.init.ModContainers;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

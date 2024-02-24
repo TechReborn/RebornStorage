@@ -24,6 +24,7 @@ import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -130,7 +131,9 @@ public class WirelessCraftingGrid extends WirelessGrid
     {
         if (currentRecipe == null || !currentRecipe.matches(craftingContainer, level))
         {
-            currentRecipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftingContainer, level).orElse(null);
+            currentRecipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftingContainer, level)
+                    .map(RecipeHolder::value)
+                    .orElse(null);
         }
         if (currentRecipe == null)
         {

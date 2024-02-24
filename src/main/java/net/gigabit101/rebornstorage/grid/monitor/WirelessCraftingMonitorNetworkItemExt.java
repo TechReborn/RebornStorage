@@ -5,21 +5,22 @@ import com.refinedmods.refinedstorage.RSContainerMenus;
 import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.api.network.item.INetworkItemManager;
 import com.refinedmods.refinedstorage.api.network.security.Permission;
+import com.refinedmods.refinedstorage.apiimpl.API;
+import com.refinedmods.refinedstorage.apiimpl.network.grid.factory.WirelessFluidGridGridFactory;
 import com.refinedmods.refinedstorage.apiimpl.network.item.WirelessCraftingMonitorNetworkItem;
 import com.refinedmods.refinedstorage.blockentity.craftingmonitor.CraftingMonitorBlockEntity;
 import com.refinedmods.refinedstorage.blockentity.craftingmonitor.WirelessCraftingMonitor;
 import com.refinedmods.refinedstorage.container.factory.CraftingMonitorMenuProvider;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
+import com.refinedmods.refinedstorage.item.WirelessFluidGridItem;
 import com.refinedmods.refinedstorage.util.LevelUtils;
 import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.util.Objects;
 
@@ -42,17 +43,17 @@ public class WirelessCraftingMonitorNetworkItemExt extends WirelessCraftingMonit
     @Override
     public boolean onOpen(INetwork network)
     {
-        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY, null).orElse(null);
+        IEnergyStorage energy = (IEnergyStorage)this.stack.getCapability(Capabilities.EnergyStorage.ITEM);
         if (RS.SERVER_CONFIG.getWirelessCraftingMonitor().getUseEnergy() && ((ItemWirelessGrid)this.stack.getItem()).getType() != ItemWirelessGrid.Type.CREATIVE && energy != null && energy.getEnergyStored() <= RS.SERVER_CONFIG.getWirelessCraftingMonitor().getOpenUsage()) {
             this.sendOutOfEnergyMessage();
             return false;
         } else if (network.getSecurityManager().hasPermission(Permission.MODIFY, this.player) && network.getSecurityManager().hasPermission(Permission.AUTOCRAFTING, this.player)) {
-            WirelessCraftingMonitor wirelessCraftingMonitor = new WirelessCraftingMonitor(this.stack, this.player.getServer(), this.slot);
-            ServerPlayer var10000 = (ServerPlayer)this.player;
-            CraftingMonitorMenuProvider var10001 = new CraftingMonitorMenuProvider(RSContainerMenus.WIRELESS_CRAFTING_MONITOR.get(), wirelessCraftingMonitor, (CraftingMonitorBlockEntity)null);
+//            WirelessCraftingMonitor wirelessCraftingMonitor = new WirelessCraftingMonitor(this.stack, this.player.getServer(), this.slot);
+//            ServerPlayer var10000 = (ServerPlayer)this.player;
+//            CraftingMonitorMenuProvider var10001 = new CraftingMonitorMenuProvider(RSContainerMenus.WIRELESS_CRAFTING_MONITOR.get(), wirelessCraftingMonitor, (CraftingMonitorBlockEntity)null);
             PlayerSlot var10002 = this.slot;
             Objects.requireNonNull(var10002);
-            NetworkHooks.openScreen(var10000, var10001, var10002::writePlayerSlot);
+            API.instance().getGridManager().openGrid(WirelessFluidGridGridFactory.ID, (ServerPlayer)this.player, this.stack, this.slot);
             this.drainEnergy(RS.SERVER_CONFIG.getWirelessCraftingMonitor().getOpenUsage());
             return true;
         } else {
@@ -64,15 +65,16 @@ public class WirelessCraftingMonitorNetworkItemExt extends WirelessCraftingMonit
     @Override
     public void drainEnergy(int energy)
     {
-        if (RS.SERVER_CONFIG.getWirelessCraftingMonitor().getUseEnergy() && ((ItemWirelessGrid)this.stack.getItem()).getType() != ItemWirelessGrid.Type.CREATIVE) {
-            this.stack.getCapability(ForgeCapabilities.ENERGY).ifPresent((energyStorage) -> {
+        if (RS.SERVER_CONFIG.getWirelessFluidGrid().getUseEnergy() && ((WirelessFluidGridItem)this.stack.getItem()).getType() != WirelessFluidGridItem.Type.CREATIVE) {
+            IEnergyStorage energyStorage = (IEnergyStorage)this.stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            if (energyStorage != null) {
                 energyStorage.extractEnergy(energy, false);
                 if (energyStorage.getEnergyStored() <= 0) {
                     this.handler.close(this.player);
                     this.player.closeContainer();
                     this.sendOutOfEnergyMessage();
                 }
-            });
+            }
         }
     }
 

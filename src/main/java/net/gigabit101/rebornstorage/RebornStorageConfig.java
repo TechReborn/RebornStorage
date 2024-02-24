@@ -2,38 +2,37 @@ package net.gigabit101.rebornstorage;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.nio.file.Path;
 
-@Mod.EventBusSubscriber
 public class RebornStorageConfig
 {
     public static final String CATEGORY_GENERAL = "general";
     public static final String CATEGORY_MULTIBLOCK = "multiblock";
 
-    private static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
+    private static final ModConfigSpec.Builder COMMON_BUILDER = new ModConfigSpec.Builder();
 
-    public static ForgeConfigSpec COMMON_CONFIG;
+    public static ModConfigSpec COMMON_CONFIG;
 
-    public static ForgeConfigSpec.IntValue FRAME_COST;
-    public static ForgeConfigSpec.IntValue HEAT_COST;
-    public static ForgeConfigSpec.IntValue CPU_COST;
-    public static ForgeConfigSpec.IntValue STORAGE_COST;
+    public static ModConfigSpec.IntValue FRAME_COST;
+    public static ModConfigSpec.IntValue HEAT_COST;
+    public static ModConfigSpec.IntValue CPU_COST;
+    public static ModConfigSpec.IntValue STORAGE_COST;
 
-    public static ForgeConfigSpec.IntValue MULTIBLOCK_MAX_XSIZE;
-    public static ForgeConfigSpec.IntValue MULTIBLOCK_MAX_YSIZE;
-    public static ForgeConfigSpec.IntValue MULTIBLOCK_MAX_ZSIZE;
+    public static ModConfigSpec.IntValue MULTIBLOCK_MAX_XSIZE;
+    public static ModConfigSpec.IntValue MULTIBLOCK_MAX_YSIZE;
+    public static ModConfigSpec.IntValue MULTIBLOCK_MAX_ZSIZE;
 
-    public static ForgeConfigSpec.IntValue MULTIBLOCK_MIN_XSIZE;
-    public static ForgeConfigSpec.IntValue MULTIBLOCK_MIN_YSIZE;
-    public static ForgeConfigSpec.IntValue MULTIBLOCK_MIN_ZSIZE;
+    public static ModConfigSpec.IntValue MULTIBLOCK_MIN_XSIZE;
+    public static ModConfigSpec.IntValue MULTIBLOCK_MIN_YSIZE;
+    public static ModConfigSpec.IntValue MULTIBLOCK_MIN_ZSIZE;
 
-    public static ForgeConfigSpec.IntValue ADVANCED_WIRELESS_TRANSMITTER_RANGE;
-    public static ForgeConfigSpec.IntValue ADVANCED_WIRELESS_TRANSMITTER_POWER_COST;
+    public static ModConfigSpec.IntValue ADVANCED_WIRELESS_TRANSMITTER_RANGE;
+    public static ModConfigSpec.IntValue ADVANCED_WIRELESS_TRANSMITTER_POWER_COST;
 
-    public static ForgeConfigSpec.IntValue ADVANCED_WIRELESS_RAGE_BOOSTER_RANGE;
+    public static ModConfigSpec.IntValue ADVANCED_WIRELESS_RAGE_BOOSTER_RANGE;
 
 
     static
@@ -66,7 +65,7 @@ public class RebornStorageConfig
         COMMON_CONFIG = COMMON_BUILDER.build();
     }
 
-    public static void loadConfig(ForgeConfigSpec spec, Path path)
+    public static void loadConfig(ModConfigSpec spec, Path path)
     {
 
         final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave().writingMode(WritingMode.REPLACE).build();

@@ -34,28 +34,20 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.DistExecutor;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
-
-import javax.swing.text.TabExpander;
-import javax.swing.text.TextAction;
 
 @Mod(Constants.MOD_ID)
 public class RebornStorage
@@ -67,10 +59,9 @@ public class RebornStorage
 
     public static RebornStorage INSTANCE;
 
-    public RebornStorage()
+    public RebornStorage(IEventBus eventBus)
     {
         INSTANCE = this;
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         RebornStorageConfig.loadConfig(RebornStorageConfig.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(Constants.MOD_ID + "-common.toml"));
         ModItems.ITEMS.register(eventBus);
         ModBlocks.BLOCKS.register(eventBus);
@@ -79,18 +70,19 @@ public class RebornStorage
         eventBus.addListener(this::preInit);
         eventBus.addListener(this::clientInit);
         eventBus.addListener(this::registerCreativeTab);
-        MinecraftForge.EVENT_BUS.register(new MultiblockEventHandler());
-        MinecraftForge.EVENT_BUS.register(new MultiblockServerTickHandler());
+        NeoForge.EVENT_BUS.register(new MultiblockEventHandler());
+        NeoForge.EVENT_BUS.register(new MultiblockServerTickHandler());
+        PacketHandler.init(eventBus);
+        //noinspection removal
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             eventBus.addListener(this::keyRegisterEvent);
-            MinecraftForge.EVENT_BUS.addListener(this::onKeyInput);
+            NeoForge.EVENT_BUS.addListener(this::onKeyInput);
         });
     }
 
     @SubscribeEvent
     public void preInit(FMLCommonSetupEvent event)
     {
-        PacketHandler.register();
         API.instance().getNetworkNodeRegistry().add(Constants.MULTI_BLOCK_ID, (tag, world, pos) ->
         {
             CraftingNode node = new CraftingNode(world, pos);
@@ -106,7 +98,7 @@ public class RebornStorage
     public void clientInit(FMLClientSetupEvent event)
     {
         ModScreens.init();
-        MinecraftForge.EVENT_BUS.register(new MultiblockClientTickHandler());
+        NeoForge.EVENT_BUS.register(new MultiblockClientTickHandler());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOCK_ADVANCED_WIRELESS_TRANSMITTER.get(), RenderType.cutout());
     }
 
