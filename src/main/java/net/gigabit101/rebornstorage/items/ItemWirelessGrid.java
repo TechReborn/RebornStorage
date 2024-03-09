@@ -29,7 +29,6 @@ public class ItemWirelessGrid extends NetworkItem
         NORMAL,
         CREATIVE;
     }
-
     Type type;
 
     public ItemWirelessGrid(Properties item, Type type, Supplier<Integer> energyCapacity)
@@ -100,6 +99,11 @@ public class ItemWirelessGrid extends NetworkItem
 
         }
         return new WirelessCraftingGridNetworkItem(iNetworkItemManager, player, itemStack, playerSlot);
+    }
+
+    public int getEnergyMax()
+    {
+        return 3200;
     }
 
     @Override

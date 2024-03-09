@@ -7,6 +7,7 @@ import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.apiimpl.network.node.NetworkNode;
 import com.refinedmods.refinedstorage.screen.KeyInputListener;
 import com.refinedmods.refinedstorage.util.StackUtils;
+import net.gigabit101.rebornstorage.capabilities.EnergisedItem;
 import net.gigabit101.rebornstorage.client.KeyBindings;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockClientTickHandler;
 import net.gigabit101.rebornstorage.core.multiblock.events.MultiblockEventHandler;
@@ -16,6 +17,7 @@ import net.gigabit101.rebornstorage.init.ModBlocks;
 import net.gigabit101.rebornstorage.init.ModContainers;
 import net.gigabit101.rebornstorage.init.ModItems;
 import net.gigabit101.rebornstorage.init.ModScreens;
+import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
 import net.gigabit101.rebornstorage.multiblocks.MultiBlockCrafter;
 import net.gigabit101.rebornstorage.nodes.AdvancedWirelessTransmitterNode;
 import net.gigabit101.rebornstorage.nodes.CraftingNode;
@@ -42,6 +44,8 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -72,6 +76,7 @@ public class RebornStorage
         eventBus.addListener(this::registerCreativeTab);
         NeoForge.EVENT_BUS.register(new MultiblockEventHandler());
         NeoForge.EVENT_BUS.register(new MultiblockServerTickHandler());
+        eventBus.addListener(this::registerCapabilities);
         PacketHandler.init(eventBus);
         //noinspection removal
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
@@ -91,6 +96,12 @@ public class RebornStorage
         });
         API.instance().getNetworkNodeRegistry().add(AdvancedWirelessTransmitterNode.ID, (tag, world, pos) -> readAndReturn(tag, new AdvancedWirelessTransmitterNode(world, pos)));
         API.instance().getGridManager().add(WirelessCraftingGridGridFactory.ID, new WirelessCraftingGridGridFactory());
+    }
+
+    private void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (itemStack, context) -> new EnergisedItem(itemStack, ((ItemWirelessGrid) itemStack.getItem()).getEnergyMax()),
+                ModItems.WIRELESS_GRID.get()
+        );
     }
 
     @SuppressWarnings("all")

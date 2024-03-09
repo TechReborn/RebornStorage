@@ -42,7 +42,7 @@ public class WirelessCraftingGridNetworkItem implements INetworkItem
     @Override
     public boolean onOpen(INetwork network)
     {
-        IEnergyStorage energy = (IEnergyStorage)this.stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        IEnergyStorage energy = this.stack.getCapability(Capabilities.EnergyStorage.ITEM);
 
         if (((ItemWirelessGrid) stack.getItem()).getType() != ItemWirelessGrid.Type.CREATIVE && energy != null && energy.getEnergyStored() <= RS.SERVER_CONFIG.getWirelessFluidGrid().getOpenUsage())
         {
@@ -71,15 +71,13 @@ public class WirelessCraftingGridNetworkItem implements INetworkItem
     @Override
     public void drainEnergy(int energy)
     {
-        if (RS.SERVER_CONFIG.getWirelessFluidGrid().getUseEnergy() && ((WirelessFluidGridItem)this.stack.getItem()).getType() != WirelessFluidGridItem.Type.CREATIVE) {
-            IEnergyStorage energyStorage = (IEnergyStorage)this.stack.getCapability(Capabilities.EnergyStorage.ITEM);
-            if (energyStorage != null) {
-                energyStorage.extractEnergy(energy, false);
-                if (energyStorage.getEnergyStored() <= 0) {
-                    this.handler.close(this.player);
-                    this.player.closeContainer();
-                    this.sendOutOfEnergyMessage();
-                }
+        IEnergyStorage energyStorage = this.stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        if (energyStorage != null) {
+            energyStorage.extractEnergy(energy, false);
+            if (energyStorage.getEnergyStored() <= 0) {
+                this.handler.close(this.player);
+                this.player.closeContainer();
+                this.sendOutOfEnergyMessage();
             }
         }
     }
