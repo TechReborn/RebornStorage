@@ -13,9 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-//import net.minecraftforge.registries.DeferredRegister;
-//import net.minecraftforge.registries.ForgeRegistries;
-//import net.minecraftforge.registries.RegistryObject;
 
 public class ModItems
 {
@@ -24,7 +21,6 @@ public class ModItems
 
     public static final Item.Properties PROPERTIES = new Item.Properties();
 
-//    public static final RegistryObject<Item> BOOK = ITEMS.register("rs_book", () -> new ItemBook());
 
     //ItemBlocks
     public static final DeferredHolder<Item, BlockItem> BLOCK_MULTI_FRAME_ITEM = ITEMS.register("multiblock_frame", () -> new BlockItem(ModBlocks.BLOCK_MULTI_FRAME.get(), ITEM_GROUP));
