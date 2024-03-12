@@ -1,5 +1,6 @@
 package net.gigabit101.rebornstorage.init;
 
+import com.refinedmods.refinedstorage.blockentity.data.BlockEntitySynchronizationManager;
 import net.gigabit101.rebornstorage.blockentities.BlockEntityAdvancedWirelessTransmitter;
 import net.gigabit101.rebornstorage.blocks.BlockAdvancedWirelessTransmitter;
 import net.gigabit101.rebornstorage.blocks.BlockMultiCrafter;
@@ -25,4 +26,9 @@ public class ModBlocks
 
     public static final  DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityMultiCrafter>> CRAFTER_TILE = TILES_ENTITIES.register("multiblock_frame", () -> BlockEntityType.Builder.of(BlockEntityMultiCrafter::new, ModBlocks.BLOCK_MULTI_FRAME.get(), ModBlocks.BLOCK_MULTI_STORAGE.get(), ModBlocks.BLOCK_MULTI_CPU.get(), ModBlocks.BLOCK_MULTI_HEAT.get()).build(null));
     public static final  DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityAdvancedWirelessTransmitter>> ADVANCED_WIRELESS_TRANSMITTER = TILES_ENTITIES.register("advanced_wireless_transmitter", () -> BlockEntityType.Builder.of(BlockEntityAdvancedWirelessTransmitter::new, ModBlocks.BLOCK_ADVANCED_WIRELESS_TRANSMITTER.get()).build(null));
+
+    static
+    {
+        BlockEntitySynchronizationManager.registerParameter(BlockEntityAdvancedWirelessTransmitter.RANGE);
+    }
 }

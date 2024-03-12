@@ -1,5 +1,6 @@
 package net.gigabit101.rebornstorage.blockentities;
 
+import com.refinedmods.refinedstorage.apiimpl.network.node.WirelessTransmitterNetworkNode;
 import com.refinedmods.refinedstorage.blockentity.NetworkNodeBlockEntity;
 import com.refinedmods.refinedstorage.blockentity.data.BlockEntitySynchronizationParameter;
 import com.refinedmods.refinedstorage.blockentity.data.BlockEntitySynchronizationSpec;
@@ -14,8 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityAdvancedWirelessTransmitter extends NetworkNodeBlockEntity<AdvancedWirelessTransmitterNode>
 {
-    public static final BlockEntitySynchronizationParameter<Integer, BlockEntityAdvancedWirelessTransmitter> RANGE = new BlockEntitySynchronizationParameter<>(new ResourceLocation(Constants.MOD_ID, "wireless_transmitter_range"), EntityDataSerializers.INT, 0, (t) -> t.getNode().getRange());
-    public static BlockEntitySynchronizationSpec SPEC = BlockEntitySynchronizationSpec.builder().addWatchedParameter(REDSTONE_MODE).addWatchedParameter(RANGE).build();
+    public static final BlockEntitySynchronizationParameter<Integer, BlockEntityAdvancedWirelessTransmitter> RANGE;
+    public static BlockEntitySynchronizationSpec SPEC;
 
     public BlockEntityAdvancedWirelessTransmitter(BlockPos pos, BlockState state)
     {
@@ -26,5 +27,12 @@ public class BlockEntityAdvancedWirelessTransmitter extends NetworkNodeBlockEnti
     public AdvancedWirelessTransmitterNode createNode(Level level, BlockPos blockPos)
     {
         return new AdvancedWirelessTransmitterNode(level, blockPos);
+    }
+
+    static {
+        RANGE = new BlockEntitySynchronizationParameter<>(new ResourceLocation("refinedstorage", "advanced_wireless_transmitter_range"), EntityDataSerializers.INT, 0, (t) -> {
+            return ((AdvancedWirelessTransmitterNode) t.getNode()).getRange();
+        });
+        SPEC = BlockEntitySynchronizationSpec.builder().addWatchedParameter(REDSTONE_MODE).addWatchedParameter(RANGE).build();
     }
 }

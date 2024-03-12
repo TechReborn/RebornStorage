@@ -83,7 +83,6 @@ public class BlockAdvancedWirelessTransmitter extends ColoredNetworkBlock
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult blockHitResult)
     {
-
         return !level.isClientSide ? NetworkUtils.attemptModify(level, pos, player, () -> {
             player.openMenu(new BlockEntityMenuProvider<BlockEntityAdvancedWirelessTransmitter>(Component.translatable("gui.rebornstorage.advanced_wireless_transmitter"), (blockEntity, windowId, inventory, p) -> {
                 return new AdvancedWirelessTransmitterContainer(blockEntity, player, windowId);

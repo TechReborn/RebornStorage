@@ -58,7 +58,7 @@ public class BlockMultiCrafter extends Block implements EntityBlock
             {
                 if (tile.getMultiblockController().isAssembled())
                 {
-                    player.openMenu((MenuProvider) tile, tile.getBlockPos());
+                    player.openMenu(tile, tile.getBlockPos());
                     return InteractionResult.SUCCESS;
                 }
                 else
