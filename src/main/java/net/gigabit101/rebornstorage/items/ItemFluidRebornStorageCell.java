@@ -1,19 +1,28 @@
 package net.gigabit101.rebornstorage.items;
 
+import com.refinedmods.refinedstorage.RSItems;
 import com.refinedmods.refinedstorage.api.storage.StorageType;
+import com.refinedmods.refinedstorage.api.storage.disk.IStorageDisk;
 import com.refinedmods.refinedstorage.api.storage.disk.IStorageDiskProvider;
 import com.refinedmods.refinedstorage.api.storage.disk.StorageDiskSyncData;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.render.Styles;
+import net.gigabit101.rebornstorage.init.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.UUID;
@@ -70,6 +79,38 @@ public class ItemFluidRebornStorageCell extends Item implements IStorageDiskProv
                 tooltip.add(Component.literal(id.toString()));
             }
         }
+    }
+
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand)
+    {
+        ItemStack diskStack = player.getItemInHand(hand);
+
+        if (!level.isClientSide && player.isCrouching())
+        {
+            IStorageDisk<?> disk = API.instance().getStorageDiskManager((ServerLevel)level).getByStack(diskStack);
+            if (disk != null && disk.getStored() == 0)
+            {
+                ItemStack storagePart = getStoragePart(diskStack);
+                if (!player.getInventory().add(storagePart.copy()))
+                {
+                    Containers.dropItemStack(level, player.getX(), player.getY(), player.getZ(), storagePart);
+                }
+                API.instance().getStorageDiskManager((ServerLevel)level).remove(this.getId(diskStack));
+                API.instance().getStorageDiskManager((ServerLevel)level).markForSaving();
+                return new InteractionResultHolder<>(InteractionResult.SUCCESS, new ItemStack((ItemLike) RSItems.STORAGE_HOUSING.get()));
+            }
+        }
+
+        return new InteractionResultHolder<>(InteractionResult.PASS, diskStack);
+    }
+
+    public ItemStack getStoragePart(ItemStack stack)
+    {
+        if(stack.getItem() == ModItems.STORAGE_DISK_FLUID_16384K.get()) return new ItemStack(ModItems.STORAGE_DISK_16384K_FLUID_PART);
+        if(stack.getItem() == ModItems.STORAGE_DISK_FLUID_65536K.get()) return new ItemStack(ModItems.STORAGE_DISK_65536K_FLUID_PART);
+        if(stack.getItem() == ModItems.STORAGE_DISK_FLUID_262M.get()) return new ItemStack(ModItems.STORAGE_DISK_262M_FLUID_PART);
+        if(stack.getItem() == ModItems.STORAGE_DISK_FLUID_1048M.get()) return new ItemStack(ModItems.STORAGE_DISK_1048M_FLUID_PART);
+        return ItemStack.EMPTY;
     }
 
 
