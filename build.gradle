@@ -94,6 +94,10 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        name = 'Curios'
+        url = "https://maven.theillusivec4.top/"
+    }
 }
 
 dependencies {
@@ -108,6 +112,7 @@ dependencies {
     implementation ("com.refinedmods:refinedstorage:${project.rs_version}") {
         transitive false
     }
+    implementation "top.theillusivec4.curios:curios-neoforge:7.2.0+1.20.4"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

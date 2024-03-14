@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -75,14 +76,13 @@ public class PacketChangeMode implements CustomPacketPayload
                 //If we don't find our stack and Curio is loaded look in the curio slots
                 if (CuriosIntegration.isLoaded() && slotFound == -1)
                 {
-                    //TODO
-//                    Optional<ImmutableTriple<String, Integer, ItemStack>> curio = CuriosApi.getCuriosHelper().findEquippedCurio((stack) -> validItems.contains(stack.getItem()), player);
-//                    if (curio.isPresent())
-//                    {
-//                        //if we find our stack update its nbt/mode
-//                        updateStack(curio.get().getRight(), player);
-//                        return;
-//                    }
+                    Optional<ImmutableTriple<String, Integer, ItemStack>> curio = CuriosApi.getCuriosHelper().findEquippedCurio((stack) -> validItems.contains(stack.getItem()), player);
+                    if (curio.isPresent())
+                    {
+                        //if we find our stack update its nbt/mode
+                        updateStack(curio.get().getRight(), player);
+                        return;
+                    }
                 }
                 if (slotFound != -1)
                 {

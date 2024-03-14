@@ -10,6 +10,7 @@ import com.refinedmods.refinedstorage.blockentity.grid.WirelessGrid;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.util.StackUtils;
 import net.gigabit101.rebornstorage.RebornStorage;
+import net.gigabit101.rebornstorage.items.ItemWirelessGrid;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
